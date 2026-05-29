@@ -2,7 +2,7 @@
 builder = "NIXPACKS"
 
 [deploy]
-startCommand = "npx serve -s . -l $PORT --no-clipboard"
+startCommand = "npx serve . -l $PORT --no-clipboard"
 healthcheckPath = "/"
 healthcheckTimeout = 100
 restartPolicyType = "ON_FAILURE"
