@@ -489,21 +489,39 @@ function submitForm(e) {
   trackEvent('form_submit', { form_type: 'devis_client', code_postal: data.cp, responsable: data.resp });
   if (typeof fbq === 'function') fbq('track', 'Lead', { content_category: 'devis_carrosserie' });
 
-  const subject = encodeURIComponent('[LEAD CLIENT] Nouvelle demande de carrossier - ' + (data.cp || ''));
-  const body = encodeURIComponent(
-    'Nouvelle demande client reçue depuis mon-carrossier.fr\n\n' +
-    '— Prénom : ' + (data.nom || '') + '\n' +
-    '— Téléphone : ' + (data.tel || '') + '\n' +
-    '— Email : ' + (data.email || '') + '\n' +
-    '— Code postal : ' + (data.cp || '') + '\n' +
-    '— Responsable : ' + (data.resp || 'Non précisé') + '\n' +
-    '— Description dégâts : ' + (data.degats || 'Non précisée') + '\n\n' +
-    '— Date : ' + new Date().toLocaleString('fr-FR')
-  );
-  window.location.href = 'mailto:contact@mon-carrossier.fr?subject=' + subject + '&body=' + body;
+  const payload = {
+    _subject: '[LEAD CLIENT] Nouvelle demande - ' + (data.cp || ''),
+    _template: 'table',
+    _captcha: 'false',
+    _autoresponse: 'Bonjour ' + (data.nom || '') + ',\n\n'
+      + 'Nous avons bien reçu votre demande sur mon-carrossier.fr. '
+      + 'Un carrossier de votre secteur vous recontacte sous 24h pour un devis personnalisé.\n\n'
+      + 'À très vite,\nL\'équipe mon-carrossier.fr',
+    'Prénom': data.nom || '',
+    'Téléphone': data.tel || '',
+    email: data.email || '',
+    'Code postal': data.cp || '',
+    'Responsable du sinistre': data.resp || 'Non précisé',
+    'Description des dégâts': data.degats || 'Non précisée'
+  };
 
-  document.getElementById('formView').style.display = 'none';
-  document.getElementById('success').classList.add('active');
+  const btn = e.target.querySelector('button[type="submit"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'Envoi en cours…'; }
+
+  fetch('https://formsubmit.co/ajax/contact@mon-carrossier.fr', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(function(r) { return r.json(); })
+  .then(function() {
+    document.getElementById('formView').style.display = 'none';
+    document.getElementById('success').classList.add('active');
+  })
+  .catch(function() {
+    alert('Une erreur est survenue lors de l\'envoi. Vous pouvez nous écrire directement à contact@mon-carrossier.fr.');
+    if (btn) { btn.disabled = false; btn.textContent = 'Envoyer ma demande'; }
+  });
 }
 document.getElementById('modal').addEventListener('click', function(e) { if (e.target.id === 'modal') closeForm(); });
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeForm(); });

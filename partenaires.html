@@ -519,22 +519,40 @@ function submitForm(e) {
   trackEvent('partner_form_submit', { form_type: 'partenaire', ville: data.ville, taille: data.taille, vehicule: data.vehicule });
   if (typeof fbq === 'function') fbq('track', 'Lead', { content_category: 'recrutement_carrossier' });
 
-  const subject = encodeURIComponent('[LEAD CARROSSIER] ' + (data.garage || '') + ' - ' + (data.ville || ''));
-  const body = encodeURIComponent(
-    'Nouvelle demande de partenariat reçue depuis mon-carrossier.fr\n\n' +
-    '— Carrosserie : ' + (data.garage || '') + '\n' +
-    '— Contact : ' + (data.nom || '') + '\n' +
-    '— Téléphone : ' + (data.tel || '') + '\n' +
-    '— Email : ' + (data.email || '') + '\n' +
-    '— Ville : ' + (data.ville || '') + '\n' +
-    '— Taille atelier : ' + (data.taille || 'Non précisée') + '\n' +
-    '— Véhicule de prêt : ' + (data.vehicule || 'Non précisé') + '\n\n' +
-    '— Date : ' + new Date().toLocaleString('fr-FR')
-  );
-  window.location.href = 'mailto:contact@mon-carrossier.fr?subject=' + subject + '&body=' + body;
+  const payload = {
+    _subject: '[LEAD CARROSSIER] ' + (data.garage || '') + ' - ' + (data.ville || ''),
+    _template: 'table',
+    _captcha: 'false',
+    _autoresponse: 'Bonjour ' + (data.nom || '') + ',\n\n'
+      + 'Merci pour votre intérêt ! Nous avons bien reçu votre demande pour rejoindre le réseau de carrossiers mon-carrossier.fr. '
+      + 'Pierre vous rappelle sous 48h pour un échange entre carrossiers, sans engagement.\n\n'
+      + 'À très vite,\nL\'équipe mon-carrossier.fr',
+    'Carrosserie': data.garage || '',
+    'Contact': data.nom || '',
+    'Téléphone': data.tel || '',
+    email: data.email || '',
+    'Ville': data.ville || '',
+    'Taille atelier': data.taille || 'Non précisée',
+    'Véhicule de prêt': data.vehicule || 'Non précisé'
+  };
 
-  document.getElementById('formView').style.display = 'none';
-  document.getElementById('success').classList.add('active');
+  const btn = e.target.querySelector('button[type="submit"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'Envoi en cours…'; }
+
+  fetch('https://formsubmit.co/ajax/contact@mon-carrossier.fr', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(function(r) { return r.json(); })
+  .then(function() {
+    document.getElementById('formView').style.display = 'none';
+    document.getElementById('success').classList.add('active');
+  })
+  .catch(function() {
+    alert('Une erreur est survenue lors de l\'envoi. Vous pouvez nous écrire directement à contact@mon-carrossier.fr.');
+    if (btn) { btn.disabled = false; btn.textContent = 'Demander à être rappelé'; }
+  });
 }
 document.getElementById('modal').addEventListener('click', function(e) { if (e.target.id === 'modal') closeForm(); });
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeForm(); });
