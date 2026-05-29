@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0866FF">
+<title>Contact | mon-carrossier.fr</title>
+<meta name="description" content="Contactez l'équipe mon-carrossier.fr. Une question ? Un projet ? Nous répondons sous 48h.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+
+<style>
+.contact-grid { display: grid; grid-template-columns: 1fr; gap: 40px; max-width: 980px; margin: 0 auto; padding: 60px 0 80px; }
+@media (min-width: 860px) { .contact-grid { grid-template-columns: 0.4fr 0.6fr; gap: 56px; } }
+.contact-intro .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 16px; }
+.contact-intro .eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--blue); }
+.contact-intro h1 { font-size: clamp(32px, 5vw, 44px); color: var(--ink-deep); margin-bottom: 18px; font-weight: 600; }
+.contact-intro h1 em { font-style: italic; color: var(--blue); font-weight: 500; }
+.contact-intro p { font-size: 16px; color: var(--ink-soft); margin-bottom: 24px; line-height: 1.6; }
+.contact-info { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-md); padding: 24px; margin-bottom: 18px; }
+.contact-info h3 { font-family: var(--body); font-size: 15px; font-weight: 700; color: var(--ink-deep); margin-bottom: 10px; }
+.contact-info p { font-size: 14px; color: var(--ink-soft); margin: 0; line-height: 1.55; }
+.contact-info a { color: var(--blue); text-decoration: none; font-weight: 600; }
+.contact-info a:hover { text-decoration: underline; }
+
+.contact-form-card { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); padding: 40px; box-shadow: var(--shadow); }
+@media (max-width: 560px) { .contact-form-card { padding: 28px 22px; } }
+.contact-form-card h2 { font-size: 24px; color: var(--ink-deep); margin-bottom: 8px; font-weight: 600; }
+.contact-form-card .lead { font-size: 14px; color: var(--ink-soft); margin-bottom: 24px; }
+.fg { margin-bottom: 16px; }
+.fg label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; color: var(--ink-deep); }
+.fg input, .fg select, .fg textarea { width: 100%; padding: 14px 16px; border: 1.5px solid var(--border-light); border-radius: var(--r-md); font-family: var(--body); font-size: 16px; background: #fff; transition: border-color 0.15s; }
+.fg input:focus, .fg select:focus, .fg textarea:focus { outline: none; border-color: var(--blue); }
+.fg textarea { resize: vertical; min-height: 120px; }
+.disclaimer { font-size: 12px; color: var(--ink-faint); text-align: center; margin-top: 14px; line-height: 1.5; }
+.disclaimer a { color: var(--ink-soft); text-decoration: underline; }
+.success-msg { display: none; background: var(--blue-bg); border: 1px solid var(--blue); border-radius: var(--r-md); padding: 20px; text-align: center; color: var(--blue-dark); margin-bottom: 20px; }
+.success-msg.active { display: block; }
+.success-msg strong { color: var(--blue); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap head">
+    <a href="/" class="logo">mon-<b>carrossier</b>.fr</a>
+    <button class="head-cta" onclick="location.href='/'">Retour au site</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="contact-grid">
+
+    <div class="contact-intro">
+      <span class="eyebrow">Une question ?</span>
+      <h1>Parlons-en <em>directement.</em></h1>
+      <p>Particulier sinistré, carrossier intéressé par notre réseau, ou partenaire potentiel : on vous répond sous 48 heures, en toute simplicité.</p>
+
+      <div class="contact-info">
+        <h3>📧 Email</h3>
+        <p><a href="mailto:contact@mon-carrossier.fr">contact@mon-carrossier.fr</a></p>
+      </div>
+
+      <div class="contact-info">
+        <h3>📍 Adresse postale</h3>
+        <p>mon-carrossier.fr<br>146 rue Jean Monnet<br>69300 Caluire-et-Cuire<br>France</p>
+      </div>
+
+      <div class="contact-info">
+        <h3>⏱ Délai de réponse</h3>
+        <p>Sous 48h ouvrées maximum, du lundi au vendredi.</p>
+      </div>
+
+      <div class="contact-info">
+        <h3>🔧 Vous êtes carrossier ?</h3>
+        <p>Découvrez nos conditions de partenariat sur la <a href="/partenaires.html">page dédiée aux professionnels</a>.</p>
+      </div>
+    </div>
+
+    <div class="contact-form-card">
+      <h2>Nous écrire</h2>
+      <p class="lead">Remplissez ce formulaire, nous vous répondons rapidement.</p>
+
+      <div class="success-msg" id="successMsg">
+        <strong>Message prêt à être envoyé !</strong><br>
+        Votre client email s'est ouvert avec votre message pré-rempli. Cliquez sur "Envoyer" pour finaliser.
+      </div>
+
+      <form id="contactForm" onsubmit="submitContact(event)">
+        <div class="fg">
+          <label for="nom">Votre nom *</label>
+          <input type="text" id="nom" name="nom" required autocomplete="name">
+        </div>
+        <div class="fg">
+          <label for="email">Votre email *</label>
+          <input type="email" id="email" name="email" required autocomplete="email" placeholder="vous@exemple.fr">
+        </div>
+        <div class="fg">
+          <label for="tel">Téléphone (optionnel)</label>
+          <input type="tel" id="tel" name="tel" autocomplete="tel" placeholder="06 12 34 56 78">
+        </div>
+        <div class="fg">
+          <label for="sujet">Sujet *</label>
+          <select id="sujet" name="sujet" required>
+            <option value="">Choisir un sujet…</option>
+            <option value="Particulier - Question sur un dossier">Particulier — Question sur un dossier</option>
+            <option value="Particulier - Information générale">Particulier — Information générale</option>
+            <option value="Carrossier - Devenir partenaire">Carrossier — Devenir partenaire</option>
+            <option value="Carrossier - Question contrat existant">Carrossier — Question sur contrat existant</option>
+            <option value="Presse et media">Presse et média</option>
+            <option value="Demande RGPD">Demande RGPD (accès, suppression, rectification)</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="message">Votre message *</label>
+          <textarea id="message" name="message" required placeholder="Décrivez votre demande en quelques mots…"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Envoyer le message →</button>
+        <p class="disclaimer">En envoyant ce formulaire, vous acceptez d'être recontacté. Vos données sont protégées — voir notre <a href="/rgpd.html">politique RGPD</a>.</p>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap foot">
+    <div>© 2026 mon-carrossier.fr — Plateforme indépendante de mise en relation</div>
+    <div class="foot-links">
+      <a href="/">Accueil</a>
+      <a href="/mentions-legales.html">Mentions légales</a>
+      <a href="/cgu.html">CGU</a>
+      <a href="/rgpd.html">RGPD</a>
+      <a href="/cookies.html">Cookies</a>
+      <a href="/partenaires.html" class="pro">Vous êtes carrossier ?</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function submitContact(e) {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.target).entries());
+
+  const subject = encodeURIComponent('[CONTACT] ' + (data.sujet || 'Demande de contact'));
+  const body = encodeURIComponent(
+    'Nouveau message reçu depuis le formulaire contact mon-carrossier.fr\n\n' +
+    '— Nom : ' + (data.nom || '') + '\n' +
+    '— Email : ' + (data.email || '') + '\n' +
+    '— Téléphone : ' + (data.tel || 'Non fourni') + '\n' +
+    '— Sujet : ' + (data.sujet || '') + '\n\n' +
+    '— Message :\n' + (data.message || '') + '\n\n' +
+    '— Date : ' + new Date().toLocaleString('fr-FR')
+  );
+  window.location.href = 'mailto:contact@mon-carrossier.fr?subject=' + subject + '&body=' + body;
+
+  document.getElementById('successMsg').classList.add('active');
+}
+</script>
+
+</body>
+</html>

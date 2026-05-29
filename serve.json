@@ -1,0 +1,23 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "**/*.@(html|css|svg|png|jpg|jpeg)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, must-revalidate"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    { "source": "/partenaires", "destination": "/partenaires.html" },
+    { "source": "/mentions-legales", "destination": "/mentions-legales.html" },
+    { "source": "/cgu", "destination": "/cgu.html" },
+    { "source": "/rgpd", "destination": "/rgpd.html" },
+    { "source": "/cookies", "destination": "/cookies.html" },
+    { "source": "/contact", "destination": "/contact.html" }
+  ]
+}
