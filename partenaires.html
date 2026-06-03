@@ -534,7 +534,7 @@ function submitForm(e) {
   e.preventDefault();
   const data = Object.fromEntries(new FormData(e.target).entries());
   trackEvent('partner_form_submit', { form_type: 'partenaire', ville: data.ville, taille: data.taille, vehicule: data.vehicule });
-  if (typeof fbq === 'function') fbq('track', 'Lead', { content_category: 'recrutement_carrossier' });
+  if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'Lead partenaire', content_category: 'recrutement_carrossier' });
 
   const payload = {
     _subject: '[LEAD CARROSSIER] ' + (data.garage || '') + ' - ' + (data.ville || ''),

@@ -504,7 +504,7 @@ function submitForm(e) {
   e.preventDefault();
   const data = Object.fromEntries(new FormData(e.target).entries());
   trackEvent('form_submit', { form_type: 'devis_client', code_postal: data.cp, responsable: data.resp });
-  if (typeof fbq === 'function') fbq('track', 'Lead', { content_category: 'devis_carrosserie' });
+  if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'Lead Client', content_category: 'devis_carrosserie' });
 
   const payload = {
     _subject: '[LEAD CLIENT] Nouvelle demande - ' + (data.cp || ''),
