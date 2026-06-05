@@ -504,6 +504,22 @@ function submitForm(e) {
   e.preventDefault();
   const data = Object.fromEntries(new FormData(e.target).entries());
   trackEvent('form_submit', { form_type: 'devis_client', code_postal: data.cp, responsable: data.resp });
+  // ── Make.com webhook (confirmation email client) ──────────────────────────
+  fetch('MAKE_WEBHOOK_URL', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      form_type:   'client',
+      prenom:      data.prenom      || '',
+      email:       data.email       || '',
+      telephone:   data.telephone   || '',
+      cp:          data.cp          || '',
+      marque:      data.marque      || '',
+      resp:        data.resp        || '',
+      description: data.description || ''
+    })
+  }).catch(function(){});
+  // ─────────────────────────────────────────────────────────────────────────
   if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'Lead Client', content_category: 'devis_carrosserie' });
 
   const payload = {

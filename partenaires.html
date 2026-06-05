@@ -534,6 +534,22 @@ function submitForm(e) {
   e.preventDefault();
   const data = Object.fromEntries(new FormData(e.target).entries());
   trackEvent('partner_form_submit', { form_type: 'partenaire', ville: data.ville, taille: data.taille, vehicule: data.vehicule });
+  // ── Make.com webhook (confirmation email partenaire) ──────────────────────
+  fetch('MAKE_WEBHOOK_URL', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      form_type: 'partenaire',
+      nom:       data.nom       || '',
+      garage:    data.garage    || '',
+      ville:     data.ville     || '',
+      email:     data.email     || '',
+      telephone: data.telephone || '',
+      taille:    data.taille    || '',
+      vehicule:  data.vehicule  || ''
+    })
+  }).catch(function(){});
+  // ─────────────────────────────────────────────────────────────────────────
   if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'Lead partenaire', content_category: 'recrutement_carrossier' });
 
   const payload = {

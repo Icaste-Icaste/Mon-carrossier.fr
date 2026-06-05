@@ -1,0 +1,172 @@
+{
+  "name": "mon-carrossier.fr — Confirmations formulaires",
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": {
+        "hook": 1,
+        "maxResults": 1
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": { "x": 0, "y": 0 },
+        "restore": {
+          "parameters": { "hook": { "label": "Webhook mon-carrossier.fr" } }
+        },
+        "parameters": [
+          { "name": "hook", "type": "hook:gateway-webhook", "label": "Webhook" },
+          { "name": "maxResults", "type": "number", "label": "Maximum number of results" }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "module": "builtin:BasicRouter",
+      "version": 1,
+      "parameters": {},
+      "mapper": {},
+      "metadata": {
+        "designer": { "x": 300, "y": 0 }
+      },
+      "routes": [
+        {
+          "flow": [
+            {
+              "id": 3,
+              "module": "smtp:ActionSendEmail",
+              "version": 5,
+              "parameters": { "account": 1 },
+              "filter": {
+                "name": "Formulaire Partenaire",
+                "conditions": [[{ "a": "{{1.form_type}}", "b": "partenaire", "o": "text:equal" }]]
+              },
+              "mapper": {
+                "from": "Pierre | mon-carrossier.fr <{{ZIMBRA_USER}}>",
+                "to": [{ "name": "{{1.nom}}", "address": "{{1.email}}" }],
+                "subject": "Bienvenue sur mon-carrossier.fr — Votre demande de partenariat, {{1.nom}}",
+                "html": "<!DOCTYPE html><html><head><meta charset='UTF-8'><style>body{margin:0;padding:0;background:#f4f4f4;font-family:Arial,sans-serif}.wrapper{max-width:600px;margin:32px auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)}.header{background:#0866FF;padding:28px 32px}.header h1{margin:0;color:#fff;font-size:22px;font-weight:700}.body{padding:32px}.body p{color:#374151;font-size:15px;line-height:1.6;margin:0 0 16px}.highlight{background:#EFF6FF;border-left:4px solid #0866FF;padding:16px 20px;border-radius:0 6px 6px 0;margin:24px 0}.highlight p{margin:0;color:#1e40af;font-weight:600}.divider{border:none;border-top:1px solid #e5e7eb;margin:28px 0}.sig{padding:0 0 8px}.sig .name{font-size:15px;font-weight:700;color:#111827}.sig .title{font-size:13px;color:#6B7280;margin:2px 0 8px}.sig .contact a{color:#0866FF;text-decoration:none;font-size:13px}.badge{display:inline-block;background:#EFF6FF;color:#0866FF;font-size:12px;font-weight:600;padding:4px 10px;border-radius:100px;margin-top:8px}</style></head><body><div class='wrapper'><div class='header'><h1>Bonjour {{1.nom}} 👋</h1></div><div class='body'><p>Merci pour votre intérêt pour <strong>mon-carrossier.fr</strong> !</p><p>Nous avons bien reçu votre demande de partenariat pour <strong>{{1.garage}}</strong> à <strong>{{1.ville}}</strong>.</p><div class='highlight'><p>📞 Pierre vous rappelle personnellement sous 48h pour un échange entre professionnels — sans engagement.</p></div><p>Pour rappel, notre modèle :</p><ul style='color:#374151;font-size:15px;line-height:1.8'><li><strong>0 € d'abonnement</strong> — vous ne payez rien tant qu'on ne vous apporte pas de dossier</li><li><strong>20% de commission</strong> uniquement sur les dossiers conclus</li><li>Votre identité et réputation préservées</li></ul><hr class='divider'><div class='sig'><div class='name'>Pierre Bertin</div><div class='title'>Fondateur — mon-carrossier.fr</div><div class='contact'><a href='tel:{{PIERRE_TEL}}'>{{PIERRE_TEL}}</a> · <a href='mailto:pierre@mon-carrossier.fr'>pierre@mon-carrossier.fr</a> · <a href='https://www.mon-carrossier.fr'>www.mon-carrossier.fr</a></div><div><span class='badge'>Plateforme indépendante · Commission au succès</span></div></div></div></div></body></html>",
+                "attachments": []
+              },
+              "metadata": {
+                "designer": { "x": 600, "y": -200 },
+                "restore": {
+                  "parameters": { "account": { "label": "SMTP Zimbra" } },
+                  "expect": { "to": { "mode": "chose", "items": [null] }, "cc": { "mode": "chose", "items": [] }, "bcc": { "mode": "chose", "items": [] } }
+                },
+                "parameters": [{ "name": "account", "type": "account:smtp", "label": "Connection" }],
+                "expect": [
+                  { "name": "from", "type": "text", "label": "From" },
+                  { "name": "to", "type": "array", "label": "To", "spec": [{ "name": "name", "type": "text" }, { "name": "address", "type": "email" }] },
+                  { "name": "subject", "type": "text", "label": "Subject" },
+                  { "name": "html", "type": "text", "label": "HTML content" },
+                  { "name": "attachments", "type": "array", "label": "Attachments" }
+                ]
+              }
+            },
+            {
+              "id": 4,
+              "module": "smtp:ActionSendEmail",
+              "version": 5,
+              "parameters": { "account": 1 },
+              "mapper": {
+                "from": "Pierre | mon-carrossier.fr <{{ZIMBRA_USER}}>",
+                "to": [{ "name": "Pierre Bertin", "address": "{{ZIMBRA_USER}}" }],
+                "subject": "[NOUVEAU PARTENAIRE] {{1.garage}} — {{1.ville}}",
+                "html": "<h2>Nouveau formulaire partenaire</h2><table style='border-collapse:collapse;width:100%;font-family:Arial,sans-serif;font-size:14px'><tr><td style='padding:8px;border:1px solid #ddd;background:#f5f5f5'><b>Propriétaire</b></td><td style='padding:8px;border:1px solid #ddd'>{{1.nom}}</td></tr><tr><td style='padding:8px;border:1px solid #ddd;background:#f5f5f5'><b>Carrosserie</b></td><td style='padding:8px;border:1px solid #ddd'>{{1.garage}}</td></tr><tr><td style='padding:8px;border:1px solid #ddd;background:#f5f5f5'><b>Ville</b></td><td style='padding:8px;border:1px solid #ddd'>{{1.ville}}</td></tr><tr><td style='padding:8px;border:1px solid #ddd;background:#f5f5f5'><b>Email</b></td><td style='padding:8px;border:1px solid #ddd'><a href='mailto:{{1.email}}'>{{1.email}}</a></td></tr><tr><td style='padding:8px;border:1px solid #ddd;background:#f5f5f5'><b>Téléphone</b></td><td style='padding:8px;border:1px solid #ddd'>{{1.telephone}}</td></tr><tr><td style='padding:8px;border:1px solid #ddd;background:#f5f5f5'><b>Véhicules/mois</b></td><td style='padding:8px;border:1px solid #ddd'>{{1.taille}}</td></tr><tr><td style='padding:8px;border:1px solid #ddd;background:#f5f5f5'><b>Type véhicule</b></td><td style='padding:8px;border:1px solid #ddd'>{{1.vehicule}}</td></tr></table>",
+                "attachments": []
+              },
+              "metadata": {
+                "designer": { "x": 600, "y": 0 },
+                "restore": {
+                  "parameters": { "account": { "label": "SMTP Zimbra" } },
+                  "expect": { "to": { "mode": "chose", "items": [null] }, "cc": { "mode": "chose", "items": [] }, "bcc": { "mode": "chose", "items": [] } }
+                },
+                "parameters": [{ "name": "account", "type": "account:smtp", "label": "Connection" }],
+                "expect": [
+                  { "name": "from", "type": "text", "label": "From" },
+                  { "name": "to", "type": "array", "label": "To", "spec": [{ "name": "name", "type": "text" }, { "name": "address", "type": "email" }] },
+                  { "name": "subject", "type": "text", "label": "Subject" },
+                  { "name": "html", "type": "text", "label": "HTML content" },
+                  { "name": "attachments", "type": "array", "label": "Attachments" }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "flow": [
+            {
+              "id": 5,
+              "module": "smtp:ActionSendEmail",
+              "version": 5,
+              "parameters": { "account": 1 },
+              "filter": {
+                "name": "Formulaire Client",
+                "conditions": [[{ "a": "{{1.form_type}}", "b": "client", "o": "text:equal" }]]
+              },
+              "mapper": {
+                "from": "Pierre | mon-carrossier.fr <{{ZIMBRA_USER}}>",
+                "to": [{ "name": "{{1.prenom}}", "address": "{{1.email}}" }],
+                "subject": "Votre demande de devis — mon-carrossier.fr",
+                "html": "<!DOCTYPE html><html><head><meta charset='UTF-8'><style>body{margin:0;padding:0;background:#f4f4f4;font-family:Arial,sans-serif}.wrapper{max-width:600px;margin:32px auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)}.header{background:#0866FF;padding:28px 32px}.header h1{margin:0;color:#fff;font-size:22px;font-weight:700}.body{padding:32px}.body p{color:#374151;font-size:15px;line-height:1.6;margin:0 0 16px}.highlight{background:#EFF6FF;border-left:4px solid #0866FF;padding:16px 20px;border-radius:0 6px 6px 0;margin:24px 0}.highlight p{margin:0;color:#1e40af;font-weight:600}.benefits{display:table;width:100%;margin:20px 0}.benefit{display:table-cell;padding:12px;text-align:center;background:#f9fafb;border-radius:6px;font-size:13px;color:#374151}.divider{border:none;border-top:1px solid #e5e7eb;margin:28px 0}.sig .name{font-size:15px;font-weight:700;color:#111827}.sig .title{font-size:13px;color:#6B7280;margin:2px 0 8px}.sig .contact a{color:#0866FF;text-decoration:none;font-size:13px}.badge{display:inline-block;background:#f0fdf4;color:#16a34a;font-size:12px;font-weight:600;padding:4px 10px;border-radius:100px;margin-top:8px}</style></head><body><div class='wrapper'><div class='header'><h1>Bonjour {{1.prenom}} 👋</h1></div><div class='body'><p>Nous avons bien reçu votre demande pour votre <strong>{{1.marque}}</strong> ({{1.cp}}).</p><div class='highlight'><p>🔧 Un carrossier partenaire vous contacte sous <strong>24h</strong> au {{1.telephone}} pour convenir d'un devis gratuit.</p></div><p>Ce que vous obtenez gratuitement :</p><ul style='color:#374151;font-size:15px;line-height:1.8'><li>✅ <strong>Devis gratuit sous 24h</strong></li><li>✅ <strong>Franchise prise en charge*</strong> chez nos partenaires</li><li>✅ <strong>Véhicule de prêt</strong> pendant les réparations</li></ul><p style='font-size:12px;color:#9ca3af;margin-top:4px'>* Sous conditions — applicable chez les carrossiers partenaires.</p><hr class='divider'><div class='sig'><div class='name'>L'équipe mon-carrossier.fr</div><div class='title'>Plateforme indépendante de mise en relation</div><div class='contact'><a href='https://www.mon-carrossier.fr'>www.mon-carrossier.fr</a></div><div><span class='badge'>✓ Indépendant de votre assurance</span></div></div></div></div></body></html>",
+                "attachments": []
+              },
+              "metadata": {
+                "designer": { "x": 600, "y": 200 },
+                "restore": {
+                  "parameters": { "account": { "label": "SMTP Zimbra" } },
+                  "expect": { "to": { "mode": "chose", "items": [null] }, "cc": { "mode": "chose", "items": [] }, "bcc": { "mode": "chose", "items": [] } }
+                },
+                "parameters": [{ "name": "account", "type": "account:smtp", "label": "Connection" }],
+                "expect": [
+                  { "name": "from", "type": "text", "label": "From" },
+                  { "name": "to", "type": "array", "label": "To", "spec": [{ "name": "name", "type": "text" }, { "name": "address", "type": "email" }] },
+                  { "name": "subject", "type": "text", "label": "Subject" },
+                  { "name": "html", "type": "text", "label": "HTML content" },
+                  { "name": "attachments", "type": "array", "label": "Attachments" }
+                ]
+              }
+            },
+            {
+              "id": 6,
+              "module": "smtp:ActionSendEmail",
+              "version": 5,
+              "parameters": { "account": 1 },
+              "mapper": {
+                "from": "mon-carrossier.fr <{{ZIMBRA_USER}}>",
+                "to": [{ "name": "Pierre Bertin", "address": "{{ZIMBRA_USER}}" }],
+                "subject": "[NOUVEAU CLIENT] {{1.prenom}} — {{1.marque}} ({{1.cp}})",
+                "html": "<h2>Nouveau formulaire client</h2><table style='border-collapse:collapse;width:100%;font-family:Arial,sans-serif;font-size:14px'><tr><td style='padding:8px;border:1px solid #ddd;background:#f5f5f5'><b>Prénom</b></td><td style='padding:8px;border:1px solid #ddd'>{{1.prenom}}</td></tr><tr><td style='padding:8px;border:1px solid #ddd;background:#f5f5f5'><b>Email</b></td><td style='padding:8px;border:1px solid #ddd'><a href='mailto:{{1.email}}'>{{1.email}}</a></td></tr><tr><td style='padding:8px;border:1px solid #ddd;background:#f5f5f5'><b>Téléphone</b></td><td style='padding:8px;border:1px solid #ddd'>{{1.telephone}}</td></tr><tr><td style='padding:8px;border:1px solid #ddd;background:#f5f5f5'><b>Code postal</b></td><td style='padding:8px;border:1px solid #ddd'>{{1.cp}}</td></tr><tr><td style='padding:8px;border:1px solid #ddd;background:#f5f5f5'><b>Marque</b></td><td style='padding:8px;border:1px solid #ddd'>{{1.marque}}</td></tr><tr><td style='padding:8px;border:1px solid #ddd;background:#f5f5f5'><b>Responsable</b></td><td style='padding:8px;border:1px solid #ddd'>{{1.resp}}</td></tr><tr><td style='padding:8px;border:1px solid #ddd;background:#f5f5f5'><b>Description</b></td><td style='padding:8px;border:1px solid #ddd'>{{1.description}}</td></tr></table>",
+                "attachments": []
+              },
+              "metadata": {
+                "designer": { "x": 600, "y": 400 },
+                "restore": {
+                  "parameters": { "account": { "label": "SMTP Zimbra" } },
+                  "expect": { "to": { "mode": "chose", "items": [null] }, "cc": { "mode": "chose", "items": [] }, "bcc": { "mode": "chose", "items": [] } }
+                },
+                "parameters": [{ "name": "account", "type": "account:smtp", "label": "Connection" }],
+                "expect": [
+                  { "name": "from", "type": "text", "label": "From" },
+                  { "name": "to", "type": "array", "label": "To", "spec": [{ "name": "name", "type": "text" }, { "name": "address", "type": "email" }] },
+                  { "name": "subject", "type": "text", "label": "Subject" },
+                  { "name": "html", "type": "text", "label": "HTML content" },
+                  { "name": "attachments", "type": "array", "label": "Attachments" }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "instant": true,
+    "version": 1,
+    "scenario": { "roundtrips": 1, "maxErrors": 3, "autoCommit": true, "autoCommitTriggerLast": true, "sequential": false, "confidential": false, "dataloss": false, "dlq": false, "freshVariables": false },
+    "designer": { "orphans": [] },
+    "zone": "eu1.make.com"
+  }
+}
