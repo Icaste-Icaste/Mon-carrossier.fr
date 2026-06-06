@@ -505,7 +505,7 @@ function submitForm(e) {
   const data = Object.fromEntries(new FormData(e.target).entries());
   trackEvent('form_submit', { form_type: 'devis_client', code_postal: data.cp, responsable: data.resp });
   // ── Make.com webhook (confirmation email client) ──────────────────────────
-  fetch('MAKE_WEBHOOK_URL', {
+  fetch('https://hook.eu2.make.com/1d3qw2cqvdm7avawr4v6zzg34zjhwot2', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
