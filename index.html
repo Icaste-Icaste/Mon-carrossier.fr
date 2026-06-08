@@ -455,6 +455,10 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
           <input type="email" id="email" name="email" required autocomplete="email" placeholder="vous@exemple.fr">
         </div>
         <div class="fg">
+          <label for="marque">Marque et modèle du véhicule *</label>
+          <input type="text" id="marque" name="marque" required placeholder="Ex : Renault Clio, Peugeot 308…">
+        </div>
+        <div class="fg">
           <label for="cp">Code postal *</label>
           <input type="text" id="cp" name="cp" required pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" placeholder="83470">
         </div>
@@ -510,29 +514,26 @@ function submitForm(e) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       form_type:   'client',
-      prenom:      data.prenom      || '',
+      prenom:      data.nom         || '',
       email:       data.email       || '',
-      telephone:   data.telephone   || '',
+      telephone:   data.tel         || '',
       cp:          data.cp          || '',
       marque:      data.marque      || '',
       resp:        data.resp        || '',
-      description: data.description || ''
+      description: data.degats      || ''
     })
   }).catch(function(){});
   // ─────────────────────────────────────────────────────────────────────────
   if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'Lead Client', content_category: 'devis_carrosserie' });
 
   const payload = {
-    _subject: '[LEAD CLIENT] Nouvelle demande - ' + (data.cp || ''),
+    _subject: '[LEAD CLIENT] ' + (data.nom || '') + ' - ' + (data.marque || '') + ' - ' + (data.cp || ''),
     _template: 'table',
     _captcha: 'false',
-    _autoresponse: 'Bonjour ' + (data.nom || '') + ',\n\n'
-      + 'Nous avons bien reçu votre demande sur mon-carrossier.fr. '
-      + 'Un carrossier de votre secteur vous recontacte sous 24h pour un devis personnalisé.\n\n'
-      + 'À très vite,\nL\'équipe mon-carrossier.fr',
     'Prénom': data.nom || '',
     'Téléphone': data.tel || '',
     email: data.email || '',
+    'Véhicule': data.marque || '',
     'Code postal': data.cp || '',
     'Responsable du sinistre': data.resp || 'Non précisé',
     'Description des dégâts': data.degats || 'Non précisée'
