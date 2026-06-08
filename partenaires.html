@@ -468,7 +468,11 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
         </div>
         <div class="fg">
           <label for="nom">Votre nom *</label>
-          <input type="text" id="nom" name="nom" required autocomplete="name">
+          <input type="text" id="nom" name="nom" required autocomplete="family-name">
+        </div>
+        <div class="fg">
+          <label for="prenom">Votre prénom *</label>
+          <input type="text" id="prenom" name="prenom" required autocomplete="given-name">
         </div>
         <div class="fg">
           <label for="tel">Téléphone *</label>
@@ -478,10 +482,17 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
           <label for="email">Email *</label>
           <input type="email" id="email" name="email" required autocomplete="email" placeholder="vous@exemple.fr">
         </div>
-        <div class="fg">
-          <label for="ville">Ville *</label>
-          <input type="text" id="ville" name="ville" required placeholder="Saint-Maximin, Brignoles…">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="fg" style="margin-bottom:0;">
+            <label for="cp">Code postal *</label>
+            <input type="text" id="cp" name="cp" required placeholder="83470" inputmode="numeric" maxlength="5">
+          </div>
+          <div class="fg" style="margin-bottom:0;">
+            <label for="ville">Ville *</label>
+            <input type="text" id="ville" name="ville" required placeholder="Saint-Maximin…">
+          </div>
         </div>
+        <div style="margin-bottom:16px;"></div>
         <div class="fg">
           <label for="taille">Taille de votre atelier</label>
           <select id="taille" name="taille">
@@ -541,10 +552,12 @@ function submitForm(e) {
     body: JSON.stringify({
       form_type: 'partenaire',
       nom:       data.nom       || '',
+      prenom:    data.prenom    || '',
       garage:    data.garage    || '',
+      cp:        data.cp        || '',
       ville:     data.ville     || '',
       email:     data.email     || '',
-      telephone: data.telephone || '',
+      telephone: data.tel       || '',
       taille:    data.taille    || '',
       vehicule:  data.vehicule  || ''
     })
@@ -553,17 +566,19 @@ function submitForm(e) {
   if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'Lead partenaire', content_category: 'recrutement_carrossier' });
 
   const payload = {
-    _subject: '[LEAD CARROSSIER] ' + (data.garage || '') + ' - ' + (data.ville || ''),
+    _subject: '[LEAD CARROSSIER] ' + (data.garage || '') + ' - ' + (data.cp || '') + ' ' + (data.ville || ''),
     _template: 'table',
     _captcha: 'false',
-    _autoresponse: 'Bonjour ' + (data.nom || '') + ',\n\n'
+    _autoresponse: 'Bonjour ' + (data.prenom || data.nom || '') + ',\n\n'
       + 'Merci pour votre intérêt ! Nous avons bien reçu votre demande pour rejoindre le réseau de carrossiers mon-carrossier.fr. '
       + 'Pierre vous rappelle sous 48h pour un échange entre carrossiers, sans engagement.\n\n'
       + 'À très vite,\nL\'équipe mon-carrossier.fr',
     'Carrosserie': data.garage || '',
-    'Contact': data.nom || '',
+    'Nom': data.nom || '',
+    'Prénom': data.prenom || '',
     'Téléphone': data.tel || '',
     email: data.email || '',
+    'Code postal': data.cp || '',
     'Ville': data.ville || '',
     'Taille atelier': data.taille || 'Non précisée',
     'Véhicule de prêt': data.vehicule || 'Non précisé'
