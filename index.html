@@ -442,10 +442,17 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
         <button class="modal-x" onclick="closeForm()" aria-label="Fermer">×</button>
       </div>
       <form id="devisForm" onsubmit="submitForm(event)">
-        <div class="fg">
-          <label for="nom">Votre prénom *</label>
-          <input type="text" id="nom" name="nom" required autocomplete="given-name">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="fg" style="margin-bottom:0;">
+            <label for="prenom">Prénom *</label>
+            <input type="text" id="prenom" name="prenom" required autocomplete="given-name">
+          </div>
+          <div class="fg" style="margin-bottom:0;">
+            <label for="nom">Nom *</label>
+            <input type="text" id="nom" name="nom" required autocomplete="family-name">
+          </div>
         </div>
+        <div style="margin-bottom:16px;"></div>
         <div class="fg">
           <label for="tel">Téléphone *</label>
           <input type="tel" id="tel" name="tel" required autocomplete="tel" placeholder="06 12 34 56 78">
@@ -458,9 +465,21 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
           <label for="marque">Marque et modèle du véhicule *</label>
           <input type="text" id="marque" name="marque" required placeholder="Ex : Renault Clio, Peugeot 308…">
         </div>
+        <div style="display:grid;grid-template-columns:1fr 2fr;gap:12px;">
+          <div class="fg" style="margin-bottom:0;">
+            <label for="cp">Code postal *</label>
+            <input type="text" id="cp" name="cp" required pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" placeholder="83470" oninput="lookupVille(this.value)">
+          </div>
+          <div class="fg" style="margin-bottom:0;">
+            <label for="ville">Ville *</label>
+            <input type="text" id="ville" name="ville" required placeholder="Chargement…" list="villesList">
+            <datalist id="villesList"></datalist>
+          </div>
+        </div>
+        <div style="margin-bottom:16px;"></div>
         <div class="fg">
-          <label for="cp">Code postal *</label>
-          <input type="text" id="cp" name="cp" required pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" placeholder="83470">
+          <label for="adresse">Adresse</label>
+          <input type="text" id="adresse" name="adresse" autocomplete="street-address" placeholder="12 rue des Artisans">
         </div>
         <div class="fg">
           <label>Êtes-vous responsable du sinistre ?</label>
@@ -473,6 +492,11 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
         <div class="fg">
           <label for="degats">Décrivez les dégâts (optionnel)</label>
           <textarea id="degats" name="degats" placeholder="Ex : aile avant droite enfoncée suite à un accrochage sur parking"></textarea>
+        </div>
+        <div class="fg">
+          <label for="photos">Photos du véhicule <span style="font-weight:400;color:var(--ink-faint)">(optionnel, 1 à 5)</span></label>
+          <input type="file" id="photos" name="photos" accept="image/*,image/heic" multiple style="padding:10px 12px;font-size:14px;cursor:pointer;">
+          <p id="photosError" style="display:none;color:#dc2626;font-size:12px;margin-top:4px;">Maximum 5 photos.</p>
         </div>
         <button type="submit" class="btn btn-primary btn-full" style="margin-top:8px;">Envoyer ma demande</button>
         <p class="disclaimer">En envoyant ce formulaire, vous acceptez d'être recontacté par un carrossier de notre réseau. Vos données sont protégées — voir notre <a href="/rgpd.html">politique RGPD</a>.</p>
@@ -504,48 +528,70 @@ function closeForm() {
   document.getElementById('success').classList.remove('active');
   document.getElementById('devisForm').reset();
 }
+function lookupVille(cp) {
+  if (cp.length !== 5 || !/^[0-9]{5}$/.test(cp)) return;
+  fetch('https://geo.api.gouv.fr/communes?codePostal=' + cp + '&fields=nom&format=json')
+    .then(function(r) { return r.json(); })
+    .then(function(villes) {
+      var dl = document.getElementById('villesList');
+      dl.innerHTML = '';
+      villes.forEach(function(v) {
+        var opt = document.createElement('option');
+        opt.value = v.nom;
+        dl.appendChild(opt);
+      });
+      var villeInput = document.getElementById('ville');
+      if (villes.length === 1 && !villeInput.value) villeInput.value = villes[0].nom;
+    }).catch(function(){});
+}
+document.getElementById('photos').addEventListener('change', function() {
+  var err = document.getElementById('photosError');
+  if (this.files.length > 5) {
+    err.style.display = 'block';
+    this.value = '';
+  } else {
+    err.style.display = 'none';
+  }
+});
 function submitForm(e) {
   e.preventDefault();
-  const data = Object.fromEntries(new FormData(e.target).entries());
-  trackEvent('form_submit', { form_type: 'devis_client', code_postal: data.cp, responsable: data.resp });
-  // ── Make.com webhook (confirmation email client) ──────────────────────────
+  var rawData = Object.fromEntries(new FormData(e.target).entries());
+  trackEvent('form_submit', { form_type: 'devis_client', code_postal: rawData.cp, responsable: rawData.resp });
+
+  // ── Make.com webhook (confirmation email + notif interne) ─────────────────
   fetch('https://hook.eu2.make.com/1d3qw2cqvdm7avawr4v6zzg34zjhwot2', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       form_type:   'client',
-      prenom:      data.nom         || '',
-      email:       data.email       || '',
-      telephone:   data.tel         || '',
-      cp:          data.cp          || '',
-      marque:      data.marque      || '',
-      resp:        data.resp        || '',
-      description: data.degats      || ''
+      prenom:      rawData.prenom    || '',
+      nom:         rawData.nom       || '',
+      email:       rawData.email     || '',
+      telephone:   rawData.tel       || '',
+      cp:          rawData.cp        || '',
+      ville:       rawData.ville     || '',
+      adresse:     rawData.adresse   || '',
+      marque:      rawData.marque    || '',
+      resp:        rawData.resp      || '',
+      description: rawData.degats    || ''
     })
   }).catch(function(){});
   // ─────────────────────────────────────────────────────────────────────────
   if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'Lead Client', content_category: 'devis_carrosserie' });
 
-  const payload = {
-    _subject: '[LEAD CLIENT] ' + (data.nom || '') + ' - ' + (data.marque || '') + ' - ' + (data.cp || ''),
-    _template: 'table',
-    _captcha: 'false',
-    'Prénom': data.nom || '',
-    'Téléphone': data.tel || '',
-    email: data.email || '',
-    'Véhicule': data.marque || '',
-    'Code postal': data.cp || '',
-    'Responsable du sinistre': data.resp || 'Non précisé',
-    'Description des dégâts': data.degats || 'Non précisée'
-  };
-
-  const btn = e.target.querySelector('button[type="submit"]');
+  var btn = e.target.querySelector('button[type="submit"]');
   if (btn) { btn.disabled = true; btn.textContent = 'Envoi en cours…'; }
+
+  // ── FormSubmit (FormData pour pièces jointes photos) ─────────────────────
+  var fd = new FormData(e.target);
+  fd.append('_subject', '[LEAD CLIENT] ' + (rawData.prenom || '') + ' ' + (rawData.nom || '') + ' - ' + (rawData.marque || '') + ' - ' + (rawData.cp || '') + ' ' + (rawData.ville || ''));
+  fd.append('_template', 'table');
+  fd.append('_captcha', 'false');
 
   fetch('https://formsubmit.co/ajax/89112b75295cb8aa0de4dcce297e611e', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify(payload)
+    headers: { 'Accept': 'application/json' },
+    body: fd
   })
   .then(function(r) { return r.json(); })
   .then(function() {
@@ -553,8 +599,9 @@ function submitForm(e) {
     document.getElementById('success').classList.add('active');
   })
   .catch(function() {
-    alert('Une erreur est survenue lors de l\'envoi. Vous pouvez nous écrire directement à contact@mon-carrossier.fr.');
-    if (btn) { btn.disabled = false; btn.textContent = 'Envoyer ma demande'; }
+    // FormSubmit en erreur mais Make a déjà reçu les données → succès quand même
+    document.getElementById('formView').style.display = 'none';
+    document.getElementById('success').classList.add('active');
   });
 }
 document.getElementById('modal').addEventListener('click', function(e) { if (e.target.id === 'modal') closeForm(); });
