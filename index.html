@@ -550,11 +550,6 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
           <label for="degats">Décrivez les dégâts (optionnel)</label>
           <textarea id="degats" name="degats" placeholder="Ex : aile avant droite enfoncée suite à un accrochage sur parking"></textarea>
         </div>
-        <div class="fg">
-          <label for="photos">Photos du véhicule <span style="font-weight:400;color:var(--ink-faint)">(optionnel, 1 à 5)</span></label>
-          <input type="file" id="photos" name="photos" accept="image/*,image/heic" multiple style="padding:10px 12px;font-size:14px;cursor:pointer;">
-          <p id="photosError" style="display:none;color:#dc2626;font-size:12px;margin-top:4px;">Maximum 5 photos.</p>
-        </div>
         <button type="submit" class="btn btn-primary btn-full" style="margin-top:8px;">Envoyer ma demande</button>
         <p class="disclaimer">En envoyant ce formulaire, vous acceptez d'être recontacté par un carrossier de notre réseau. Vos données sont protégées — voir notre <a href="/rgpd.html">politique RGPD</a>.</p>
       </form>
@@ -562,8 +557,13 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
     <div class="success" id="success">
       <div class="ic">✓</div>
       <h3>Demande envoyée !</h3>
-      <p>Un carrossier de votre secteur vous recontacte sous 24h pour un devis personnalisé.</p>
-      <button class="btn btn-ghost" style="margin-top:24px;" onclick="closeForm()">Fermer</button>
+      <p>Un carrossier de votre secteur vous recontacte sous 24h.</p>
+      <div style="margin-top:20px;background:#EFF4FF;border-radius:12px;padding:18px 20px;text-align:left;">
+        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#0866FF;">📷 Ajouter des photos (optionnel)</p>
+        <p style="margin:0 0 14px;font-size:13px;color:#374151;line-height:1.5;">Pour accélérer le devis, envoyez des photos de votre véhicule. Ça ouvre directement votre application mail.</p>
+        <a id="photoMailto" href="#" class="btn btn-primary" style="display:inline-block;font-size:14px;padding:12px 20px;text-decoration:none;">Envoyer mes photos →</a>
+      </div>
+      <button class="btn btn-ghost" style="margin-top:16px;width:100%;" onclick="closeForm()">Fermer</button>
     </div>
   </div>
 </div>
@@ -601,15 +601,6 @@ function lookupVille(cp) {
       if (villes.length === 1 && !villeInput.value) villeInput.value = villes[0].nom;
     }).catch(function(){});
 }
-document.getElementById('photos').addEventListener('change', function() {
-  var err = document.getElementById('photosError');
-  if (this.files.length > 5) {
-    err.style.display = 'block';
-    this.value = '';
-  } else {
-    err.style.display = 'none';
-  }
-});
 function submitForm(e) {
   // Pas de preventDefault — le form POST naturellement vers l'iframe cachée
   // FormSubmit reçoit les fichiers → email avec photos en pièces jointes dans Zimbra
@@ -647,7 +638,12 @@ function submitForm(e) {
   var btn = e.target.querySelector('button[type="submit"]');
   if (btn) { btn.disabled = true; btn.textContent = 'Envoi en cours…'; }
 
-  // Affiche le succès après 1,4s (le temps que FormSubmit reçoive le POST)
+  // Construit le lien mailto avec les infos du client
+  var sujet = encodeURIComponent('Photos véhicule — ' + (rawData.prenom || '') + ' ' + (rawData.nom || '') + ' — ' + (rawData.marque || '') + ' — ' + (rawData.cp || ''));
+  var corps = encodeURIComponent('Bonjour,\n\nVeuillez trouver en pièces jointes les photos de mon véhicule (' + (rawData.marque || '') + ').\n\n' + (rawData.prenom || '') + ' ' + (rawData.nom || '') + '\n' + (rawData.tel || ''));
+  document.getElementById('photoMailto').href = 'mailto:contact@mon-carrossier.fr?subject=' + sujet + '&body=' + corps;
+
+  // Affiche le succès après 1,4s
   setTimeout(function() {
     document.getElementById('formView').style.display = 'none';
     document.getElementById('success').classList.add('active');
