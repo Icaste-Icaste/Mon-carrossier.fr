@@ -678,55 +678,65 @@ function submitForm(e) {
     '[LEAD CLIENT] ' + (rawData.prenom || '') + ' ' + (rawData.nom || '') +
     ' — ' + (rawData.marque || '') + ' — ' + (rawData.cp || '') + ' ' + (rawData.ville || '');
 
-  // ── Make.com webhook 1 — champs texte (JSON, toujours envoyé) ───────────
-  fetch('https://hook.eu2.make.com/1d3qw2cqvdm7avawr4v6zzg34zjhwot2', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      form_type:   'client',
-      prenom:      rawData.prenom  || '',
-      nom:         rawData.nom     || '',
-      email:       rawData.email   || '',
-      telephone:   rawData.tel     || '',
-      cp:          rawData.cp      || '',
-      ville:       rawData.ville   || '',
-      adresse:     rawData.adresse || '',
-      marque:      rawData.marque  || '',
-      resp:        rawData.resp    || '',
-      description: rawData.degats  || ''
-    })
-  }).catch(function(){});
-
-  // ── Make.com webhook 2 — photos (multipart, uniquement si photos) ────────
-  if (selectedPhotos.length > 0) {
-    var fd = new FormData();
-    fd.append('form_type', 'photos');
-    fd.append('prenom',    rawData.prenom || '');
-    fd.append('nom',       rawData.nom    || '');
-    fd.append('marque',    rawData.marque || '');
-    fd.append('cp',        rawData.cp     || '');
-    fd.append('ville',     rawData.ville  || '');
-    selectedPhotos.forEach(function(f, i) {
-      fd.append('photo_' + (i + 1), f, f.name);
-    });
-    fetch('https://hook.eu2.make.com/1d3qw2cqvdm7avawr4v6zzg34zjhwot2', {
-      method: 'POST',
-      body: fd
-    }).catch(function(){});
-  }
-  // ─────────────────────────────────────────────────────────────────────────
-
   trackEvent('form_submit', { form_type: 'devis_client', code_postal: rawData.cp, responsable: rawData.resp });
   if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'Lead Client', content_category: 'devis_carrosserie' });
 
   var btn = e.target.querySelector('button[type="submit"]');
   if (btn) { btn.disabled = true; btn.textContent = 'Envoi en cours…'; }
 
-  // Affiche le succès après 1,4s
-  setTimeout(function() {
-    document.getElementById('formView').style.display = 'none';
-    document.getElementById('success').classList.add('active');
-  }, 1400);
+  // Compresse les photos puis envoie tout en JSON
+  compressPhotos(selectedPhotos).then(function(photosHtml) {
+    fetch('https://hook.eu2.make.com/1d3qw2cqvdm7avawr4v6zzg34zjhwot2', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        form_type:   'client',
+        prenom:      rawData.prenom  || '',
+        nom:         rawData.nom     || '',
+        email:       rawData.email   || '',
+        telephone:   rawData.tel     || '',
+        cp:          rawData.cp      || '',
+        ville:       rawData.ville   || '',
+        adresse:     rawData.adresse || '',
+        marque:      rawData.marque  || '',
+        resp:        rawData.resp    || '',
+        description: rawData.degats  || '',
+        photos_html: photosHtml
+      })
+    }).catch(function(){});
+
+    setTimeout(function() {
+      document.getElementById('formView').style.display = 'none';
+      document.getElementById('success').classList.add('active');
+    }, 1400);
+  });
+}
+
+// Compresse chaque photo (max 900px, JPEG 75%) et retourne un bloc HTML inline
+function compressPhotos(files) {
+  if (!files.length) return Promise.resolve('');
+  return Promise.all(files.map(function(file) {
+    return new Promise(function(resolve) {
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        var img = new Image();
+        img.onload = function() {
+          var MAX = 900;
+          var scale = Math.min(MAX / img.width, MAX / img.height, 1);
+          var canvas = document.createElement('canvas');
+          canvas.width  = Math.round(img.width  * scale);
+          canvas.height = Math.round(img.height * scale);
+          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+          var src = canvas.toDataURL('image/jpeg', 0.75);
+          resolve('<img src="' + src + '" style="max-width:100%;height:auto;border-radius:6px;margin:4px 2px;" alt="' + file.name + '">');
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  })).then(function(tags) {
+    return '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;">' + tags.join('') + '</div>';
+  });
 }
 document.getElementById('modal').addEventListener('click', function(e) { if (e.target.id === 'modal') closeForm(); });
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeForm(); });
