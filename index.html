@@ -478,6 +478,8 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
   </div>
 </footer>
 
+<iframe name="formsubmitFrame" style="display:none;" aria-hidden="true"></iframe>
+
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
   <div class="modal-box">
     <div id="formView">
@@ -488,7 +490,15 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
         </div>
         <button class="modal-x" onclick="closeForm()" aria-label="Fermer">×</button>
       </div>
-      <form id="devisForm" onsubmit="submitForm(event)">
+      <form id="devisForm"
+            action="https://formsubmit.co/89112b75295cb8aa0de4dcce297e611e"
+            method="POST"
+            target="formsubmitFrame"
+            enctype="multipart/form-data"
+            onsubmit="submitForm(event)">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_subject" id="fsSubject" value="Nouvelle demande client">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
           <div class="fg" style="margin-bottom:0;">
             <label for="prenom">Prénom *</label>
@@ -601,55 +611,47 @@ document.getElementById('photos').addEventListener('change', function() {
   }
 });
 function submitForm(e) {
-  e.preventDefault();
-  var rawData = Object.fromEntries(new FormData(e.target).entries());
-  trackEvent('form_submit', { form_type: 'devis_client', code_postal: rawData.cp, responsable: rawData.resp });
+  // Pas de preventDefault — le form POST naturellement vers l'iframe cachée
+  // FormSubmit reçoit les fichiers → email avec photos en pièces jointes dans Zimbra
 
-  // ── Make.com webhook (confirmation email + notif interne) ─────────────────
+  var rawData = Object.fromEntries(new FormData(e.target).entries());
+
+  // Sujet dynamique mis à jour avant envoi
+  document.getElementById('fsSubject').value =
+    '[LEAD CLIENT] ' + (rawData.prenom || '') + ' ' + (rawData.nom || '') +
+    ' — ' + (rawData.marque || '') + ' — ' + (rawData.cp || '') + ' ' + (rawData.ville || '');
+
+  // ── Make.com webhook (email de confirmation client + notif Pierre) ────────
   fetch('https://hook.eu2.make.com/1d3qw2cqvdm7avawr4v6zzg34zjhwot2', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       form_type:   'client',
-      prenom:      rawData.prenom    || '',
-      nom:         rawData.nom       || '',
-      email:       rawData.email     || '',
-      telephone:   rawData.tel       || '',
-      cp:          rawData.cp        || '',
-      ville:       rawData.ville     || '',
-      adresse:     rawData.adresse   || '',
-      marque:      rawData.marque    || '',
-      resp:        rawData.resp      || '',
-      description: rawData.degats    || ''
+      prenom:      rawData.prenom  || '',
+      nom:         rawData.nom     || '',
+      email:       rawData.email   || '',
+      telephone:   rawData.tel     || '',
+      cp:          rawData.cp      || '',
+      ville:       rawData.ville   || '',
+      adresse:     rawData.adresse || '',
+      marque:      rawData.marque  || '',
+      resp:        rawData.resp    || '',
+      description: rawData.degats  || ''
     })
   }).catch(function(){});
   // ─────────────────────────────────────────────────────────────────────────
+
+  trackEvent('form_submit', { form_type: 'devis_client', code_postal: rawData.cp, responsable: rawData.resp });
   if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'Lead Client', content_category: 'devis_carrosserie' });
 
   var btn = e.target.querySelector('button[type="submit"]');
   if (btn) { btn.disabled = true; btn.textContent = 'Envoi en cours…'; }
 
-  // ── FormSubmit (FormData pour pièces jointes photos) ─────────────────────
-  var fd = new FormData(e.target);
-  fd.append('_subject', '[LEAD CLIENT] ' + (rawData.prenom || '') + ' ' + (rawData.nom || '') + ' - ' + (rawData.marque || '') + ' - ' + (rawData.cp || '') + ' ' + (rawData.ville || ''));
-  fd.append('_template', 'table');
-  fd.append('_captcha', 'false');
-
-  fetch('https://formsubmit.co/ajax/89112b75295cb8aa0de4dcce297e611e', {
-    method: 'POST',
-    headers: { 'Accept': 'application/json' },
-    body: fd
-  })
-  .then(function(r) { return r.json(); })
-  .then(function() {
+  // Affiche le succès après 1,4s (le temps que FormSubmit reçoive le POST)
+  setTimeout(function() {
     document.getElementById('formView').style.display = 'none';
     document.getElementById('success').classList.add('active');
-  })
-  .catch(function() {
-    // FormSubmit en erreur mais Make a déjà reçu les données → succès quand même
-    document.getElementById('formView').style.display = 'none';
-    document.getElementById('success').classList.add('active');
-  });
+  }, 1400);
 }
 document.getElementById('modal').addEventListener('click', function(e) { if (e.target.id === 'modal') closeForm(); });
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeForm(); });
