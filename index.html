@@ -557,13 +557,8 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
     <div class="success" id="success">
       <div class="ic">✓</div>
       <h3>Demande envoyée !</h3>
-      <p>Un carrossier de votre secteur vous recontacte sous 24h.</p>
-      <div style="margin-top:20px;background:#EFF4FF;border-radius:12px;padding:18px 20px;text-align:left;">
-        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#0866FF;">📷 Ajouter des photos (optionnel)</p>
-        <p style="margin:0 0 14px;font-size:13px;color:#374151;line-height:1.5;">Pour accélérer le devis, envoyez des photos de votre véhicule. Ça ouvre directement votre application mail.</p>
-        <a id="photoMailto" href="#" class="btn btn-primary" style="display:inline-block;font-size:14px;padding:12px 20px;text-decoration:none;">Envoyer mes photos →</a>
-      </div>
-      <button class="btn btn-ghost" style="margin-top:16px;width:100%;" onclick="closeForm()">Fermer</button>
+      <p>Un carrossier de votre secteur vous recontacte sous 24h pour un devis personnalisé.</p>
+      <button class="btn btn-ghost" style="margin-top:24px;" onclick="closeForm()">Fermer</button>
     </div>
   </div>
 </div>
@@ -637,11 +632,6 @@ function submitForm(e) {
 
   var btn = e.target.querySelector('button[type="submit"]');
   if (btn) { btn.disabled = true; btn.textContent = 'Envoi en cours…'; }
-
-  // Construit le lien mailto avec les infos du client
-  var sujet = encodeURIComponent('Photos véhicule — ' + (rawData.prenom || '') + ' ' + (rawData.nom || '') + ' — ' + (rawData.marque || '') + ' — ' + (rawData.cp || ''));
-  var corps = encodeURIComponent('Bonjour,\n\nVeuillez trouver en pièces jointes les photos de mon véhicule (' + (rawData.marque || '') + ').\n\n' + (rawData.prenom || '') + ' ' + (rawData.nom || '') + '\n' + (rawData.tel || ''));
-  document.getElementById('photoMailto').href = 'mailto:contact@mon-carrossier.fr?subject=' + sujet + '&body=' + corps;
 
   // Affiche le succès après 1,4s
   setTimeout(function() {
