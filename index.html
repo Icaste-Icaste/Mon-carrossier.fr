@@ -678,44 +678,26 @@ function submitForm(e) {
     '[LEAD CLIENT] ' + (rawData.prenom || '') + ' ' + (rawData.nom || '') +
     ' — ' + (rawData.marque || '') + ' — ' + (rawData.cp || '') + ' ' + (rawData.ville || '');
 
-  // ── Make.com webhook (email de confirmation client + notif Pierre) ────────
+  // ── Make.com webhook — un seul appel multipart (champs + photos) ─────────
+  var fd = new FormData();
+  fd.append('form_type',   'client');
+  fd.append('prenom',      rawData.prenom  || '');
+  fd.append('nom',         rawData.nom     || '');
+  fd.append('email',       rawData.email   || '');
+  fd.append('telephone',   rawData.tel     || '');
+  fd.append('cp',          rawData.cp      || '');
+  fd.append('ville',       rawData.ville   || '');
+  fd.append('adresse',     rawData.adresse || '');
+  fd.append('marque',      rawData.marque  || '');
+  fd.append('resp',        rawData.resp    || '');
+  fd.append('description', rawData.degats  || '');
+  selectedPhotos.forEach(function(f, i) {
+    fd.append('photo_' + (i + 1), f, f.name);
+  });
   fetch('https://hook.eu2.make.com/1d3qw2cqvdm7avawr4v6zzg34zjhwot2', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      form_type:   'client',
-      prenom:      rawData.prenom  || '',
-      nom:         rawData.nom     || '',
-      email:       rawData.email   || '',
-      telephone:   rawData.tel     || '',
-      cp:          rawData.cp      || '',
-      ville:       rawData.ville   || '',
-      adresse:     rawData.adresse || '',
-      marque:      rawData.marque  || '',
-      resp:        rawData.resp    || '',
-      description: rawData.degats  || ''
-    })
+    body: fd
   }).catch(function(){});
-
-  // ── Make.com webhook (photos en pièces jointes) ───────────────────────────
-  if (selectedPhotos.length > 0) {
-    var fd = new FormData();
-    fd.append('form_type', 'photos');
-    fd.append('prenom', rawData.prenom || '');
-    fd.append('nom', rawData.nom || '');
-    fd.append('email', rawData.email || '');
-    fd.append('marque', rawData.marque || '');
-    fd.append('cp', rawData.cp || '');
-    fd.append('ville', rawData.ville || '');
-    selectedPhotos.forEach(function(f, i) {
-      fd.append('photo_' + (i + 1), f, f.name);
-    });
-    fetch('https://hook.eu2.make.com/1d3qw2cqvdm7avawr4v6zzg34zjhwot2', {
-      method: 'POST',
-      body: fd
-    }).catch(function(){});
-  }
-  // ─────────────────────────────────────────────────────────────────────────
   // ─────────────────────────────────────────────────────────────────────────
 
   trackEvent('form_submit', { form_type: 'devis_client', code_postal: rawData.cp, responsable: rawData.resp });
