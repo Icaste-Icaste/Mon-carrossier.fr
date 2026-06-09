@@ -42,6 +42,50 @@
 <style>
 .hero { padding: 56px 0 72px; position: relative; overflow: hidden; }
 .hero::before { content: ''; position: absolute; top: -200px; right: -150px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(8,102,255,0.10), transparent 65%); pointer-events: none; }
+
+/* ── Orbes flottants ─────────────────────────────────────────────────── */
+.orb { position: absolute; border-radius: 50%; pointer-events: none; will-change: transform; }
+.orb-1 { width: 420px; height: 420px; top: -120px; left: -100px; background: radial-gradient(circle, rgba(8,102,255,0.09), transparent 70%); animation: orbFloat1 18s ease-in-out infinite; }
+.orb-2 { width: 300px; height: 300px; bottom: -80px; right: 10%; background: radial-gradient(circle, rgba(8,102,255,0.07), transparent 70%); animation: orbFloat2 22s ease-in-out infinite; }
+.orb-3 { width: 200px; height: 200px; top: 40%; left: 45%; background: radial-gradient(circle, rgba(245,158,11,0.06), transparent 70%); animation: orbFloat3 14s ease-in-out infinite; }
+@keyframes orbFloat1 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  30%  { transform: translate(40px,-30px) scale(1.06); }
+  70%  { transform: translate(-25px,20px) scale(0.95); }
+}
+@keyframes orbFloat2 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%  { transform: translate(-50px,-35px) scale(1.10); }
+}
+@keyframes orbFloat3 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  40%  { transform: translate(30px,-40px) scale(0.90); }
+  80%  { transform: translate(-20px,25px) scale(1.05); }
+}
+
+/* ── Fade-in stagger contenu hero ────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-anim { animation: fadeUp 0.65s cubic-bezier(.22,.68,0,1.2) both; }
+.hero-anim-1 { animation-delay: 0.05s; }
+.hero-anim-2 { animation-delay: 0.18s; }
+.hero-anim-3 { animation-delay: 0.30s; }
+.hero-anim-4 { animation-delay: 0.42s; }
+.hero-anim-5 { animation-delay: 0.54s; }
+
+/* ── Float doux sur la carte ─────────────────────────────────────────── */
+@keyframes cardFloat {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-10px); }
+}
+.hero-card { animation: cardFloat 6s ease-in-out infinite; }
+
+/* ── Respect prefers-reduced-motion ──────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .orb, .hero-anim, .hero-card { animation: none !important; }
+}
 .hero-grid { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; position: relative; }
 @media (min-width: 860px) { .hero-grid { grid-template-columns: 1.05fr 0.95fr; gap: 60px; } .hero { padding: 80px 0 100px; } }
 @media (max-width: 560px) { .hero { padding: 36px 0 56px; } }
@@ -207,16 +251,19 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
 </header>
 
 <section class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
   <div class="wrap hero-grid">
     <div>
-      <span class="badge">Service disponible dans le Var</span>
-      <h1>Vous avez un sinistre. Vous avez aussi des <em>droits</em>.</h1>
-      <p class="hero-sub">Choisissez librement votre carrossier — un vrai, un local, un certifié. On vous accompagne, on prend en charge votre franchise, et on vous offre un cadeau pour chaque dossier. Jusqu'à 500&nbsp;€.</p>
-      <div class="hero-ctas">
+      <span class="badge hero-anim hero-anim-1">Service disponible dans le Var</span>
+      <h1 class="hero-anim hero-anim-2">Vous avez un sinistre. Vous avez aussi des <em>droits</em>.</h1>
+      <p class="hero-sub hero-anim hero-anim-3">Choisissez librement votre carrossier — un vrai, un local, un certifié. On vous accompagne, on prend en charge votre franchise, et on vous offre un cadeau pour chaque dossier. Jusqu'à 500&nbsp;€.</p>
+      <div class="hero-ctas hero-anim hero-anim-4">
         <button class="btn btn-primary" onclick="openForm('hero')">Trouver mon carrossier →</button>
         <a href="#process" class="btn btn-ghost">Comment ça marche</a>
       </div>
-      <div class="hero-trust">
+      <div class="hero-trust hero-anim hero-anim-5">
         <span class="stars">★★★★★</span>
         <span><strong>4,8/5</strong></span>
         <span class="dot"></span>
