@@ -564,8 +564,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
         </div>
         <div class="fg">
           <label>Photos des dégâts (optionnel, jusqu'à 5)</label>
-          <div class="photo-zone" id="photoZone"
-               onclick="document.getElementById('photosInput').click()"
+          <label for="photosInput" class="photo-zone" id="photoZone"
                ondragover="event.preventDefault();this.classList.add('drag')"
                ondragleave="this.classList.remove('drag')"
                ondrop="handlePhotoDrop(event)">
@@ -574,7 +573,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
             <div class="pz-main">Cliquez ou glissez vos photos ici</div>
             <div class="pz-sub">JPG, PNG, HEIC — max 5 photos</div>
             <div id="photoCount" class="photo-count" style="display:none;"></div>
-          </div>
+          </label>
           <div class="photo-preview" id="photoPreview"></div>
         </div>
         <button type="submit" class="btn btn-primary btn-full" style="margin-top:8px;">Envoyer ma demande</button>
