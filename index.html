@@ -217,6 +217,16 @@ section { padding: 80px 0; }
 .radio-row label:has(input:checked) { border-color: var(--blue); background: var(--blue-bg); color: var(--blue); }
 .disclaimer { font-size: 12px; color: var(--ink-faint); text-align: center; margin-top: 14px; line-height: 1.5; }
 .disclaimer a { color: var(--ink-soft); text-decoration: underline; }
+.photo-zone { border: 2px dashed var(--border-light); border-radius: var(--r-md); padding: 18px 16px; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; background: #fafbfd; }
+.photo-zone:hover, .photo-zone.drag { border-color: var(--blue); background: var(--blue-bg); }
+.photo-zone .pz-icon { font-size: 26px; margin-bottom: 6px; }
+.photo-zone .pz-main { font-size: 14px; font-weight: 600; color: var(--ink); }
+.photo-zone .pz-sub { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+.photo-count { font-size: 13px; color: var(--blue); font-weight: 600; margin-top: 8px; }
+.photo-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.photo-thumb-wrap { position: relative; width: 58px; height: 58px; }
+.photo-thumb-wrap img { width: 58px; height: 58px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-light); display: block; }
+.photo-thumb-del { position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; background: #ef4444; border-radius: 50%; color: #fff; font-size: 11px; line-height: 18px; text-align: center; cursor: pointer; font-weight: 700; }
 .success { display: none; text-align: center; padding: 40px 20px; }
 .success.active { display: block; }
 .success .ic { width: 66px; height: 66px; background: var(--blue); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 34px; color: #fff; }
@@ -270,6 +280,8 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
         <span>Carrossiers certifiés</span>
         <span class="dot"></span>
         <span>100% gratuit</span>
+        <span class="dot"></span>
+        <span>Garantie 5 ans</span>
       </div>
     </div>
     <div class="hero-card">
@@ -371,7 +383,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
       <div class="step-card">
         <div class="n">3</div>
         <h3>Votre voiture, comme neuve</h3>
-        <p>Travaux garantis 2 ans, véhicule de prêt inclus. Et selon votre situation : franchise prise en charge ou carte cadeau.</p>
+        <p>Travaux garantis 5 ans, véhicule de prêt inclus. Et selon votre situation : franchise prise en charge ou carte cadeau.</p>
         <span class="time">⏱ 3 à 7 jours</span>
       </div>
     </div>
@@ -408,7 +420,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
       </div>
       <div class="guarantee">
         <div class="ic">✓</div>
-        <h3>Garanti 2 ans</h3>
+        <h3>Garantie 5 ans</h3>
         <p>Pièces et main d'œuvre, sur tous les dossiers de notre réseau.</p>
       </div>
       <div class="guarantee">
@@ -550,6 +562,21 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
           <label for="degats">Décrivez les dégâts (optionnel)</label>
           <textarea id="degats" name="degats" placeholder="Ex : aile avant droite enfoncée suite à un accrochage sur parking"></textarea>
         </div>
+        <div class="fg">
+          <label>Photos des dégâts (optionnel, jusqu'à 5)</label>
+          <div class="photo-zone" id="photoZone"
+               onclick="document.getElementById('photosInput').click()"
+               ondragover="event.preventDefault();this.classList.add('drag')"
+               ondragleave="this.classList.remove('drag')"
+               ondrop="handlePhotoDrop(event)">
+            <input type="file" id="photosInput" accept="image/*" multiple style="display:none;" onchange="handlePhotoChange(this)">
+            <div class="pz-icon">📷</div>
+            <div class="pz-main">Cliquez ou glissez vos photos ici</div>
+            <div class="pz-sub">JPG, PNG, HEIC — max 5 photos</div>
+            <div id="photoCount" class="photo-count" style="display:none;"></div>
+          </div>
+          <div class="photo-preview" id="photoPreview"></div>
+        </div>
         <button type="submit" class="btn btn-primary btn-full" style="margin-top:8px;">Envoyer ma demande</button>
         <p class="disclaimer">En envoyant ce formulaire, vous acceptez d'être recontacté par un carrossier de notre réseau. Vos données sont protégées — voir notre <a href="/rgpd.html">politique RGPD</a>.</p>
       </form>
@@ -578,6 +605,8 @@ function closeForm() {
   document.body.style.overflow = '';
   document.getElementById('formView').style.display = 'block';
   document.getElementById('success').classList.remove('active');
+  selectedPhotos = [];
+  renderPhotos();
   document.getElementById('devisForm').reset();
 }
 function lookupVille(cp) {
@@ -596,9 +625,52 @@ function lookupVille(cp) {
       if (villes.length === 1 && !villeInput.value) villeInput.value = villes[0].nom;
     }).catch(function(){});
 }
+var selectedPhotos = [];
+
+function handlePhotoChange(input) {
+  addPhotos(Array.from(input.files));
+  input.value = ''; // reset pour pouvoir re-sélectionner les mêmes fichiers
+}
+function handlePhotoDrop(e) {
+  e.preventDefault();
+  document.getElementById('photoZone').classList.remove('drag');
+  addPhotos(Array.from(e.dataTransfer.files).filter(function(f) { return f.type.startsWith('image/'); }));
+}
+function addPhotos(files) {
+  files.forEach(function(f) {
+    if (selectedPhotos.length < 5) selectedPhotos.push(f);
+  });
+  renderPhotos();
+}
+function renderPhotos() {
+  var n = selectedPhotos.length;
+  var countEl = document.getElementById('photoCount');
+  var preview = document.getElementById('photoPreview');
+  countEl.style.display = n ? '' : 'none';
+  countEl.textContent = n + ' photo' + (n > 1 ? 's' : '') + ' sélectionnée' + (n > 1 ? 's' : '');
+  preview.innerHTML = '';
+  selectedPhotos.forEach(function(f, i) {
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      var wrap = document.createElement('div');
+      wrap.className = 'photo-thumb-wrap';
+      var img = document.createElement('img');
+      img.src = ev.target.result;
+      img.title = f.name;
+      var del = document.createElement('div');
+      del.className = 'photo-thumb-del';
+      del.textContent = '×';
+      del.onclick = function(e) { e.stopPropagation(); selectedPhotos.splice(i, 1); renderPhotos(); };
+      wrap.appendChild(img);
+      wrap.appendChild(del);
+      preview.appendChild(wrap);
+    };
+    reader.readAsDataURL(f);
+  });
+}
+
 function submitForm(e) {
   // Pas de preventDefault — le form POST naturellement vers l'iframe cachée
-  // FormSubmit reçoit les fichiers → email avec photos en pièces jointes dans Zimbra
 
   var rawData = Object.fromEntries(new FormData(e.target).entries());
 
@@ -625,6 +697,26 @@ function submitForm(e) {
       description: rawData.degats  || ''
     })
   }).catch(function(){});
+
+  // ── Make.com webhook (photos en pièces jointes) ───────────────────────────
+  if (selectedPhotos.length > 0) {
+    var fd = new FormData();
+    fd.append('form_type', 'photos');
+    fd.append('prenom', rawData.prenom || '');
+    fd.append('nom', rawData.nom || '');
+    fd.append('email', rawData.email || '');
+    fd.append('marque', rawData.marque || '');
+    fd.append('cp', rawData.cp || '');
+    fd.append('ville', rawData.ville || '');
+    selectedPhotos.forEach(function(f, i) {
+      fd.append('photo_' + (i + 1), f, f.name);
+    });
+    fetch('https://hook.eu2.make.com/1d3qw2cqvdm7avawr4v6zzg34zjhwot2', {
+      method: 'POST',
+      body: fd
+    }).catch(function(){});
+  }
+  // ─────────────────────────────────────────────────────────────────────────
   // ─────────────────────────────────────────────────────────────────────────
 
   trackEvent('form_submit', { form_type: 'devis_client', code_postal: rawData.cp, responsable: rawData.resp });
