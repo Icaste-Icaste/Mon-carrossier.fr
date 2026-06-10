@@ -111,6 +111,7 @@ async function createNotionPage(lead, folderUrl) {
     'Statut': { select: { name: 'Nouveau' } },
     'Source': { select: { name: 'Formulaire web' } },
     'Date': { date: { start: todayParis() } },
+    'Notes': { rich_text: [{ text: { content: lead.description || '' } }] },
   };
   if (folderUrl) properties['Photos'] = { url: folderUrl };
 
