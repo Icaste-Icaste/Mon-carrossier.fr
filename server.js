@@ -143,6 +143,21 @@ async function sendToMake(lead, folderUrl) {
   if (!r.ok) throw new Error('Make HTTP ' + r.status);
 }
 
+// ── Diagnostic : présence des variables + dernières erreurs ─────────────────
+var lastErrors = { drive: null, notion: null, make: null };
+app.get('/api/health', function (req, res) {
+  res.json({
+    env: {
+      google_sa: !!process.env.GOOGLE_SERVICE_ACCOUNT_JSON,
+      notion_key: !!process.env.NOTION_API_KEY,
+      drive_folder: !!process.env.GOOGLE_DRIVE_PHOTOS_FOLDER_ID,
+      notion_db: !!process.env.NOTION_DATABASE_ID,
+      make_url: !!process.env.MAKE_WEBHOOK_URL,
+    },
+    lastErrors: lastErrors,
+  });
+});
+
 // ── Endpoint lead client ─────────────────────────────────────────────────────
 app.post('/api/lead-client', function (req, res) {
   upload.array('photos', MAX_PHOTOS)(req, res, async function (err) {
@@ -167,7 +182,9 @@ app.post('/api/lead-client', function (req, res) {
       if (files.length) {
         try {
           folderUrl = await uploadToDrive(files, lead);
+          lastErrors.drive = null;
         } catch (e) {
+          lastErrors.drive = e.message;
           console.error('[Drive]', e.message);
         }
       }
@@ -178,7 +195,13 @@ app.post('/api/lead-client', function (req, res) {
         sendToMake(lead, folderUrl),
       ]);
       results.forEach(function (r, i) {
-        if (r.status === 'rejected') console.error(i === 0 ? '[Notion]' : '[Make]', r.reason && r.reason.message);
+        const key = i === 0 ? 'notion' : 'make';
+        if (r.status === 'rejected') {
+          lastErrors[key] = r.reason && r.reason.message;
+          console.error('[' + key + ']', r.reason && r.reason.message);
+        } else {
+          lastErrors[key] = null;
+        }
       });
 
       // OK si au moins un canal a fonctionné (sinon le frontend a un fallback)
