@@ -217,6 +217,15 @@ section { padding: 80px 0; }
 .radio-row label:has(input:checked) { border-color: var(--blue); background: var(--blue-bg); color: var(--blue); }
 .disclaimer { font-size: 12px; color: var(--ink-faint); text-align: center; margin-top: 14px; line-height: 1.5; }
 .disclaimer a { color: var(--ink-soft); text-decoration: underline; }
+.photo-zone { display: block; border: 2px dashed var(--blue); border-radius: var(--r-md); padding: 18px 16px; text-align: center; cursor: pointer; background: var(--blue-bg); transition: background 0.15s, border-color 0.15s; }
+.photo-zone:hover { background: #E2ECFF; }
+.photo-zone .pz-icon { font-size: 26px; margin-bottom: 6px; }
+.photo-zone .pz-main { font-size: 14px; font-weight: 600; color: var(--blue); line-height: 1.45; }
+.photo-error { display: none; font-size: 13px; color: #DC2626; font-weight: 600; margin-top: 8px; }
+.photo-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.photo-thumb { position: relative; width: 58px; height: 58px; }
+.photo-thumb img { width: 58px; height: 58px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-light); display: block; }
+.photo-thumb .del { position: absolute; top: -6px; right: -6px; width: 19px; height: 19px; background: #DC2626; border: none; border-radius: 50%; color: #fff; font-size: 12px; line-height: 19px; text-align: center; cursor: pointer; font-weight: 700; padding: 0; }
 .success { display: none; text-align: center; padding: 40px 20px; }
 .success.active { display: block; }
 .success .ic { width: 66px; height: 66px; background: var(--blue); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 34px; color: #fff; }
@@ -553,7 +562,19 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
           <label for="degats">Décrivez les dégâts (optionnel)</label>
           <textarea id="degats" name="degats" placeholder="Ex : aile avant droite enfoncée suite à un accrochage sur parking"></textarea>
         </div>
-<button type="submit" class="btn btn-primary btn-full" style="margin-top:8px;">Envoyer ma demande</button>
+        <div class="fg">
+          <label for="photosInput">Photos des dégâts (optionnel)</label>
+          <label class="photo-zone" for="photosInput">
+            <input type="file" id="photosInput" accept="image/*" multiple capture="environment" style="display:none;" onchange="handlePhotos(this)">
+            <div class="pz-icon">📷</div>
+            <div class="pz-main">Ajoutez des photos de votre véhicule — ça accélère votre devis</div>
+          </label>
+          <div class="photo-error" id="photoError">6 photos maximum</div>
+          <div class="photo-preview" id="photoPreview"></div>
+        </div>
+        <!-- Honeypot anti-spam -->
+        <input type="text" name="website" style="display:none;" tabindex="-1" autocomplete="off" value="">
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top:8px;">Envoyer ma demande</button>
         <p class="disclaimer">En envoyant ce formulaire, vous acceptez d'être recontacté par un carrossier de notre réseau. Vos données sont protégées — voir notre <a href="/rgpd.html">politique RGPD</a>.</p>
       </form>
     </div>
@@ -581,8 +602,9 @@ function closeForm() {
   document.body.style.overflow = '';
   document.getElementById('formView').style.display = 'block';
   document.getElementById('success').classList.remove('active');
-  
   document.getElementById('devisForm').reset();
+  selectedPhotos = [];
+  renderPhotos();
 }
 function lookupVille(cp) {
   if (cp.length !== 5 || !/^[0-9]{5}$/.test(cp)) return;
@@ -600,6 +622,91 @@ function lookupVille(cp) {
       if (villes.length === 1 && !villeInput.value) villeInput.value = villes[0].nom;
     }).catch(function(){});
 }
+// ── Photos : sélection, compression, aperçu ─────────────────────────────────
+var selectedPhotos = []; // [{ file: File compressé, url: objectURL }]
+var MAX_PHOTOS = 6;
+var MAKE_FALLBACK_URL = 'https://hook.eu2.make.com/1d3qw2cqvdm7avawr4v6zzg34zjhwot2';
+
+function handlePhotos(input) {
+  var files = Array.from(input.files).filter(function(f) { return f.type.indexOf('image/') === 0; });
+  input.value = '';
+  var err = document.getElementById('photoError');
+  err.style.display = 'none';
+  if (selectedPhotos.length + files.length > MAX_PHOTOS) {
+    err.style.display = 'block';
+    files = files.slice(0, MAX_PHOTOS - selectedPhotos.length);
+  }
+  files.forEach(function(f) {
+    var slot = { file: f, url: URL.createObjectURL(f) };
+    selectedPhotos.push(slot);
+    compressImage(f).then(function(compressed) {
+      if (compressed) slot.file = compressed;
+    });
+  });
+  renderPhotos();
+}
+
+function renderPhotos() {
+  var preview = document.getElementById('photoPreview');
+  if (!preview) return;
+  preview.innerHTML = '';
+  selectedPhotos.forEach(function(p, i) {
+    var wrap = document.createElement('div');
+    wrap.className = 'photo-thumb';
+    var img = document.createElement('img');
+    img.src = p.url;
+    img.alt = 'Photo ' + (i + 1);
+    var del = document.createElement('button');
+    del.type = 'button';
+    del.className = 'del';
+    del.textContent = '×';
+    del.onclick = function(ev) {
+      ev.preventDefault(); ev.stopPropagation();
+      URL.revokeObjectURL(p.url);
+      selectedPhotos.splice(i, 1);
+      document.getElementById('photoError').style.display = 'none';
+      renderPhotos();
+    };
+    wrap.appendChild(img);
+    wrap.appendChild(del);
+    preview.appendChild(wrap);
+  });
+}
+
+// Compression : max 1600px grand côté, JPEG 0.8, jamais agrandir
+function compressImage(file) {
+  function decode() {
+    if (typeof createImageBitmap === 'function') {
+      return createImageBitmap(file, { imageOrientation: 'from-image' })
+        .catch(function() { return createImageBitmap(file); })
+        .catch(decodeViaImg);
+    }
+    return decodeViaImg();
+  }
+  function decodeViaImg() {
+    return new Promise(function(resolve, reject) {
+      var img = new Image();
+      img.onload = function() { resolve(img); };
+      img.onerror = reject;
+      img.src = URL.createObjectURL(file);
+    });
+  }
+  return decode().then(function(bitmap) {
+    var w = bitmap.width, h = bitmap.height;
+    var scale = Math.min(1600 / Math.max(w, h), 1);
+    var canvas = document.createElement('canvas');
+    canvas.width = Math.round(w * scale);
+    canvas.height = Math.round(h * scale);
+    canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    return new Promise(function(resolve) {
+      canvas.toBlob(function(blob) { resolve(blob); }, 'image/jpeg', 0.8);
+    });
+  }).then(function(blob) {
+    if (!blob) return null;
+    return new File([blob], 'photo.jpg', { type: 'image/jpeg' });
+  }).catch(function() { return null; }); // échec → on garde l'original
+}
+
 function submitForm(e) {
   var rawData = Object.fromEntries(new FormData(e.target).entries());
 
@@ -613,28 +720,61 @@ function submitForm(e) {
   var btn = e.target.querySelector('button[type="submit"]');
   if (btn) { btn.disabled = true; btn.textContent = 'Envoi en cours…'; }
 
-  fetch('https://hook.eu2.make.com/1d3qw2cqvdm7avawr4v6zzg34zjhwot2', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      form_type:   'client',
-      prenom:      rawData.prenom  || '',
-      nom:         rawData.nom     || '',
-      email:       rawData.email   || '',
-      telephone:   rawData.tel     || '',
-      cp:          rawData.cp      || '',
-      ville:       rawData.ville   || '',
-      adresse:     rawData.adresse || '',
-      marque:      rawData.marque  || '',
-      resp:        rawData.resp    || '',
-      description: rawData.degats  || ''
-    })
-  }).catch(function(){});
-
-  setTimeout(function() {
+  var shown = false;
+  function showSuccess() {
+    if (shown) return;
+    shown = true;
     document.getElementById('formView').style.display = 'none';
     document.getElementById('success').classList.add('active');
-  }, 1400);
+  }
+
+  // FormData multipart : champs texte + photos compressées
+  var fd = new FormData();
+  fd.append('form_type',   'client');
+  fd.append('prenom',      rawData.prenom  || '');
+  fd.append('nom',         rawData.nom     || '');
+  fd.append('email',       rawData.email   || '');
+  fd.append('telephone',   rawData.tel     || '');
+  fd.append('cp',          rawData.cp      || '');
+  fd.append('ville',       rawData.ville   || '');
+  fd.append('adresse',     rawData.adresse || '');
+  fd.append('marque',      rawData.marque  || '');
+  fd.append('resp',        rawData.resp    || '');
+  fd.append('description', rawData.degats  || '');
+  fd.append('website',     rawData.website || '');
+  selectedPhotos.forEach(function(p, i) {
+    fd.append('photos', p.file, 'photo-' + (i + 1) + '.jpg');
+  });
+
+  fetch('/api/lead-client', { method: 'POST', body: fd })
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      showSuccess();
+    })
+    .catch(function() {
+      // Fallback : Make direct (sans photos) pour ne jamais perdre le lead
+      fetch(MAKE_FALLBACK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          form_type:   'client',
+          prenom:      rawData.prenom  || '',
+          nom:         rawData.nom     || '',
+          email:       rawData.email   || '',
+          telephone:   rawData.tel     || '',
+          cp:          rawData.cp      || '',
+          ville:       rawData.ville   || '',
+          adresse:     rawData.adresse || '',
+          marque:      rawData.marque  || '',
+          resp:        rawData.resp    || '',
+          description: rawData.degats  || ''
+        })
+      }).catch(function(){});
+      showSuccess();
+    });
+
+  // Garde-fou : succès affiché au plus tard après 15s
+  setTimeout(showSuccess, 15000);
 }
 document.getElementById('modal').addEventListener('click', function(e) { if (e.target.id === 'modal') closeForm(); });
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeForm(); });
