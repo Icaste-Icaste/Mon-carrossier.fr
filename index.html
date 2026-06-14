@@ -559,6 +559,10 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
           </div>
         </div>
         <div class="fg">
+          <label for="franchise">Montant de votre franchise (optionnel)</label>
+          <input type="number" id="franchise" name="franchise" min="0" step="1" placeholder="Ex : 300" style="max-width:180px;">
+        </div>
+        <div class="fg">
           <label for="degats">Décrivez les dégâts (optionnel)</label>
           <textarea id="degats" name="degats" placeholder="Ex : aile avant droite enfoncée suite à un accrochage sur parking"></textarea>
         </div>
@@ -739,8 +743,9 @@ function submitForm(e) {
   fd.append('ville',       rawData.ville   || '');
   fd.append('adresse',     rawData.adresse || '');
   fd.append('marque',      rawData.marque  || '');
-  fd.append('resp',        rawData.resp    || '');
-  fd.append('description', rawData.degats  || '');
+  fd.append('resp',        rawData.resp      || '');
+  fd.append('franchise',   rawData.franchise || '');
+  fd.append('description', rawData.degats    || '');
   fd.append('website',     rawData.website || '');
   selectedPhotos.forEach(function(p, i) {
     fd.append('photos', p.file, 'photo-' + (i + 1) + '.jpg');
@@ -766,8 +771,9 @@ function submitForm(e) {
           ville:       rawData.ville   || '',
           adresse:     rawData.adresse || '',
           marque:      rawData.marque  || '',
-          resp:        rawData.resp    || '',
-          description: rawData.degats  || ''
+          resp:        rawData.resp      || '',
+          franchise:   rawData.franchise || '',
+          description: rawData.degats    || ''
         })
       }).catch(function(){});
       showSuccess();
