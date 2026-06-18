@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0866FF">
 
-<title>Carrossier indépendant — Devis 24h, franchise prise en charge | mon-carrossier.fr</title>
-<meta name="description" content="Vous avez un sinistre ? Choisissez librement votre carrossier. Devis sous 24h, franchise prise en charge ou cadeau jusqu'à 500€, véhicule de prêt inclus. Service 100% gratuit.">
+<title>Carrossier indépendant — Devis 48h, franchise prise en charge | mon-carrossier.fr</title>
+<meta name="description" content="Vous avez un sinistre ? Choisissez librement votre carrossier. Devis sous 48h, franchise prise en charge ou cadeau jusqu'à 500€, véhicule de prêt inclus. Service 100% gratuit.">
 
 <meta property="og:title" content="Vous avez un sinistre. Vous avez aussi des droits.">
 <meta property="og:description" content="Choisissez votre carrossier, on prend en charge votre franchise. Jusqu'à 500€ de cadeau. Service 100% gratuit.">
@@ -22,7 +22,7 @@
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "mon-carrossier.fr",
-  "description": "Plateforme indépendante de mise en relation avec les meilleurs carrossiers du Var. Devis 24h, franchise prise en charge, véhicule de prêt.",
+  "description": "Plateforme indépendante de mise en relation avec les meilleurs carrossiers du Var. Devis 48h, franchise prise en charge, véhicule de prêt.",
   "areaServed": [
     {"@type": "City", "name": "Saint-Maximin-la-Sainte-Baume"},
     {"@type": "City", "name": "Brignoles"},
@@ -102,6 +102,17 @@
 .dot { width: 4px; height: 4px; background: var(--ink-faint); border-radius: 50%; }
 .hero-card { background: var(--bg-card); border-radius: var(--r-xl); padding: 30px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-light); position: relative; }
 .hero-card-tag { font-size: 12px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+.form-card { animation: none; }
+.form-card .hero-card-tag { margin-bottom: 10px; }
+.form-card-title { font-family: var(--display); font-size: 22px; font-weight: 600; color: var(--ink-deep); line-height: 1.15; }
+.form-card-sub { font-size: 14px; font-weight: 700; color: var(--ink-soft); margin: 4px 0 12px; }
+.form-intro { font-size: 13px; color: var(--ink-soft); line-height: 1.5; margin: 0 0 18px; }
+/* Mobile : on masque le formulaire inline du hero et on affiche un bouton qui ouvre le modal */
+.hero-mobile-cta { display: none; }
+@media (max-width: 859px) {
+  .form-card { display: none; }
+  .hero-mobile-cta { display: inline-flex; }
+}
 .step-row { display: flex; align-items: center; gap: 14px; padding: 15px 0; border-bottom: 1px solid var(--border-light); }
 .step-row:last-child { border-bottom: none; }
 .step-num { width: 38px; height: 38px; flex-shrink: 0; background: var(--blue-dark); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 600; }
@@ -228,6 +239,9 @@ section { padding: 80px 0; }
 }
 .fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 @media (max-width: 480px) { .fg-row { grid-template-columns: 1fr; } }
+/* CP + Ville : toujours côte à côte, y compris sur mobile */
+.fg-row--cpville { grid-template-columns: 1fr 1.5fr; }
+@media (max-width: 480px) { .fg-row--cpville { grid-template-columns: 1fr 1.5fr; } }
 
 /* Badge optionnel */
 .opt-badge {
@@ -316,7 +330,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
 <header>
   <div class="wrap head">
     <a href="/" class="logo">mon-<b>carrossier</b>.fr</a>
-    <button class="head-cta" onclick="openForm('header')">Trouver mon carrossier</button>
+    <button class="head-cta" onclick="scrollToForm('header')">Trouver mon carrossier</button>
   </div>
 </header>
 
@@ -330,7 +344,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
       <h1 class="hero-anim hero-anim-2">Vous avez un sinistre. Vous avez aussi des <em>droits</em>.</h1>
       <p class="hero-sub hero-anim hero-anim-3">Choisissez librement votre carrossier — un vrai, un local, un certifié. On vous accompagne, on prend en charge votre franchise, et on vous offre un cadeau pour chaque dossier. Jusqu'à 500&nbsp;€.</p>
       <div class="hero-ctas hero-anim hero-anim-4">
-        <button class="btn btn-primary" onclick="openForm('hero')">Trouver mon carrossier →</button>
+        <button class="btn btn-primary hero-mobile-cta" onclick="scrollToForm('hero')">Trouver mon carrossier →</button>
         <a href="#process" class="btn btn-ghost">Comment ça marche</a>
       </div>
       <div class="hero-trust hero-anim hero-anim-5">
@@ -344,20 +358,42 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
         <span>Garantie 5 ans</span>
       </div>
     </div>
-    <div class="hero-card">
+    <div class="hero-card form-card" id="leadForm">
       <div class="hero-card-tag">Votre demande en 2 minutes</div>
-      <div class="step-row">
-        <div class="step-num">1</div>
-        <div><div class="lbl">Où êtes-vous ?</div><div class="val">Saint-Maximin, 83470</div></div>
-      </div>
-      <div class="step-row">
-        <div class="step-num">2</div>
-        <div><div class="lbl">Responsable du sinistre ?</div><div class="val">Non, l'autre conducteur</div></div>
-      </div>
-      <div class="step-row">
-        <div class="step-num">3</div>
-        <div><div class="lbl">Une photo des dégâts</div><div class="val">Glissez ou photographiez</div></div>
-      </div>
+      <p class="form-card-sub">Réponse en 48h, service sans engagement.</p>
+      <p class="form-intro">Vos coordonnées nous permettent de vous recontacter et de vous orienter vers un carrossier partenaire proche de chez vous.</p>
+      <form id="step1Form" onsubmit="goStep2(event)" novalidate>
+        <div class="fg-row">
+          <div class="fg">
+            <label for="s1_prenom">Prénom *</label>
+            <input type="text" id="s1_prenom" name="prenom" required autocomplete="given-name" placeholder="Marie">
+          </div>
+          <div class="fg">
+            <label for="s1_tel">Téléphone *</label>
+            <input type="tel" id="s1_tel" name="tel" required autocomplete="tel" placeholder="06 12 34 56 78">
+          </div>
+        </div>
+        <div class="fg">
+          <label for="s1_email">Email *</label>
+          <input type="email" id="s1_email" name="email" required autocomplete="email" placeholder="marie@exemple.fr">
+        </div>
+        <div class="fg-row fg-row--cpville">
+          <div class="fg">
+            <label for="s1_cp">Code postal *</label>
+            <input type="text" id="s1_cp" name="cp" required inputmode="numeric" maxlength="5" placeholder="83470" oninput="lookupVille(this)">
+          </div>
+          <div class="fg">
+            <label for="s1_ville">Ville *</label>
+            <select id="s1_ville" name="ville" required>
+              <option value="">Choisir…</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px;font-size:16px;">
+          Continuer →
+        </button>
+        <p class="disclaimer">Vos données sont protégées — <a href="/rgpd.html">politique RGPD</a></p>
+      </form>
     </div>
   </div>
 </section>
@@ -437,8 +473,8 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
       <div class="step-card">
         <div class="n">2</div>
         <h3>On vous oriente</h3>
-        <p>Un carrossier certifié près de chez vous vous rappelle sous 24h. Il édite votre devis et reçoit l'expert dans les meilleures conditions.</p>
-        <span class="time">⏱ Sous 24h</span>
+        <p>Un carrossier certifié près de chez vous vous rappelle sous 48h. Il édite votre devis et reçoit l'expert dans les meilleures conditions.</p>
+        <span class="time">⏱ Sous 48h</span>
       </div>
       <div class="step-card">
         <div class="n">3</div>
@@ -520,7 +556,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
     <div class="faq-list">
       <details class="faq-item"><summary>Mon assurance peut-elle refuser que j'aille chez votre carrossier ?</summary><div class="faq-a">Non. Le Code des assurances vous donne le libre choix du réparateur. Aucune assurance ne peut vous imposer un garage. Si la vôtre essaie, on vous aide à faire valoir votre droit.</div></details>
       <details class="faq-item"><summary>C'est vraiment 100% gratuit ?</summary><div class="faq-a">Oui. Notre service est gratuit pour vous, à 100%. On est rémunérés par les carrossiers de notre réseau sur la base d'une commission au succès. Vous ne payez rien, jamais.</div></details>
-      <details class="faq-item"><summary>Combien de temps avant d'avoir mon véhicule réparé ?</summary><div class="faq-a">Devis sous 24h après votre demande. Réparation entre 3 et 7 jours selon les dégâts. Les délais précis vous sont communiqués et engagés dès le devis validé.</div></details>
+      <details class="faq-item"><summary>Combien de temps avant d'avoir mon véhicule réparé ?</summary><div class="faq-a">Devis sous 48h après votre demande. Réparation entre 3 et 7 jours selon les dégâts. Les délais précis vous sont communiqués et engagés dès le devis validé.</div></details>
       <details class="faq-item"><summary>Comment calculez-vous le montant du cadeau ?</summary><div class="faq-a">Selon le coût total des réparations. Plus votre dossier est important, plus le cadeau est élevé — jusqu'à 500 €. Le montant exact vous est communiqué dès le devis validé, sans surprise.</div></details>
       <details class="faq-item"><summary>Vos carrossiers sont-ils tous certifiés ?</summary><div class="faq-a">Oui. On vérifie l'ancienneté, la note Google, les certifications professionnelles et l'assurance RC pro. Et on les rencontre tous physiquement avant de les intégrer à notre réseau.</div></details>
       <details class="faq-item"><summary>Et si je ne suis pas satisfait des travaux ?</summary><div class="faq-a">On intervient en médiation directe. Nos carrossiers s'engagent à reprendre tout défaut sous garantie. Notre réputation dépend de votre satisfaction — on prend ça très au sérieux.</div></details>
@@ -531,8 +567,8 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
 <section class="cta-final">
   <div class="wrap cta-inner">
     <h2>Votre sinistre. Vos droits. <em>Votre carrossier.</em></h2>
-    <p>Trouvez le bon partenaire en 24h. Service 100% gratuit, jusqu'à 500 € de cadeau.</p>
-    <button class="btn btn-primary" style="font-size:18px;padding:19px 38px;" onclick="openForm('cta_final')">Trouver mon carrossier →</button>
+    <p>Trouvez le bon partenaire en 48h. Service 100% gratuit, jusqu'à 500 € de cadeau.</p>
+    <button class="btn btn-primary" style="font-size:18px;padding:19px 38px;" onclick="scrollToForm('cta_final')">Trouver mon carrossier →</button>
     <p style="margin-top:20px;font-size:15px;color:rgba(255,255,255,0.85);">Ou appelez directement : <a href="tel:0762337265" style="color:#fff;text-decoration:none;font-weight:700;">07 62 33 72 65</a></p>
   </div>
 </section>
@@ -553,53 +589,52 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
 
 <iframe name="formsubmitFrame" style="display:none;" aria-hidden="true"></iframe>
 
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Trouver mon carrossier">
   <div class="modal-box">
 
-    <!-- ── ÉTAPE 1 : Coordonnées ── -->
-    <div id="step1View">
+    <!-- ── ÉTAPE 1 (entrée mobile) : Coordonnées ── -->
+    <div id="step1View" style="display:none;">
       <div class="modal-head">
-        <h3 id="mTitle">Trouver mon carrossier</h3>
+        <div class="hero-card-tag" style="margin-bottom:0;">Votre demande en 2 minutes</div>
         <button class="modal-x" onclick="closeForm()" aria-label="Fermer">×</button>
       </div>
-      <p style="font-size:14px;color:var(--ink-soft,#4A5568);margin-bottom:4px;">Réponse sous 48h, sans engagement.</p>
+      <p class="form-card-sub">Réponse en 48h, service sans engagement.</p>
+      <p class="form-intro">Vos coordonnées nous permettent de vous recontacter et de vous orienter vers un carrossier partenaire proche de chez vous.</p>
 
       <div class="form-progress"><div class="form-progress-fill" style="width:50%"></div></div>
 
-      <form id="step1Form" onsubmit="goStep2(event)" novalidate>
+      <form id="modalStep1Form" onsubmit="goStep2(event)" novalidate>
         <div class="fg-row">
           <div class="fg">
-            <label for="s1_prenom">Prénom *</label>
-            <input type="text" id="s1_prenom" name="prenom" required autocomplete="given-name" placeholder="Marie">
+            <label for="m_prenom">Prénom *</label>
+            <input type="text" id="m_prenom" name="prenom" required autocomplete="given-name" placeholder="Marie">
           </div>
           <div class="fg">
-            <label for="s1_nom">Nom *</label>
-            <input type="text" id="s1_nom" name="nom" required autocomplete="family-name" placeholder="Dupont">
+            <label for="m_tel">Téléphone *</label>
+            <input type="tel" id="m_tel" name="tel" required autocomplete="tel" placeholder="06 12 34 56 78">
           </div>
         </div>
         <div class="fg">
-          <label for="s1_email">Email *</label>
-          <input type="email" id="s1_email" name="email" required autocomplete="email" placeholder="marie@exemple.fr">
+          <label for="m_email">Email *</label>
+          <input type="email" id="m_email" name="email" required autocomplete="email" placeholder="marie@exemple.fr">
         </div>
-        <div class="fg">
-          <label for="s1_tel">Téléphone *</label>
-          <input type="tel" id="s1_tel" name="tel" required autocomplete="tel" placeholder="06 12 34 56 78">
-        </div>
-        <div class="fg-row">
+        <div class="fg-row fg-row--cpville">
           <div class="fg">
-            <label for="s1_cp">Code postal *</label>
-            <input type="text" id="s1_cp" name="cp" required inputmode="numeric" maxlength="5" placeholder="83470">
+            <label for="m_cp">Code postal *</label>
+            <input type="text" id="m_cp" name="cp" required inputmode="numeric" maxlength="5" placeholder="83470" oninput="lookupVille(this)">
           </div>
           <div class="fg">
-            <label for="s1_ville">Ville *</label>
-            <input type="text" id="s1_ville" name="ville" required autocomplete="address-level2" placeholder="Saint-Maximin">
+            <label for="m_ville">Ville *</label>
+            <select id="m_ville" name="ville" required>
+              <option value="">Choisir…</option>
+            </select>
           </div>
         </div>
 
         <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px;font-size:16px;">
-          Continuer
+          Continuer →
         </button>
-        <p class="disclaimer">En envoyant ce formulaire, vous acceptez d'être recontacté par un carrossier de notre réseau. Vos données sont protégées — voir notre <a href="/rgpd.html">politique RGPD</a>.</p>
+        <p class="disclaimer">Vos données sont protégées — <a href="/rgpd.html">politique RGPD</a></p>
       </form>
     </div>
 
@@ -611,7 +646,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
         <h3>Trouver mon carrossier</h3>
         <button class="modal-x" onclick="closeForm()" aria-label="Fermer">×</button>
       </div>
-      <p style="font-size:14px;color:var(--ink-soft,#4A5568);margin-bottom:4px;">Réponse sous 48h, sans engagement.</p>
+      <p class="form-card-sub">Réponse en 48h, service sans engagement.</p>
 
       <div class="form-progress"><div class="form-progress-fill" style="width:100%"></div></div>
 
@@ -620,6 +655,10 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
       </div>
 
       <form id="step2Form" onsubmit="submitFinalForm(event)" novalidate>
+        <div class="fg">
+          <label for="s2_nom">Nom *</label>
+          <input type="text" id="s2_nom" name="nom" required autocomplete="family-name" placeholder="Dupont">
+        </div>
         <div class="fg">
           <label for="s2_marque">Marque et modèle du véhicule *</label>
           <input type="text" id="s2_marque" name="marque_modele" required placeholder="Ex : Renault Clio 5, Peugeot 308…">
@@ -691,36 +730,68 @@ function trackEvent(name, params) {
   if (typeof fbq  === 'function') fbq('trackCustom', name, params || {});
 }
 
-function openForm(source) {
+var _entry = 'inline'; // 'inline' (desktop) | 'modal' (mobile)
+
+// Boutons « Trouver mon carrossier » : desktop → amène au formulaire inline ;
+// mobile (formulaire inline masqué) → ouvre le modal sur l'étape 1.
+function scrollToForm(source) {
+  trackEvent('form_open', { source: source || 'unknown' });
+  var card = document.getElementById('leadForm');
+  if (!card || card.offsetParent === null) { openModalStep1(); return; }
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  var first = document.getElementById('s1_prenom');
+  if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 450);
+}
+
+// Ouvre le modal sur l'étape 1 (parcours mobile)
+function openModalStep1() {
+  _entry = 'modal';
+  document.getElementById('step1View').style.display = 'block';
+  document.getElementById('step2View').style.display = 'none';
+  document.getElementById('successView').classList.remove('active');
   document.getElementById('modal').classList.add('active');
   document.body.style.overflow = 'hidden';
-  trackEvent('form_open', { source: source || 'unknown' });
+  document.querySelector('.modal-box').scrollTop = 0;
+}
+
+// Ouvre le modal sur l'étape 2 (dossier sinistre)
+function openStep2() {
+  document.getElementById('step1View').style.display = 'none';
+  document.getElementById('step2View').style.display = 'block';
+  document.getElementById('successView').classList.remove('active');
+  document.getElementById('modal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  document.querySelector('.modal-box').scrollTop = 0;
 }
 
 function closeForm() {
+  var wasSuccess = document.getElementById('successView').classList.contains('active');
   document.getElementById('modal').classList.remove('active');
   document.body.style.overflow = '';
-  setTimeout(resetModal, 300);
+  // Après une demande envoyée, on repart d'une page vierge
+  if (wasSuccess) setTimeout(resetAll, 300);
 }
 
-function resetModal() {
-  document.getElementById('step1View').style.display  = 'block';
-  document.getElementById('step2View').style.display  = 'none';
-  document.getElementById('successView').classList.remove('active');
-  document.getElementById('step1Form').reset();
+function resetAll() {
+  var f1 = document.getElementById('step1Form');      if (f1) f1.reset();
+  var fm = document.getElementById('modalStep1Form');  if (fm) fm.reset();
   document.getElementById('step2Form').reset();
   document.getElementById('photoPreview').innerHTML = '';
+  document.getElementById('step1View').style.display = 'none';
+  document.getElementById('step2View').style.display = 'block';
+  document.getElementById('successView').classList.remove('active');
   _notionPageId = null;
   _leadStep1    = {};
 }
 
+// Étape 1 → étape 2 (commun au formulaire inline desktop et au formulaire du modal mobile)
 function goStep2(e) {
   e.preventDefault();
-  var form = document.getElementById('step1Form');
+  var form = e.target;
   if (!form.checkValidity()) { form.reportValidity(); return; }
 
   // Validation tel FR basique
-  var telEl = document.getElementById('s1_tel');
+  var telEl = form.elements['tel'];
   var tel   = telEl.value.replace(/[\s\-\.]/g, '');
   if (!/^(\+33|0033|0)[1-9][0-9]{8}$/.test(tel)) {
     telEl.setCustomValidity('Numéro invalide (ex : 06 12 34 56 78)');
@@ -729,13 +800,13 @@ function goStep2(e) {
     return;
   }
 
+  _entry = (form.id === 'modalStep1Form') ? 'modal' : 'inline';
   _leadStep1 = {
-    prenom: document.getElementById('s1_prenom').value.trim(),
-    nom:    document.getElementById('s1_nom').value.trim(),
-    email:  document.getElementById('s1_email').value.trim(),
+    prenom: form.elements['prenom'].value.trim(),
+    email:  form.elements['email'].value.trim(),
     tel:    tel,
-    cp:     document.getElementById('s1_cp').value.trim(),
-    ville:  document.getElementById('s1_ville').value.trim(),
+    cp:     form.elements['cp'].value.trim(),
+    ville:  form.elements['ville'].value,
   };
 
   // Envoi immédiat à Notion (statut Incomplet)
@@ -750,15 +821,46 @@ function goStep2(e) {
 
   trackEvent('form_step1_complete', { ville: _leadStep1.ville, cp: _leadStep1.cp });
 
-  document.getElementById('step1View').style.display = 'none';
-  document.getElementById('step2View').style.display = 'block';
-  document.querySelector('.modal-box').scrollTop = 0;
+  openStep2();
+}
+
+// Peuple le menu déroulant Ville à partir du code postal (API Découpage administratif)
+function lookupVille(cpInput) {
+  var form = cpInput.form;
+  var sel  = form && form.elements['ville'];
+  if (!sel) return;
+  var cp = cpInput.value.trim();
+  if (!/^[0-9]{5}$/.test(cp)) {
+    sel.innerHTML = '<option value="">Choisir…</option>';
+    return;
+  }
+  fetch('https://geo.api.gouv.fr/communes?codePostal=' + cp + '&fields=nom&format=json')
+    .then(function (r) { return r.json(); })
+    .then(function (villes) {
+      sel.innerHTML = '<option value="">Choisir…</option>';
+      (villes || []).forEach(function (v) {
+        var o = document.createElement('option');
+        o.value = v.nom; o.textContent = v.nom;
+        sel.appendChild(o);
+      });
+      if (villes && villes.length === 1) sel.value = villes[0].nom;
+    })
+    .catch(function () {});
 }
 
 function goBack() {
-  document.getElementById('step2View').style.display = 'none';
-  document.getElementById('step1View').style.display = 'block';
-  document.querySelector('.modal-box').scrollTop = 0;
+  if (_entry === 'modal') {
+    // Parcours mobile : retour à l'étape 1 dans le modal
+    document.getElementById('step2View').style.display = 'none';
+    document.getElementById('step1View').style.display = 'block';
+    document.querySelector('.modal-box').scrollTop = 0;
+  } else {
+    // Parcours desktop : on referme et on revient au formulaire inline
+    document.getElementById('modal').classList.remove('active');
+    document.body.style.overflow = '';
+    var card = document.getElementById('leadForm');
+    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 }
 
 function submitFinalForm(e) {
@@ -774,6 +876,7 @@ function submitFinalForm(e) {
   // Données étape 1
   Object.keys(_leadStep1).forEach(function (k) { payload.append(k, _leadStep1[k]); });
   // Données étape 2
+  payload.append('nom',           document.getElementById('s2_nom').value.trim());
   payload.append('marque_modele', document.getElementById('s2_marque').value.trim());
   payload.append('adresse',       document.getElementById('s2_adresse').value.trim());
   payload.append('responsable',   document.getElementById('s2_responsable').value);
