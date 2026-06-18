@@ -830,6 +830,8 @@ function goStep2(e) {
   .catch(function () {});  // silencieux — on passe à l'étape 2 quoi qu'il arrive
 
   trackEvent('form_step1_complete', { ville: _leadStep1.ville, cp: _leadStep1.cp });
+  // Conversion Meta standard pour l'étape 1 (coordonnées captées)
+  if (typeof fbq === 'function') fbq('track', 'Contact', { content_category: 'sinistre_auto' });
 
   openStep2();
 }
