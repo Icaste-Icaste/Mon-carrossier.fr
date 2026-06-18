@@ -102,6 +102,10 @@
 .dot { width: 4px; height: 4px; background: var(--ink-faint); border-radius: 50%; }
 .hero-card { background: var(--bg-card); border-radius: var(--r-xl); padding: 30px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-light); position: relative; }
 .hero-card-tag { font-size: 12px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+.form-card { animation: none; }
+.form-card .hero-card-tag { margin-bottom: 10px; }
+.form-card-title { font-family: var(--display); font-size: 22px; font-weight: 600; color: var(--ink-deep); line-height: 1.15; }
+.form-card-sub { font-size: 14px; color: var(--ink-soft); margin: 4px 0 18px; }
 .step-row { display: flex; align-items: center; gap: 14px; padding: 15px 0; border-bottom: 1px solid var(--border-light); }
 .step-row:last-child { border-bottom: none; }
 .step-num { width: 38px; height: 38px; flex-shrink: 0; background: var(--blue-dark); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 600; }
@@ -316,7 +320,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
 <header>
   <div class="wrap head">
     <a href="/" class="logo">mon-<b>carrossier</b>.fr</a>
-    <button class="head-cta" onclick="openForm('header')">Trouver mon carrossier</button>
+    <button class="head-cta" onclick="scrollToForm('header')">Trouver mon carrossier</button>
   </div>
 </header>
 
@@ -330,7 +334,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
       <h1 class="hero-anim hero-anim-2">Vous avez un sinistre. Vous avez aussi des <em>droits</em>.</h1>
       <p class="hero-sub hero-anim hero-anim-3">Choisissez librement votre carrossier — un vrai, un local, un certifié. On vous accompagne, on prend en charge votre franchise, et on vous offre un cadeau pour chaque dossier. Jusqu'à 500&nbsp;€.</p>
       <div class="hero-ctas hero-anim hero-anim-4">
-        <button class="btn btn-primary" onclick="openForm('hero')">Trouver mon carrossier →</button>
+        <button class="btn btn-primary" onclick="scrollToForm('hero')">Trouver mon carrossier →</button>
         <a href="#process" class="btn btn-ghost">Comment ça marche</a>
       </div>
       <div class="hero-trust hero-anim hero-anim-5">
@@ -344,20 +348,44 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
         <span>Garantie 5 ans</span>
       </div>
     </div>
-    <div class="hero-card">
-      <div class="hero-card-tag">Votre demande en 2 minutes</div>
-      <div class="step-row">
-        <div class="step-num">1</div>
-        <div><div class="lbl">Où êtes-vous ?</div><div class="val">Saint-Maximin, 83470</div></div>
-      </div>
-      <div class="step-row">
-        <div class="step-num">2</div>
-        <div><div class="lbl">Responsable du sinistre ?</div><div class="val">Non, l'autre conducteur</div></div>
-      </div>
-      <div class="step-row">
-        <div class="step-num">3</div>
-        <div><div class="lbl">Une photo des dégâts</div><div class="val">Glissez ou photographiez</div></div>
-      </div>
+    <div class="hero-card form-card" id="leadForm">
+      <div class="hero-card-tag">Votre demande en 2 minutes · étape 1/2</div>
+      <h3 class="form-card-title">Trouver mon carrossier</h3>
+      <p class="form-card-sub">Réponse sous 48h, sans engagement.</p>
+      <form id="step1Form" onsubmit="goStep2(event)" novalidate>
+        <div class="fg-row">
+          <div class="fg">
+            <label for="s1_prenom">Prénom *</label>
+            <input type="text" id="s1_prenom" name="prenom" required autocomplete="given-name" placeholder="Marie">
+          </div>
+          <div class="fg">
+            <label for="s1_nom">Nom *</label>
+            <input type="text" id="s1_nom" name="nom" required autocomplete="family-name" placeholder="Dupont">
+          </div>
+        </div>
+        <div class="fg">
+          <label for="s1_email">Email *</label>
+          <input type="email" id="s1_email" name="email" required autocomplete="email" placeholder="marie@exemple.fr">
+        </div>
+        <div class="fg">
+          <label for="s1_tel">Téléphone *</label>
+          <input type="tel" id="s1_tel" name="tel" required autocomplete="tel" placeholder="06 12 34 56 78">
+        </div>
+        <div class="fg-row">
+          <div class="fg">
+            <label for="s1_cp">Code postal *</label>
+            <input type="text" id="s1_cp" name="cp" required inputmode="numeric" maxlength="5" placeholder="83470">
+          </div>
+          <div class="fg">
+            <label for="s1_ville">Ville *</label>
+            <input type="text" id="s1_ville" name="ville" required autocomplete="address-level2" placeholder="Saint-Maximin">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px;font-size:16px;">
+          Continuer →
+        </button>
+        <p class="disclaimer">Vos données sont protégées — <a href="/rgpd.html">politique RGPD</a></p>
+      </form>
     </div>
   </div>
 </section>
@@ -532,7 +560,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
   <div class="wrap cta-inner">
     <h2>Votre sinistre. Vos droits. <em>Votre carrossier.</em></h2>
     <p>Trouvez le bon partenaire en 24h. Service 100% gratuit, jusqu'à 500 € de cadeau.</p>
-    <button class="btn btn-primary" style="font-size:18px;padding:19px 38px;" onclick="openForm('cta_final')">Trouver mon carrossier →</button>
+    <button class="btn btn-primary" style="font-size:18px;padding:19px 38px;" onclick="scrollToForm('cta_final')">Trouver mon carrossier →</button>
     <p style="margin-top:20px;font-size:15px;color:rgba(255,255,255,0.85);">Ou appelez directement : <a href="tel:0762337265" style="color:#fff;text-decoration:none;font-weight:700;">07 62 33 72 65</a></p>
   </div>
 </section>
@@ -556,59 +584,12 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
   <div class="modal-box">
 
-    <!-- ── ÉTAPE 1 : Coordonnées ── -->
-    <div id="step1View">
-      <div class="modal-head">
-        <h3 id="mTitle">Trouver mon carrossier</h3>
-        <button class="modal-x" onclick="closeForm()" aria-label="Fermer">×</button>
-      </div>
-      <p style="font-size:14px;color:var(--ink-soft,#4A5568);margin-bottom:4px;">Réponse sous 48h, sans engagement.</p>
-
-      <div class="form-progress"><div class="form-progress-fill" style="width:50%"></div></div>
-
-      <form id="step1Form" onsubmit="goStep2(event)" novalidate>
-        <div class="fg-row">
-          <div class="fg">
-            <label for="s1_prenom">Prénom *</label>
-            <input type="text" id="s1_prenom" name="prenom" required autocomplete="given-name" placeholder="Marie">
-          </div>
-          <div class="fg">
-            <label for="s1_nom">Nom *</label>
-            <input type="text" id="s1_nom" name="nom" required autocomplete="family-name" placeholder="Dupont">
-          </div>
-        </div>
-        <div class="fg">
-          <label for="s1_email">Email *</label>
-          <input type="email" id="s1_email" name="email" required autocomplete="email" placeholder="marie@exemple.fr">
-        </div>
-        <div class="fg">
-          <label for="s1_tel">Téléphone *</label>
-          <input type="tel" id="s1_tel" name="tel" required autocomplete="tel" placeholder="06 12 34 56 78">
-        </div>
-        <div class="fg-row">
-          <div class="fg">
-            <label for="s1_cp">Code postal *</label>
-            <input type="text" id="s1_cp" name="cp" required inputmode="numeric" maxlength="5" placeholder="83470">
-          </div>
-          <div class="fg">
-            <label for="s1_ville">Ville *</label>
-            <input type="text" id="s1_ville" name="ville" required autocomplete="address-level2" placeholder="Saint-Maximin">
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px;font-size:16px;">
-          Continuer
-        </button>
-        <p class="disclaimer">En envoyant ce formulaire, vous acceptez d'être recontacté par un carrossier de notre réseau. Vos données sont protégées — voir notre <a href="/rgpd.html">politique RGPD</a>.</p>
-      </form>
-    </div>
-
     <!-- ── ÉTAPE 2 : Dossier sinistre ── -->
     <div id="step2View" style="display:none;">
       <button class="btn-back" onclick="goBack()">← Retour</button>
 
       <div class="modal-head">
-        <h3>Trouver mon carrossier</h3>
+        <h3 id="mTitle">Trouver mon carrossier</h3>
         <button class="modal-x" onclick="closeForm()" aria-label="Fermer">×</button>
       </div>
       <p style="font-size:14px;color:var(--ink-soft,#4A5568);margin-bottom:4px;">Réponse sous 48h, sans engagement.</p>
@@ -691,25 +672,38 @@ function trackEvent(name, params) {
   if (typeof fbq  === 'function') fbq('trackCustom', name, params || {});
 }
 
-function openForm(source) {
-  document.getElementById('modal').classList.add('active');
-  document.body.style.overflow = 'hidden';
+// Les boutons « Trouver mon carrossier » amènent au formulaire étape 1 (inline)
+function scrollToForm(source) {
+  var card = document.getElementById('leadForm');
+  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  var first = document.getElementById('s1_prenom');
+  if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 450);
   trackEvent('form_open', { source: source || 'unknown' });
 }
 
-function closeForm() {
-  document.getElementById('modal').classList.remove('active');
-  document.body.style.overflow = '';
-  setTimeout(resetModal, 300);
+// Ouvre le modal sur l'étape 2 (dossier sinistre)
+function openStep2() {
+  document.getElementById('step2View').style.display = 'block';
+  document.getElementById('successView').classList.remove('active');
+  document.getElementById('modal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  document.querySelector('.modal-box').scrollTop = 0;
 }
 
-function resetModal() {
-  document.getElementById('step1View').style.display  = 'block';
-  document.getElementById('step2View').style.display  = 'none';
-  document.getElementById('successView').classList.remove('active');
+function closeForm() {
+  var wasSuccess = document.getElementById('successView').classList.contains('active');
+  document.getElementById('modal').classList.remove('active');
+  document.body.style.overflow = '';
+  // Après une demande envoyée, on repart d'une page vierge
+  if (wasSuccess) setTimeout(resetAll, 300);
+}
+
+function resetAll() {
   document.getElementById('step1Form').reset();
   document.getElementById('step2Form').reset();
   document.getElementById('photoPreview').innerHTML = '';
+  document.getElementById('step2View').style.display = 'block';
+  document.getElementById('successView').classList.remove('active');
   _notionPageId = null;
   _leadStep1    = {};
 }
@@ -750,15 +744,15 @@ function goStep2(e) {
 
   trackEvent('form_step1_complete', { ville: _leadStep1.ville, cp: _leadStep1.cp });
 
-  document.getElementById('step1View').style.display = 'none';
-  document.getElementById('step2View').style.display = 'block';
-  document.querySelector('.modal-box').scrollTop = 0;
+  openStep2();
 }
 
 function goBack() {
-  document.getElementById('step2View').style.display = 'none';
-  document.getElementById('step1View').style.display = 'block';
-  document.querySelector('.modal-box').scrollTop = 0;
+  // Ferme le modal et ramène au formulaire étape 1 (inline sur la page)
+  document.getElementById('modal').classList.remove('active');
+  document.body.style.overflow = '';
+  var card = document.getElementById('leadForm');
+  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 function submitFinalForm(e) {
