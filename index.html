@@ -686,6 +686,13 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
           </select>
         </div>
         <div class="fg">
+          <label for="s2_franchise">
+            Montant de votre franchise
+            <span class="opt-badge">Optionnel</span>
+          </label>
+          <input type="number" id="s2_franchise" name="franchise" min="0" step="1" inputmode="numeric" placeholder="si vous le connaissez">
+        </div>
+        <div class="fg">
           <label for="s2_degats">
             Description des dégâts
             <span class="opt-badge">Optionnel</span>
@@ -883,6 +890,7 @@ function submitFinalForm(e) {
   payload.append('marque_modele', document.getElementById('s2_marque').value.trim());
   payload.append('adresse',       document.getElementById('s2_adresse').value.trim());
   payload.append('responsable',   document.getElementById('s2_responsable').value);
+  payload.append('franchise',     document.getElementById('s2_franchise').value.trim());
   payload.append('degats',        document.getElementById('s2_degats').value.trim());
   if (_notionPageId) payload.append('notionPageId', _notionPageId);
   // Photos
