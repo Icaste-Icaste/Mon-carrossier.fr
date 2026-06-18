@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0866FF">
 
-<title>Carrossier indépendant — Devis 24h, franchise prise en charge | mon-carrossier.fr</title>
-<meta name="description" content="Vous avez un sinistre ? Choisissez librement votre carrossier. Devis sous 24h, franchise prise en charge ou cadeau jusqu'à 500€, véhicule de prêt inclus. Service 100% gratuit.">
+<title>Carrossier indépendant — Devis 48h, franchise prise en charge | mon-carrossier.fr</title>
+<meta name="description" content="Vous avez un sinistre ? Choisissez librement votre carrossier. Devis sous 48h, franchise prise en charge ou cadeau jusqu'à 500€, véhicule de prêt inclus. Service 100% gratuit.">
 
 <meta property="og:title" content="Vous avez un sinistre. Vous avez aussi des droits.">
 <meta property="og:description" content="Choisissez votre carrossier, on prend en charge votre franchise. Jusqu'à 500€ de cadeau. Service 100% gratuit.">
@@ -22,7 +22,7 @@
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "mon-carrossier.fr",
-  "description": "Plateforme indépendante de mise en relation avec les meilleurs carrossiers du Var. Devis 24h, franchise prise en charge, véhicule de prêt.",
+  "description": "Plateforme indépendante de mise en relation avec les meilleurs carrossiers du Var. Devis 48h, franchise prise en charge, véhicule de prêt.",
   "areaServed": [
     {"@type": "City", "name": "Saint-Maximin-la-Sainte-Baume"},
     {"@type": "City", "name": "Brignoles"},
@@ -105,7 +105,8 @@
 .form-card { animation: none; }
 .form-card .hero-card-tag { margin-bottom: 10px; }
 .form-card-title { font-family: var(--display); font-size: 22px; font-weight: 600; color: var(--ink-deep); line-height: 1.15; }
-.form-card-sub { font-size: 14px; color: var(--ink-soft); margin: 4px 0 18px; }
+.form-card-sub { font-size: 14px; color: var(--ink-soft); margin: 4px 0 12px; }
+.form-intro { font-size: 13px; color: var(--ink-soft); line-height: 1.5; margin: 0 0 18px; }
 /* Mobile : on masque le formulaire inline du hero et on affiche un bouton qui ouvre le modal */
 .hero-mobile-cta { display: none; }
 @media (max-width: 859px) {
@@ -361,14 +362,17 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
       <div class="hero-card-tag">Votre demande en 2 minutes</div>
       <h3 class="form-card-title">Trouver mon carrossier</h3>
       <p class="form-card-sub">Réponse sous 48h, sans engagement.</p>
+      <p class="form-intro">Vos coordonnées nous permettent de vous recontacter et de vous orienter vers un carrossier partenaire proche de chez vous.</p>
       <form id="step1Form" onsubmit="goStep2(event)" novalidate>
-        <div class="fg">
-          <label for="s1_prenom">Prénom *</label>
-          <input type="text" id="s1_prenom" name="prenom" required autocomplete="given-name" placeholder="Marie">
-        </div>
-        <div class="fg">
-          <label for="s1_tel">Téléphone *</label>
-          <input type="tel" id="s1_tel" name="tel" required autocomplete="tel" placeholder="06 12 34 56 78">
+        <div class="fg-row">
+          <div class="fg">
+            <label for="s1_prenom">Prénom *</label>
+            <input type="text" id="s1_prenom" name="prenom" required autocomplete="given-name" placeholder="Marie">
+          </div>
+          <div class="fg">
+            <label for="s1_tel">Téléphone *</label>
+            <input type="tel" id="s1_tel" name="tel" required autocomplete="tel" placeholder="06 12 34 56 78">
+          </div>
         </div>
         <div class="fg">
           <label for="s1_email">Email *</label>
@@ -470,8 +474,8 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
       <div class="step-card">
         <div class="n">2</div>
         <h3>On vous oriente</h3>
-        <p>Un carrossier certifié près de chez vous vous rappelle sous 24h. Il édite votre devis et reçoit l'expert dans les meilleures conditions.</p>
-        <span class="time">⏱ Sous 24h</span>
+        <p>Un carrossier certifié près de chez vous vous rappelle sous 48h. Il édite votre devis et reçoit l'expert dans les meilleures conditions.</p>
+        <span class="time">⏱ Sous 48h</span>
       </div>
       <div class="step-card">
         <div class="n">3</div>
@@ -553,7 +557,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
     <div class="faq-list">
       <details class="faq-item"><summary>Mon assurance peut-elle refuser que j'aille chez votre carrossier ?</summary><div class="faq-a">Non. Le Code des assurances vous donne le libre choix du réparateur. Aucune assurance ne peut vous imposer un garage. Si la vôtre essaie, on vous aide à faire valoir votre droit.</div></details>
       <details class="faq-item"><summary>C'est vraiment 100% gratuit ?</summary><div class="faq-a">Oui. Notre service est gratuit pour vous, à 100%. On est rémunérés par les carrossiers de notre réseau sur la base d'une commission au succès. Vous ne payez rien, jamais.</div></details>
-      <details class="faq-item"><summary>Combien de temps avant d'avoir mon véhicule réparé ?</summary><div class="faq-a">Devis sous 24h après votre demande. Réparation entre 3 et 7 jours selon les dégâts. Les délais précis vous sont communiqués et engagés dès le devis validé.</div></details>
+      <details class="faq-item"><summary>Combien de temps avant d'avoir mon véhicule réparé ?</summary><div class="faq-a">Devis sous 48h après votre demande. Réparation entre 3 et 7 jours selon les dégâts. Les délais précis vous sont communiqués et engagés dès le devis validé.</div></details>
       <details class="faq-item"><summary>Comment calculez-vous le montant du cadeau ?</summary><div class="faq-a">Selon le coût total des réparations. Plus votre dossier est important, plus le cadeau est élevé — jusqu'à 500 €. Le montant exact vous est communiqué dès le devis validé, sans surprise.</div></details>
       <details class="faq-item"><summary>Vos carrossiers sont-ils tous certifiés ?</summary><div class="faq-a">Oui. On vérifie l'ancienneté, la note Google, les certifications professionnelles et l'assurance RC pro. Et on les rencontre tous physiquement avant de les intégrer à notre réseau.</div></details>
       <details class="faq-item"><summary>Et si je ne suis pas satisfait des travaux ?</summary><div class="faq-a">On intervient en médiation directe. Nos carrossiers s'engagent à reprendre tout défaut sous garantie. Notre réputation dépend de votre satisfaction — on prend ça très au sérieux.</div></details>
@@ -564,7 +568,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
 <section class="cta-final">
   <div class="wrap cta-inner">
     <h2>Votre sinistre. Vos droits. <em>Votre carrossier.</em></h2>
-    <p>Trouvez le bon partenaire en 24h. Service 100% gratuit, jusqu'à 500 € de cadeau.</p>
+    <p>Trouvez le bon partenaire en 48h. Service 100% gratuit, jusqu'à 500 € de cadeau.</p>
     <button class="btn btn-primary" style="font-size:18px;padding:19px 38px;" onclick="scrollToForm('cta_final')">Trouver mon carrossier →</button>
     <p style="margin-top:20px;font-size:15px;color:rgba(255,255,255,0.85);">Ou appelez directement : <a href="tel:0762337265" style="color:#fff;text-decoration:none;font-weight:700;">07 62 33 72 65</a></p>
   </div>
@@ -596,17 +600,20 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
         <button class="modal-x" onclick="closeForm()" aria-label="Fermer">×</button>
       </div>
       <p style="font-size:14px;color:var(--ink-soft,#4A5568);margin-bottom:4px;">Réponse sous 48h, sans engagement.</p>
+      <p class="form-intro">Vos coordonnées nous permettent de vous recontacter et de vous orienter vers un carrossier partenaire proche de chez vous.</p>
 
       <div class="form-progress"><div class="form-progress-fill" style="width:50%"></div></div>
 
       <form id="modalStep1Form" onsubmit="goStep2(event)" novalidate>
-        <div class="fg">
-          <label for="m_prenom">Prénom *</label>
-          <input type="text" id="m_prenom" name="prenom" required autocomplete="given-name" placeholder="Marie">
-        </div>
-        <div class="fg">
-          <label for="m_tel">Téléphone *</label>
-          <input type="tel" id="m_tel" name="tel" required autocomplete="tel" placeholder="06 12 34 56 78">
+        <div class="fg-row">
+          <div class="fg">
+            <label for="m_prenom">Prénom *</label>
+            <input type="text" id="m_prenom" name="prenom" required autocomplete="given-name" placeholder="Marie">
+          </div>
+          <div class="fg">
+            <label for="m_tel">Téléphone *</label>
+            <input type="tel" id="m_tel" name="tel" required autocomplete="tel" placeholder="06 12 34 56 78">
+          </div>
         </div>
         <div class="fg">
           <label for="m_email">Email *</label>
