@@ -106,6 +106,12 @@
 .form-card .hero-card-tag { margin-bottom: 10px; }
 .form-card-title { font-family: var(--display); font-size: 22px; font-weight: 600; color: var(--ink-deep); line-height: 1.15; }
 .form-card-sub { font-size: 14px; color: var(--ink-soft); margin: 4px 0 18px; }
+/* Mobile : on masque le formulaire inline du hero et on affiche un bouton qui ouvre le modal */
+.hero-mobile-cta { display: none; }
+@media (max-width: 859px) {
+  .form-card { display: none; }
+  .hero-mobile-cta { display: inline-flex; }
+}
 .step-row { display: flex; align-items: center; gap: 14px; padding: 15px 0; border-bottom: 1px solid var(--border-light); }
 .step-row:last-child { border-bottom: none; }
 .step-num { width: 38px; height: 38px; flex-shrink: 0; background: var(--blue-dark); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 600; }
@@ -232,6 +238,9 @@ section { padding: 80px 0; }
 }
 .fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 @media (max-width: 480px) { .fg-row { grid-template-columns: 1fr; } }
+/* CP + Ville : toujours côte à côte, y compris sur mobile */
+.fg-row--cpville { grid-template-columns: 1fr 1.5fr; }
+@media (max-width: 480px) { .fg-row--cpville { grid-template-columns: 1fr 1.5fr; } }
 
 /* Badge optionnel */
 .opt-badge {
@@ -334,6 +343,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
       <h1 class="hero-anim hero-anim-2">Vous avez un sinistre. Vous avez aussi des <em>droits</em>.</h1>
       <p class="hero-sub hero-anim hero-anim-3">Choisissez librement votre carrossier — un vrai, un local, un certifié. On vous accompagne, on prend en charge votre franchise, et on vous offre un cadeau pour chaque dossier. Jusqu'à 500&nbsp;€.</p>
       <div class="hero-ctas hero-anim hero-anim-4">
+        <button class="btn btn-primary hero-mobile-cta" onclick="scrollToForm('hero')">Trouver mon carrossier →</button>
         <a href="#process" class="btn btn-ghost">Comment ça marche</a>
       </div>
       <div class="hero-trust hero-anim hero-anim-5">
@@ -352,32 +362,28 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
       <h3 class="form-card-title">Trouver mon carrossier</h3>
       <p class="form-card-sub">Réponse sous 48h, sans engagement.</p>
       <form id="step1Form" onsubmit="goStep2(event)" novalidate>
-        <div class="fg-row">
-          <div class="fg">
-            <label for="s1_prenom">Prénom *</label>
-            <input type="text" id="s1_prenom" name="prenom" required autocomplete="given-name" placeholder="Marie">
-          </div>
-          <div class="fg">
-            <label for="s1_nom">Nom *</label>
-            <input type="text" id="s1_nom" name="nom" required autocomplete="family-name" placeholder="Dupont">
-          </div>
-        </div>
         <div class="fg">
-          <label for="s1_email">Email *</label>
-          <input type="email" id="s1_email" name="email" required autocomplete="email" placeholder="marie@exemple.fr">
+          <label for="s1_prenom">Prénom *</label>
+          <input type="text" id="s1_prenom" name="prenom" required autocomplete="given-name" placeholder="Marie">
         </div>
         <div class="fg">
           <label for="s1_tel">Téléphone *</label>
           <input type="tel" id="s1_tel" name="tel" required autocomplete="tel" placeholder="06 12 34 56 78">
         </div>
-        <div class="fg-row">
+        <div class="fg">
+          <label for="s1_email">Email *</label>
+          <input type="email" id="s1_email" name="email" required autocomplete="email" placeholder="marie@exemple.fr">
+        </div>
+        <div class="fg-row fg-row--cpville">
           <div class="fg">
             <label for="s1_cp">Code postal *</label>
-            <input type="text" id="s1_cp" name="cp" required inputmode="numeric" maxlength="5" placeholder="83470">
+            <input type="text" id="s1_cp" name="cp" required inputmode="numeric" maxlength="5" placeholder="83470" oninput="lookupVille(this)">
           </div>
           <div class="fg">
             <label for="s1_ville">Ville *</label>
-            <input type="text" id="s1_ville" name="ville" required autocomplete="address-level2" placeholder="Saint-Maximin">
+            <select id="s1_ville" name="ville" required>
+              <option value="">Choisir…</option>
+            </select>
           </div>
         </div>
         <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px;font-size:16px;">
@@ -580,15 +586,58 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
 
 <iframe name="formsubmitFrame" style="display:none;" aria-hidden="true"></iframe>
 
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Trouver mon carrossier">
   <div class="modal-box">
+
+    <!-- ── ÉTAPE 1 (entrée mobile) : Coordonnées ── -->
+    <div id="step1View" style="display:none;">
+      <div class="modal-head">
+        <h3>Trouver mon carrossier</h3>
+        <button class="modal-x" onclick="closeForm()" aria-label="Fermer">×</button>
+      </div>
+      <p style="font-size:14px;color:var(--ink-soft,#4A5568);margin-bottom:4px;">Réponse sous 48h, sans engagement.</p>
+
+      <div class="form-progress"><div class="form-progress-fill" style="width:50%"></div></div>
+
+      <form id="modalStep1Form" onsubmit="goStep2(event)" novalidate>
+        <div class="fg">
+          <label for="m_prenom">Prénom *</label>
+          <input type="text" id="m_prenom" name="prenom" required autocomplete="given-name" placeholder="Marie">
+        </div>
+        <div class="fg">
+          <label for="m_tel">Téléphone *</label>
+          <input type="tel" id="m_tel" name="tel" required autocomplete="tel" placeholder="06 12 34 56 78">
+        </div>
+        <div class="fg">
+          <label for="m_email">Email *</label>
+          <input type="email" id="m_email" name="email" required autocomplete="email" placeholder="marie@exemple.fr">
+        </div>
+        <div class="fg-row fg-row--cpville">
+          <div class="fg">
+            <label for="m_cp">Code postal *</label>
+            <input type="text" id="m_cp" name="cp" required inputmode="numeric" maxlength="5" placeholder="83470" oninput="lookupVille(this)">
+          </div>
+          <div class="fg">
+            <label for="m_ville">Ville *</label>
+            <select id="m_ville" name="ville" required>
+              <option value="">Choisir…</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px;font-size:16px;">
+          Continuer →
+        </button>
+        <p class="disclaimer">Vos données sont protégées — <a href="/rgpd.html">politique RGPD</a></p>
+      </form>
+    </div>
 
     <!-- ── ÉTAPE 2 : Dossier sinistre ── -->
     <div id="step2View" style="display:none;">
       <button class="btn-back" onclick="goBack()">← Retour</button>
 
       <div class="modal-head">
-        <h3 id="mTitle">Trouver mon carrossier</h3>
+        <h3>Trouver mon carrossier</h3>
         <button class="modal-x" onclick="closeForm()" aria-label="Fermer">×</button>
       </div>
       <p style="font-size:14px;color:var(--ink-soft,#4A5568);margin-bottom:4px;">Réponse sous 48h, sans engagement.</p>
@@ -600,6 +649,10 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
       </div>
 
       <form id="step2Form" onsubmit="submitFinalForm(event)" novalidate>
+        <div class="fg">
+          <label for="s2_nom">Nom *</label>
+          <input type="text" id="s2_nom" name="nom" required autocomplete="family-name" placeholder="Dupont">
+        </div>
         <div class="fg">
           <label for="s2_marque">Marque et modèle du véhicule *</label>
           <input type="text" id="s2_marque" name="marque_modele" required placeholder="Ex : Renault Clio 5, Peugeot 308…">
@@ -671,17 +724,33 @@ function trackEvent(name, params) {
   if (typeof fbq  === 'function') fbq('trackCustom', name, params || {});
 }
 
-// Les boutons « Trouver mon carrossier » amènent au formulaire étape 1 (inline)
+var _entry = 'inline'; // 'inline' (desktop) | 'modal' (mobile)
+
+// Boutons « Trouver mon carrossier » : desktop → amène au formulaire inline ;
+// mobile (formulaire inline masqué) → ouvre le modal sur l'étape 1.
 function scrollToForm(source) {
+  trackEvent('form_open', { source: source || 'unknown' });
   var card = document.getElementById('leadForm');
-  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (!card || card.offsetParent === null) { openModalStep1(); return; }
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
   var first = document.getElementById('s1_prenom');
   if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 450);
-  trackEvent('form_open', { source: source || 'unknown' });
+}
+
+// Ouvre le modal sur l'étape 1 (parcours mobile)
+function openModalStep1() {
+  _entry = 'modal';
+  document.getElementById('step1View').style.display = 'block';
+  document.getElementById('step2View').style.display = 'none';
+  document.getElementById('successView').classList.remove('active');
+  document.getElementById('modal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  document.querySelector('.modal-box').scrollTop = 0;
 }
 
 // Ouvre le modal sur l'étape 2 (dossier sinistre)
 function openStep2() {
+  document.getElementById('step1View').style.display = 'none';
   document.getElementById('step2View').style.display = 'block';
   document.getElementById('successView').classList.remove('active');
   document.getElementById('modal').classList.add('active');
@@ -698,22 +767,25 @@ function closeForm() {
 }
 
 function resetAll() {
-  document.getElementById('step1Form').reset();
+  var f1 = document.getElementById('step1Form');      if (f1) f1.reset();
+  var fm = document.getElementById('modalStep1Form');  if (fm) fm.reset();
   document.getElementById('step2Form').reset();
   document.getElementById('photoPreview').innerHTML = '';
+  document.getElementById('step1View').style.display = 'none';
   document.getElementById('step2View').style.display = 'block';
   document.getElementById('successView').classList.remove('active');
   _notionPageId = null;
   _leadStep1    = {};
 }
 
+// Étape 1 → étape 2 (commun au formulaire inline desktop et au formulaire du modal mobile)
 function goStep2(e) {
   e.preventDefault();
-  var form = document.getElementById('step1Form');
+  var form = e.target;
   if (!form.checkValidity()) { form.reportValidity(); return; }
 
   // Validation tel FR basique
-  var telEl = document.getElementById('s1_tel');
+  var telEl = form.elements['tel'];
   var tel   = telEl.value.replace(/[\s\-\.]/g, '');
   if (!/^(\+33|0033|0)[1-9][0-9]{8}$/.test(tel)) {
     telEl.setCustomValidity('Numéro invalide (ex : 06 12 34 56 78)');
@@ -722,13 +794,13 @@ function goStep2(e) {
     return;
   }
 
+  _entry = (form.id === 'modalStep1Form') ? 'modal' : 'inline';
   _leadStep1 = {
-    prenom: document.getElementById('s1_prenom').value.trim(),
-    nom:    document.getElementById('s1_nom').value.trim(),
-    email:  document.getElementById('s1_email').value.trim(),
+    prenom: form.elements['prenom'].value.trim(),
+    email:  form.elements['email'].value.trim(),
     tel:    tel,
-    cp:     document.getElementById('s1_cp').value.trim(),
-    ville:  document.getElementById('s1_ville').value.trim(),
+    cp:     form.elements['cp'].value.trim(),
+    ville:  form.elements['ville'].value,
   };
 
   // Envoi immédiat à Notion (statut Incomplet)
@@ -746,12 +818,43 @@ function goStep2(e) {
   openStep2();
 }
 
+// Peuple le menu déroulant Ville à partir du code postal (API Découpage administratif)
+function lookupVille(cpInput) {
+  var form = cpInput.form;
+  var sel  = form && form.elements['ville'];
+  if (!sel) return;
+  var cp = cpInput.value.trim();
+  if (!/^[0-9]{5}$/.test(cp)) {
+    sel.innerHTML = '<option value="">Choisir…</option>';
+    return;
+  }
+  fetch('https://geo.api.gouv.fr/communes?codePostal=' + cp + '&fields=nom&format=json')
+    .then(function (r) { return r.json(); })
+    .then(function (villes) {
+      sel.innerHTML = '<option value="">Choisir…</option>';
+      (villes || []).forEach(function (v) {
+        var o = document.createElement('option');
+        o.value = v.nom; o.textContent = v.nom;
+        sel.appendChild(o);
+      });
+      if (villes && villes.length === 1) sel.value = villes[0].nom;
+    })
+    .catch(function () {});
+}
+
 function goBack() {
-  // Ferme le modal et ramène au formulaire étape 1 (inline sur la page)
-  document.getElementById('modal').classList.remove('active');
-  document.body.style.overflow = '';
-  var card = document.getElementById('leadForm');
-  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (_entry === 'modal') {
+    // Parcours mobile : retour à l'étape 1 dans le modal
+    document.getElementById('step2View').style.display = 'none';
+    document.getElementById('step1View').style.display = 'block';
+    document.querySelector('.modal-box').scrollTop = 0;
+  } else {
+    // Parcours desktop : on referme et on revient au formulaire inline
+    document.getElementById('modal').classList.remove('active');
+    document.body.style.overflow = '';
+    var card = document.getElementById('leadForm');
+    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 }
 
 function submitFinalForm(e) {
@@ -767,6 +870,7 @@ function submitFinalForm(e) {
   // Données étape 1
   Object.keys(_leadStep1).forEach(function (k) { payload.append(k, _leadStep1[k]); });
   // Données étape 2
+  payload.append('nom',           document.getElementById('s2_nom').value.trim());
   payload.append('marque_modele', document.getElementById('s2_marque').value.trim());
   payload.append('adresse',       document.getElementById('s2_adresse').value.trim());
   payload.append('responsable',   document.getElementById('s2_responsable').value);
