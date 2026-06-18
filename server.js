@@ -110,6 +110,10 @@ function buildNotionProperties(lead, folderUrl, isPartial) {
   if (lead.adresse) {
     props['Adresse'] = { rich_text: [{ text: { content: lead.adresse } }] };
   }
+  if (lead.franchise !== undefined && lead.franchise !== null && String(lead.franchise).trim() !== '') {
+    const fr = parseFloat(String(lead.franchise).replace(',', '.'));
+    if (!isNaN(fr)) props['Franchise'] = { number: fr };
+  }
   if (folderUrl) {
     props['Photos'] = { url: folderUrl };
   }
@@ -152,6 +156,7 @@ async function sendToMake(lead, folderUrl) {
       adresse:     lead.adresse     || '',
       marque:      lead.marque_modele || lead.marque || '',
       resp:        lead.resp || lead.responsable || '',
+      franchise:   lead.franchise   || '',
       description: lead.description || lead.degats || '',
       photos_url:  folderUrl        || '',
     }),
