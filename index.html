@@ -242,6 +242,9 @@ section { padding: 80px 0; }
 /* CP + Ville : toujours côte à côte, y compris sur mobile */
 .fg-row--cpville { grid-template-columns: 1fr 1.5fr; }
 @media (max-width: 480px) { .fg-row--cpville { grid-template-columns: 1fr 1.5fr; } }
+/* Reste à 2 colonnes même sur mobile (ex. Prénom + Téléphone) */
+.fg-row--keep { grid-template-columns: 1fr 1fr; }
+@media (max-width: 480px) { .fg-row--keep { grid-template-columns: 1fr 1fr; } }
 
 /* Badge optionnel */
 .opt-badge {
@@ -363,7 +366,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
       <p class="form-card-sub">Réponse en 48h, service sans engagement.</p>
       <p class="form-intro">Vos coordonnées nous permettent de vous recontacter et de vous orienter vers un carrossier partenaire proche de chez vous.</p>
       <form id="step1Form" onsubmit="goStep2(event)" novalidate>
-        <div class="fg-row">
+        <div class="fg-row fg-row--keep">
           <div class="fg">
             <label for="s1_prenom">Prénom *</label>
             <input type="text" id="s1_prenom" name="prenom" required autocomplete="given-name" placeholder="Marie">
@@ -604,7 +607,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
       <div class="form-progress"><div class="form-progress-fill" style="width:50%"></div></div>
 
       <form id="modalStep1Form" onsubmit="goStep2(event)" novalidate>
-        <div class="fg-row">
+        <div class="fg-row fg-row--keep">
           <div class="fg">
             <label for="m_prenom">Prénom *</label>
             <input type="text" id="m_prenom" name="prenom" required autocomplete="given-name" placeholder="Marie">
