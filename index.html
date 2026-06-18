@@ -562,7 +562,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
         <h3 id="mTitle">Trouver mon carrossier</h3>
         <button class="modal-x" onclick="closeForm()" aria-label="Fermer">×</button>
       </div>
-      <p style="font-size:14px;color:var(--ink-soft,#4A5568);margin-bottom:4px;">Réponse sous 48h · Service 100% gratuit</p>
+      <p style="font-size:14px;color:var(--ink-soft,#4A5568);margin-bottom:4px;">Réponse sous 48h, sans engagement.</p>
 
       <div class="form-progress"><div class="form-progress-fill" style="width:50%"></div></div>
 
@@ -597,9 +597,9 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
         </div>
 
         <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px;font-size:16px;">
-          Continuer — votre sinistre →
+          Continuer
         </button>
-        <p class="disclaimer">Vos données sont protégées — <a href="/rgpd.html">politique RGPD</a></p>
+        <p class="disclaimer">En envoyant ce formulaire, vous acceptez d'être recontacté par un carrossier de notre réseau. Vos données sont protégées — voir notre <a href="/rgpd.html">politique RGPD</a>.</p>
       </form>
     </div>
 
@@ -608,15 +608,15 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
       <button class="btn-back" onclick="goBack()">← Retour</button>
 
       <div class="modal-head">
-        <h3>Votre sinistre</h3>
+        <h3>Trouver mon carrossier</h3>
         <button class="modal-x" onclick="closeForm()" aria-label="Fermer">×</button>
       </div>
-      <p style="font-size:14px;color:var(--ink-soft,#4A5568);margin-bottom:4px;">Réponse sous 48h · Service 100% gratuit</p>
+      <p style="font-size:14px;color:var(--ink-soft,#4A5568);margin-bottom:4px;">Réponse sous 24h, sans engagement.</p>
 
       <div class="form-progress"><div class="form-progress-fill" style="width:100%"></div></div>
 
       <div class="step2-intro">
-        <p>C'est arrivé comment ? <strong>Un mot sur les dégâts</strong> — et votre carrossier sait exactement quoi faire. Ça prend 30 secondes.</p>
+        <p>Décrivez rapidement ce qu'il s'est passé et les dégâts constatés. <strong>30 secondes suffisent</strong> pour permettre à votre carrossier de préparer votre prise en charge.</p>
       </div>
 
       <form id="step2Form" onsubmit="submitFinalForm(event)" novalidate>
@@ -626,10 +626,10 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
         </div>
         <div class="fg">
           <label for="s2_adresse">
-            Adresse complète
+            Votre adresse
             <span class="opt-badge">Optionnel</span>
           </label>
-          <input type="text" id="s2_adresse" name="adresse" autocomplete="street-address" placeholder="Votre carrossier peut se déplacer pour évaluer les dégâts">
+          <input type="text" id="s2_adresse" name="adresse" autocomplete="street-address" placeholder="Juste la rue et le numéro, le reste on l'a déjà 😉">
         </div>
         <div class="fg">
           <label for="s2_responsable">
@@ -665,7 +665,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
         </div>
 
         <button type="submit" class="btn btn-primary btn-full" id="submitBtn" style="font-size:16px;">
-          Envoyer ma demande — devis sous 48h →
+          Envoyer ma demande
         </button>
         <p class="disclaimer">En envoyant ce formulaire, vous acceptez d'être recontacté par un carrossier de notre réseau. Vos données sont protégées — <a href="/rgpd.html">politique RGPD</a>.</p>
       </form>
@@ -796,7 +796,7 @@ function submitFinalForm(e) {
     .catch(function () {})
     .finally(function () {
       btn.disabled    = false;
-      btn.textContent = 'Envoyer ma demande — devis sous 48h →';
+      btn.textContent = 'Envoyer ma demande';
       document.getElementById('step2View').style.display = 'none';
       document.getElementById('successView').classList.add('active');
       document.querySelector('.modal-box').scrollTop = 0;
