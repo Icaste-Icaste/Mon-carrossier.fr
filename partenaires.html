@@ -197,6 +197,14 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+<!-- Google Ads tag -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18255900873"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18255900873');
+</script>
 </head>
 <body>
 
@@ -435,7 +443,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
     <h2>Parlons-en. <em>Entre carrossiers.</em></h2>
     <p>20 minutes au téléphone avec Pierre. Sans engagement, sans pression. Vous verrez si ça vous parle.</p>
     <button class="btn btn-primary" style="font-size:18px;padding:19px 38px;" onclick="openForm('cta_final')">Être rappelé par Pierre →</button>
-    <p style="margin-top:20px;font-size:15px;color:rgba(255,255,255,0.85);">Ou appelez directement : <a href="tel:0762337265" style="color:rgba(255,255,255,0.85);text-decoration:none;font-weight:600;">07 62 33 72 65</a></p>
+    <p style="margin-top:20px;font-size:15px;color:rgba(255,255,255,0.85);">Ou appelez directement : <a href="tel:0762337265" style="color:rgba(255,255,255,0.85);text-decoration:none;font-weight:600;" onclick="if(typeof gtag==='function')gtag('event','conversion',{send_to:'AW-18255900873'})">07 62 33 72 65</a></p>
   </div>
 </section>
 
@@ -563,6 +571,7 @@ function submitForm(e) {
 
   trackEvent('partner_form_submit', { form_type: 'partenaire', ville: data.ville, taille: data.taille, vehicule: data.vehicule });
   if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'Lead partenaire', content_category: 'recrutement_carrossier' });
+  if (typeof gtag === 'function') gtag('event', 'conversion', { send_to: 'AW-18255900873' });
 
   fetch(MAKE_WEBHOOK_URL, {
     method: 'POST',
