@@ -4,16 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0866FF">
-
-<title>Carrossier indépendant — Devis 48h, franchise prise en charge | mon-carrossier.fr</title>
-<meta name="description" content="Vous avez un sinistre ? Choisissez librement votre carrossier. Devis sous 48h, franchise prise en charge ou cadeau jusqu'à 500€, véhicule de prêt inclus. Service 100% gratuit.">
-
-<meta property="og:title" content="Vous avez un sinistre. Vous avez aussi des droits.">
-<meta property="og:description" content="Choisissez votre carrossier, on prend en charge votre franchise. Jusqu'à 500€ de cadeau. Service 100% gratuit.">
+<title>Carrosserie sans franchise — Garage qui prend en charge la franchise | mon-carrossier.fr</title>
+<meta name="description" content="Trouvez un garage sans franchise près de chez vous. Carrossier certifié, franchise prise en charge jusqu'à 500€, véhicule de prêt inclus, zéro avance de frais. Service 100% gratuit.">
+<meta property="og:title" content="Le garage qui prend en charge votre franchise — jusqu'à 500€">
+<meta property="og:description" content="Carrosserie sans franchise, zéro avance de frais, véhicule de prêt inclus. Carrossier certifié près de chez vous. 100% gratuit.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
-<meta property="og:url" content="https://mon-carrossier.fr">
-
 <link rel="canonical" href="https://mon-carrossier.fr">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
@@ -22,294 +18,626 @@
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "mon-carrossier.fr",
-  "description": "Plateforme indépendante de mise en relation avec les meilleurs carrossiers du Var. Devis 48h, franchise prise en charge, véhicule de prêt.",
+  "description": "Plateforme de mise en relation entre automobilistes sinistrés et carrossiers indépendants. Franchise prise en charge, zéro avance de frais.",
+  "url": "https://mon-carrossier.fr",
+  "telephone": "0762337265",
   "areaServed": [
     {"@type": "City", "name": "Saint-Maximin-la-Sainte-Baume"},
     {"@type": "City", "name": "Brignoles"},
-    {"@type": "City", "name": "Trets"},
-    {"@type": "City", "name": "Aubagne"}
+    {"@type": "City", "name": "Toulon"},
+    {"@type": "City", "name": "Draguignan"},
+    {"@type": "AdministrativeArea", "name": "Var"}
   ],
-  "url": "https://mon-carrossier.fr",
-  "priceRange": "Gratuit"
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Mise en relation carrossier sinistre",
+    "itemListElement": [
+      {"@type": "Offer", "name": "Franchise prise en charge", "price": "0", "priceCurrency": "EUR"},
+      {"@type": "Offer", "name": "Carte cadeau non-responsable", "description": "Jusqu'à 500€"}
+    ]
+  }
 }
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,700;9..144,1,400;9..144,1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-.hero { padding: 56px 0 72px; position: relative; overflow: hidden; }
-.hero::before { content: ''; position: absolute; top: -200px; right: -150px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(8,102,255,0.10), transparent 65%); pointer-events: none; }
+:root {
+  --blue: #0866FF;
+  --blue-dark: #0550D0;
+  --blue-deep: #0A1A33;
+  --blue-pale: #EBF2FF;
+  --blue-mid: #D0E2FF;
+  --amber: #F5A623;
+  --amber-bg: #FFF8EC;
+  --white: #FFFFFF;
+  --ink: #0A1A33;
+  --ink-soft: #4A5A72;
+  --ink-faint: #8A96A8;
+  --border: #E2E8F0;
+  --surface: #F7F9FC;
+  --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-xl: 24px; --r-2xl: 32px;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Manrope', system-ui, sans-serif;
+  --shadow-sm: 0 2px 8px rgba(8,102,255,0.08);
+  --shadow-md: 0 8px 30px rgba(8,102,255,0.12);
+  --shadow-lg: 0 20px 60px rgba(8,102,255,0.16);
+  --max: 1080px;
+}
 
-/* ── Orbes flottants ─────────────────────────────────────────────────── */
-.orb { position: absolute; border-radius: 50%; pointer-events: none; will-change: transform; }
-.orb-1 { width: 420px; height: 420px; top: -120px; left: -100px; background: radial-gradient(circle, rgba(8,102,255,0.09), transparent 70%); animation: orbFloat1 18s ease-in-out infinite; }
-.orb-2 { width: 300px; height: 300px; bottom: -80px; right: 10%; background: radial-gradient(circle, rgba(8,102,255,0.07), transparent 70%); animation: orbFloat2 22s ease-in-out infinite; }
-.orb-3 { width: 200px; height: 200px; top: 40%; left: 45%; background: radial-gradient(circle, rgba(245,158,11,0.06), transparent 70%); animation: orbFloat3 14s ease-in-out infinite; }
-@keyframes orbFloat1 {
-  0%,100% { transform: translate(0,0) scale(1); }
-  30%  { transform: translate(40px,-30px) scale(1.06); }
-  70%  { transform: translate(-25px,20px) scale(0.95); }
-}
-@keyframes orbFloat2 {
-  0%,100% { transform: translate(0,0) scale(1); }
-  50%  { transform: translate(-50px,-35px) scale(1.10); }
-}
-@keyframes orbFloat3 {
-  0%,100% { transform: translate(0,0) scale(1); }
-  40%  { transform: translate(30px,-40px) scale(0.90); }
-  80%  { transform: translate(-20px,25px) scale(1.05); }
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { font-family: var(--body); font-size: 16px; line-height: 1.65; color: var(--ink); background: var(--white); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.08; letter-spacing: -0.02em; }
+.wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+img { display: block; max-width: 100%; }
 
-/* ── Fade-in stagger contenu hero ────────────────────────────────────── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(22px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 0 24px;
+  background: #ffffff;
+  border-bottom: 1.5px solid var(--border);
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 1px 12px rgba(10,26,51,0.06);
 }
-.hero-anim { animation: fadeUp 0.65s cubic-bezier(.22,.68,0,1.2) both; }
-.hero-anim-1 { animation-delay: 0.05s; }
-.hero-anim-2 { animation-delay: 0.18s; }
-.hero-anim-3 { animation-delay: 0.30s; }
-.hero-anim-4 { animation-delay: 0.42s; }
-.hero-anim-5 { animation-delay: 0.54s; }
+.nav-logo { font-family: var(--display); font-size: 20px; font-weight: 700; color: var(--blue-deep); }
+.nav-logo span { color: var(--blue); }
+.nav-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--blue); color: #fff;
+  font-family: var(--body); font-size: 14px; font-weight: 600;
+  padding: 10px 20px; border-radius: var(--r-md);
+  border: none; cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+.nav-cta:hover { background: var(--blue-dark); transform: translateY(-1px); }
+.nav-tel { font-size: 14px; font-weight: 600; color: var(--ink-soft); margin-right: 14px; }
+@media (max-width: 480px) { .nav-tel { display: none; } }
 
-/* ── Float doux sur la carte ─────────────────────────────────────────── */
-@keyframes cardFloat {
-  0%,100% { transform: translateY(0); }
-  50%     { transform: translateY(-10px); }
+/* HERO — fond blanc */
+.hero {
+  min-height: 100vh;
+  padding-top: 64px;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
 }
-.hero-card { animation: cardFloat 6s ease-in-out infinite; }
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(8,102,255,0.05) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  padding: 60px 24px 0;
+  max-width: var(--max);
+  margin: 0 auto;
+  width: 100%;
+}
+@media (min-width: 860px) {
+  .hero-inner {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 64px;
+    padding: 80px 24px 0;
+  }
+}
+.hero-left { padding-bottom: 48px; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--blue);
+  background: var(--blue-pale);
+  padding: 6px 14px; border-radius: 100px;
+  margin-bottom: 28px;
+}
+.hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--blue); border-radius: 50%; }
+.hero h1 {
+  font-size: clamp(38px, 6.5vw, 64px);
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 10px;
+  max-width: 580px;
+}
+.hero h1 em {
+  font-style: italic;
+  color: var(--blue);
+  font-weight: 600;
+}
+/* Sous-titre sur fond blanc */
+.hero-question {
+  font-family: var(--body);
+  font-size: clamp(15px, 1.8vw, 17px);
+  font-weight: 400;
+  font-style: normal;
+  color: var(--ink-soft);
+  margin-bottom: 32px;
+  max-width: 460px;
+  line-height: 1.65;
+}
+/* Bénéfices sur fond blanc */
+.hero-benefits {
+  display: flex; flex-direction: column; gap: 12px;
+  margin-bottom: 36px;
+}
+.hero-benefit {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 15px; font-weight: 500; color: var(--ink);
+}
+.hero-benefit .dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--blue-pale);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 13px;
+}
+.hero-benefit .dot.amber { background: var(--amber-bg); color: var(--amber); }
+.hero-tel {
+  font-size: 14px; color: var(--ink-faint);
+  margin-top: 18px;
+}
+.hero-tel a { color: var(--blue); font-weight: 600; }
 
-/* ── Respect prefers-reduced-motion ──────────────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  .orb, .hero-anim, .hero-card { animation: none !important; }
+/* Carte formulaire flottante */
+.form-card {
+  background: #fff;
+  border-radius: var(--r-2xl);
+  padding: 36px 32px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
 }
-.hero-grid { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; position: relative; }
-@media (min-width: 860px) { .hero-grid { grid-template-columns: 1.05fr 0.95fr; gap: 60px; } .hero { padding: 80px 0 100px; } }
-@media (max-width: 560px) { .hero { padding: 36px 0 56px; } }
-.badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: var(--blue-bg); color: var(--blue); font-size: 13px; font-weight: 600; border-radius: 100px; margin-bottom: 24px; }
-.badge::before { content: ''; width: 8px; height: 8px; background: var(--blue); border-radius: 50%; animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-.hero h1 { font-size: clamp(38px, 7.5vw, 58px); color: var(--ink-deep); margin-bottom: 22px; font-weight: 600; }
-.hero h1 em { font-style: italic; color: var(--blue); font-weight: 500; }
-.hero-sub { font-size: 17px; color: var(--ink-soft); margin-bottom: 32px; max-width: 520px; line-height: 1.6; }
-.hero-ctas { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
-@media (min-width: 480px) { .hero-ctas { flex-direction: row; } }
-.hero-trust { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--ink-soft); flex-wrap: wrap; }
-.hero-trust .stars { color: var(--amber); letter-spacing: 1px; }
-.dot { width: 4px; height: 4px; background: var(--ink-faint); border-radius: 50%; }
-.hero-card { background: var(--bg-card); border-radius: var(--r-xl); padding: 30px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-light); position: relative; }
-.hero-card-tag { font-size: 12px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
-.form-card { animation: none; }
-.form-card .hero-card-tag { margin-bottom: 10px; }
-.form-card-title { font-family: var(--display); font-size: 22px; font-weight: 600; color: var(--ink-deep); line-height: 1.15; }
-.form-card-sub { font-size: 14px; font-weight: 700; color: var(--ink-soft); margin: 4px 0 12px; }
-.form-intro { font-size: 13px; color: var(--ink-soft); line-height: 1.5; margin: 0 0 18px; }
-/* Mobile : on masque le formulaire inline du hero et on affiche un bouton qui ouvre le modal */
-.hero-mobile-cta { display: none; }
 @media (max-width: 859px) {
-  .form-card { display: none; }
-  .hero-mobile-cta { display: inline-flex; }
+  .form-card {
+    margin: 0 -4px;
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    padding: 28px 24px 36px;
+  }
 }
-.step-row { display: flex; align-items: center; gap: 14px; padding: 15px 0; border-bottom: 1px solid var(--border-light); }
-.step-row:last-child { border-bottom: none; }
-.step-num { width: 38px; height: 38px; flex-shrink: 0; background: var(--blue-dark); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 600; }
-.step-row .lbl { font-size: 12px; color: var(--ink-faint); }
-.step-row .val { font-size: 15px; font-weight: 600; color: var(--ink); }
-section { padding: 80px 0; }
-@media (max-width: 560px) { section { padding: 56px 0; } }
-.eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 16px; }
-.eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--blue); }
-.center { text-align: center; }
-.center .eyebrow { justify-content: center; }
-.sec-title { font-size: clamp(28px, 5vw, 42px); color: var(--ink-deep); margin-bottom: 18px; font-weight: 600; }
-.sec-sub { font-size: 17px; color: var(--ink-soft); max-width: 600px; margin: 0 auto 56px; line-height: 1.55; }
-.rights { background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-deep) 100%); color: #F1F5F9; position: relative; overflow: hidden; }
-.rights::before { content: '§'; position: absolute; font-family: var(--display); font-size: 400px; color: rgba(252,211,77,0.06); top: -80px; right: -40px; line-height: 1; pointer-events: none; }
-.rights .eyebrow { color: #FCD34D; }
-.rights .eyebrow::before { background: #FCD34D; }
-.rights-inner { max-width: 760px; position: relative; }
-.rights h2 { font-size: clamp(28px, 5vw, 44px); color: #fff; margin-bottom: 28px; }
-.rights h2 em { font-style: italic; color: #FCD34D; font-weight: 500; }
-.rights p { font-size: 17px; color: rgba(241,245,249,0.80); margin-bottom: 18px; line-height: 1.65; }
-.rights p strong { color: #fff; font-weight: 600; }
-.rights .law { display: inline-block; margin-top: 8px; padding: 8px 16px; background: rgba(245,158,11,0.18); border: 1px solid rgba(245,158,11,0.30); border-radius: 8px; font-size: 13px; color: #FCD34D; font-weight: 600; letter-spacing: 0.05em; }
-.offer-grid { display: grid; grid-template-columns: 1fr; gap: 22px; }
-@media (min-width: 760px) { .offer-grid { grid-template-columns: 1fr 1fr; } }
-.offer-card { background: var(--bg-card); border-radius: var(--r-lg); padding: 36px 30px; border: 1px solid var(--border-light); position: relative; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
-.offer-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-.offer-card.warm { background: var(--warm-bg); border-color: #FED7AA; }
-.offer-icon { font-size: 36px; margin-bottom: 16px; }
-.offer-card h3 { font-size: 22px; color: var(--ink-deep); margin-bottom: 8px; }
-.offer-amount { font-family: var(--display); font-size: 28px; font-weight: 600; color: var(--blue); margin: 12px 0; letter-spacing: -0.02em; }
-.offer-card.warm .offer-amount { color: var(--amber-deep); }
-.offer-card p { font-size: 15px; color: var(--ink-soft); line-height: 1.55; }
-.offer-link { display: inline-block; margin-top: 16px; font-size: 14px; font-weight: 600; color: var(--ink); border-bottom: 1.5px solid var(--blue); padding-bottom: 2px; }
-.offer-note { text-align: center; font-size: 13px; color: var(--ink-faint); margin-top: 22px; }
-.compare-table { background: var(--bg-card); border-radius: var(--r-lg); border: 1px solid var(--border-light); overflow: hidden; box-shadow: var(--shadow); }
-.compare-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr; border-bottom: 1px solid var(--border-light); }
-.compare-row:last-child { border-bottom: none; }
-.compare-row > div { padding: 16px 14px; font-size: 14px; }
-.compare-row.head > div { font-weight: 700; font-size: 13px; background: var(--bg-soft); }
-.compare-row.head .col-us { background: var(--blue-dark); color: #fff; }
-.compare-row .crit { color: var(--ink-soft); font-weight: 500; }
-.compare-row .col-them { color: var(--ink-faint); text-align: center; }
-.compare-row .col-us { color: var(--blue); font-weight: 600; text-align: center; background: var(--blue-bg); }
-@media (max-width: 560px) { .compare-row > div { padding: 12px 8px; font-size: 12px; } }
-.steps { display: grid; grid-template-columns: 1fr; gap: 22px; }
-@media (min-width: 760px) { .steps { grid-template-columns: repeat(3, 1fr); gap: 28px; } }
-.step-card { background: var(--bg-card); border-radius: var(--r-lg); padding: 32px 26px; border: 1px solid var(--border-light); transition: transform 0.2s, box-shadow 0.2s; }
-.step-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-.step-card .n { font-family: var(--display); font-size: 16px; font-weight: 700; color: var(--blue); background: var(--blue-bg); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
-.step-card h3 { font-size: 20px; color: var(--ink-deep); margin-bottom: 10px; }
-.step-card p { font-size: 15px; color: var(--ink-soft); line-height: 1.55; }
-.step-card .time { display: inline-flex; align-items: center; gap: 5px; margin-top: 16px; padding: 5px 12px; background: var(--bg-soft); border-radius: 100px; font-size: 12px; font-weight: 600; color: var(--ink-faint); }
-.expert { background: var(--bg-card); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
-.expert-inner { display: grid; grid-template-columns: 1fr; gap: 30px; align-items: center; }
-@media (min-width: 860px) { .expert-inner { grid-template-columns: 0.85fr 1.15fr; gap: 56px; } }
-.expert-visual { background: linear-gradient(160deg, var(--blue-dark) 0%, var(--blue-deep) 100%); border-radius: var(--r-lg); padding: 40px 30px; text-align: center; color: #fff; position: relative; overflow: hidden; }
-.expert-visual::before { content: ''; position: absolute; top: -40px; right: -40px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(252,211,77,0.20), transparent 65%); pointer-events: none; }
-.expert-visual .big { font-family: var(--display); font-size: 52px; font-weight: 600; color: #FCD34D; line-height: 1; margin-bottom: 12px; position: relative; letter-spacing: -0.02em; }
-.expert .expert-visual p { font-size: 16px; color: #fff; margin-bottom: 0; position: relative; line-height: 1.6; }
-.expert h2 { font-size: clamp(26px, 4.5vw, 38px); color: var(--ink-deep); margin-bottom: 18px; }
-.expert h2 em { font-style: italic; color: var(--blue); font-weight: 500; }
-.expert p { font-size: 16px; color: var(--ink-soft); margin-bottom: 16px; line-height: 1.6; }
-.expert p strong { color: var(--ink); font-weight: 600; }
-.guarantees { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-@media (min-width: 760px) { .guarantees { grid-template-columns: repeat(4, 1fr); gap: 24px; } }
-.guarantee { padding: 8px; }
-.guarantee .ic { width: 48px; height: 48px; background: var(--blue-bg); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--blue); font-size: 24px; font-weight: 700; margin-bottom: 14px; }
-.guarantee h3 { font-family: var(--body); font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
-.guarantee p { font-size: 14px; color: var(--ink-soft); line-height: 1.5; }
-.testimonial { background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-deep) 100%); color: #fff; position: relative; overflow: hidden; }
-.testimonial::before { content: ''; position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(252,211,77,0.10), transparent 65%); pointer-events: none; }
-.test-inner { max-width: 760px; margin: 0 auto; text-align: center; position: relative; }
-.test-q { font-family: var(--display); font-size: 80px; color: #FCD34D; line-height: 0.4; margin-bottom: 30px; }
-.test-inner blockquote { font-family: var(--display); font-size: clamp(22px, 3.5vw, 30px); font-weight: 500; line-height: 1.35; margin-bottom: 28px; color: #fff; }
-.test-author { display: flex; align-items: center; justify-content: center; gap: 13px; }
-.test-avatar { width: 46px; height: 46px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
-.test-name { font-weight: 600; }
-.test-loc { color: rgba(255,255,255,0.65); font-size: 14px; }
-.faq-list { max-width: 780px; margin: 0 auto; display: grid; gap: 12px; }
-.faq-item { background: var(--bg-card); border-radius: var(--r-md); border: 1px solid var(--border-light); overflow: hidden; transition: border-color 0.2s; }
-.faq-item[open] { border-color: var(--blue); }
-.faq-item summary { padding: 20px 24px; cursor: pointer; font-weight: 600; font-size: 16px; color: var(--ink-deep); list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-.faq-item summary::-webkit-details-marker { display: none; }
-.faq-item summary::after { content: '+'; font-family: var(--display); font-size: 26px; color: var(--blue); flex-shrink: 0; transition: transform 0.2s; }
-.faq-item[open] summary::after { transform: rotate(45deg); }
-.faq-a { padding: 0 24px 22px; color: var(--ink-soft); font-size: 15px; line-height: 1.6; }
-@media (max-width: 560px) { .faq-item summary { padding: 16px 18px; font-size: 15px; } .faq-a { padding: 0 18px 18px; font-size: 14px; } }
-.cta-final { background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-deep) 100%); position: relative; overflow: hidden; }
-.cta-final::before { content: ''; position: absolute; top: -50%; left: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(245,158,11,0.18), transparent 70%); }
-.cta-inner { text-align: center; position: relative; }
-.cta-final h2 { font-size: clamp(30px, 5.5vw, 46px); color: #fff; margin-bottom: 16px; }
-.cta-final h2 em { font-style: italic; color: #FCD34D; font-weight: 500; }
-.cta-final p { font-size: 18px; color: rgba(255,255,255,0.75); margin-bottom: 32px; }
-</style>
-
-<!-- ═══════════════════════════ STYLES MODAL ═══════════════════════════ -->
-<style id="MODAL-STYLES">
-
-.modal { display: none; position: fixed; inset: 0; background: rgba(10,26,51,0.82); z-index: 1000; align-items: flex-end; justify-content: center; backdrop-filter: blur(4px); }
-.modal.active { display: flex; }
-@media (min-width: 760px) { .modal { align-items: center; } }
-.modal-box { background: var(--cream, #FBFAF6); border-radius: var(--r-xl,28px) var(--r-xl,28px) 0 0; width: 100%; max-width: 520px; max-height: 92vh; overflow-y: auto; padding: 32px 26px; animation: slideUp 0.3s ease; }
-@media (min-width: 760px) { .modal-box { border-radius: var(--r-xl,28px); } }
-@keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-.modal-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-.modal-head h3 { font-family: var(--display,'Fraunces',Georgia,serif); font-size: 24px; font-weight: 600; color: var(--blue-deep,#0A1A33); line-height: 1.15; }
-.modal-x { background: none; border: none; font-size: 30px; color: var(--ink-faint,#8A96A3); cursor: pointer; line-height: 1; padding: 0; }
-
-/* Champs — identiques à l'existant */
-.fg { margin-bottom: 16px; }
-.fg label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; color: var(--ink,#0A1A33); }
-.fg input, .fg select, .fg textarea {
-  width: 100%; padding: 14px 16px;
-  border: 1.5px solid var(--border,#E4E6EB);
-  border-radius: var(--r-md,14px);
-  font-family: var(--body,'Manrope',system-ui,sans-serif);
-  font-size: 16px; background: #fff;
-  transition: border-color 0.15s; color: var(--ink,#0A1A33);
+.form-title {
+  font-family: var(--display);
+  font-size: 20px; font-weight: 600;
+  color: var(--ink); margin-bottom: 4px;
 }
-.fg input:focus, .fg select:focus, .fg textarea:focus {
-  outline: none; border-color: var(--blue,#0866FF);
-}
-.fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-@media (max-width: 480px) { .fg-row { grid-template-columns: 1fr; } }
-/* CP + Ville : toujours côte à côte, y compris sur mobile */
-.fg-row--cpville { grid-template-columns: 1fr 1.5fr; }
-@media (max-width: 480px) { .fg-row--cpville { grid-template-columns: 1fr 1.5fr; } }
-/* Reste à 2 colonnes même sur mobile (ex. Prénom + Téléphone) */
-.fg-row--keep { grid-template-columns: 1fr 1fr; }
-@media (max-width: 480px) { .fg-row--keep { grid-template-columns: 1fr 1fr; } }
+.form-sub { font-size: 13px; color: var(--ink-faint); margin-bottom: 24px; }
+.form-sub strong { color: var(--blue); font-weight: 600; }
 
-/* Badge optionnel */
-.opt-badge {
+.fg { margin-bottom: 14px; }
+.fg label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-soft); margin-bottom: 5px; }
+.fg input, .fg select {
+  width: 100%; padding: 13px 15px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  font-family: var(--body); font-size: 15px;
+  color: var(--ink); background: var(--white);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  appearance: none;
+}
+.fg input:focus, .fg select:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(8,102,255,0.1);
+}
+.fg input::placeholder { color: var(--ink-faint); }
+.fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+/* Badge "Optionnel" */
+.opt {
   display: inline-block; font-size: 10px; font-weight: 600;
-  color: var(--ink-faint,#8A96A3); background: #F0F2F5;
+  color: var(--ink-faint); background: var(--surface);
   padding: 2px 8px; border-radius: 100px; margin-left: 6px;
   text-transform: uppercase; letter-spacing: 0.04em; vertical-align: middle;
 }
-
-/* Disclaimer */
-.disclaimer { font-size: 12px; color: var(--ink-faint,#8A96A3); text-align: center; margin-top: 14px; line-height: 1.5; }
-.disclaimer a { color: var(--ink-soft,#4A5568); text-decoration: underline; }
-
-/* Barre de progression */
-.form-progress { height: 3px; background: var(--border,#E4E6EB); border-radius: 2px; margin: 12px 0 20px; overflow: hidden; }
-.form-progress-fill { height: 100%; background: var(--blue,#0866FF); border-radius: 2px; transition: width 0.4s ease; }
-
-/* Bouton retour */
-.btn-back {
-  background: none; border: none; font-size: 13px;
-  color: var(--ink-faint,#8A96A3); cursor: pointer;
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 0; font-family: var(--body,'Manrope',system-ui,sans-serif);
-  margin-bottom: 18px; transition: color 0.15s;
-}
-.btn-back:hover { color: var(--ink,#0A1A33); }
-
-/* Intro étape 2 */
-.step2-intro {
-  border-left: 3px solid var(--blue,#0866FF);
-  padding: 12px 16px; margin-bottom: 22px;
-  background: rgba(8,102,255,0.04);
-  border-radius: 0 var(--r-md,14px) var(--r-md,14px) 0;
-}
-.step2-intro p { font-size: 14px; color: var(--ink-soft,#4A5568); margin: 0; line-height: 1.6; }
-.step2-intro strong { color: var(--ink,#0A1A33); }
-
 /* Upload photos */
-.photo-upload-zone {
-  border: 2px dashed var(--border,#E4E6EB); border-radius: var(--r-md,14px);
-  padding: 20px 16px; text-align: center; cursor: pointer;
-  transition: border-color 0.2s, background 0.2s; background: #fff;
+.photo-zone {
+  border: 2px dashed var(--border); border-radius: var(--r-md);
+  padding: 18px 16px; text-align: center; cursor: pointer;
+  transition: border-color 0.15s, background 0.15s; background: var(--white);
 }
-.photo-upload-zone:hover { border-color: var(--blue,#0866FF); background: rgba(8,102,255,0.03); }
-.photo-upload-zone .pu-icon { font-size: 26px; margin-bottom: 6px; }
-.photo-upload-zone .pu-text { font-size: 14px; font-weight: 600; color: var(--ink,#0A1A33); margin-bottom: 3px; }
-.photo-upload-zone .pu-sub { font-size: 12px; color: var(--ink-faint,#8A96A3); }
+.photo-zone:hover { border-color: var(--blue); background: var(--blue-pale); }
+.photo-zone .pz-ic { font-size: 24px; margin-bottom: 4px; }
+.photo-zone .pz-tx { font-size: 13px; font-weight: 600; color: var(--ink); }
+.photo-zone .pz-sub { font-size: 12px; color: var(--ink-faint); }
 .photo-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.photo-thumb-wrap { position: relative; }
-.photo-thumb { width: 58px; height: 58px; border-radius: 10px; object-fit: cover; border: 1.5px solid var(--border,#E4E6EB); display: block; }
-.photo-remove {
-  position: absolute; top: -6px; right: -6px; width: 18px; height: 18px;
-  background: #E53935; color: #fff; border-radius: 50%; font-size: 11px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; border: none; line-height: 1; padding: 0;
+.photo-thumb { width: 54px; height: 54px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+.photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.btn-submit {
+  width: 100%; padding: 16px;
+  background: var(--blue); color: #fff;
+  font-family: var(--body); font-size: 16px; font-weight: 700;
+  border: none; border-radius: var(--r-md);
+  cursor: pointer; margin-top: 6px;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 16px rgba(8,102,255,0.35);
+}
+.btn-submit:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(8,102,255,0.4); }
+.btn-submit:disabled { opacity: 0.7; cursor: default; transform: none; }
+.form-legal { font-size: 11px; color: var(--ink-faint); text-align: center; margin-top: 12px; line-height: 1.5; }
+.form-legal a { color: var(--ink-soft); text-decoration: underline; }
+
+/* Badge "100% gratuit" sur la carte */
+.form-badge {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: var(--amber); color: var(--blue-deep);
+  font-size: 12px; font-weight: 700; padding: 5px 16px;
+  border-radius: 100px; white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(245,166,35,0.4);
+}
+@media (max-width: 859px) { .form-badge { display: none; } }
+
+/* Vague de séparation hero → suite */
+.hero-wave {
+  position: relative; z-index: 1;
+  width: 100%; overflow: hidden; line-height: 0;
+  margin-top: -2px;
+}
+@media (max-width: 859px) { .hero-wave { display: none; } }
+
+/* STATS BAND */
+.stats-band {
+  background: var(--blue-pale);
+  padding: 28px 0;
+  border-bottom: 1px solid var(--blue-mid);
+}
+.stats-inner {
+  display: flex; justify-content: center;
+  gap: 0; flex-wrap: wrap;
+}
+.stat {
+  flex: 1; min-width: 140px; max-width: 200px;
+  text-align: center; padding: 12px 20px;
+  position: relative;
+}
+.stat + .stat::before {
+  content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  height: 36px; width: 1px; background: var(--blue-mid);
+}
+.stat-val {
+  font-family: var(--display);
+  font-size: 28px; font-weight: 700;
+  color: var(--blue); line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-lbl { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+
+/* SECTION GÉNÉRIQUE */
+section { padding: 80px 0; }
+.eyebrow {
+  display: inline-block;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--blue);
+  background: var(--blue-pale); padding: 5px 12px;
+  border-radius: 100px; margin-bottom: 16px;
+}
+.sec-title {
+  font-size: clamp(26px, 4.5vw, 38px);
+  font-weight: 700; color: var(--ink);
+  margin-bottom: 16px;
+}
+.sec-title em { font-style: italic; color: var(--blue); }
+.sec-sub { font-size: 16px; color: var(--ink-soft); max-width: 560px; line-height: 1.65; }
+
+/* SECTION DROITS */
+.rights { background: var(--white); }
+.rights-grid {
+  display: grid; grid-template-columns: 1fr;
+  gap: 48px; align-items: center;
+}
+@media (min-width: 860px) {
+  .rights-grid { grid-template-columns: 1fr 1fr; gap: 80px; }
+}
+.rights-visual {
+  background: var(--blue-deep);
+  border-radius: var(--r-2xl);
+  padding: 40px 36px;
+  position: relative; overflow: hidden;
+}
+.rights-visual::after {
+  content: '';
+  position: absolute; bottom: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(8,102,255,0.3), transparent 70%);
+}
+.law-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--r-lg);
+  padding: 20px 22px;
+  margin-bottom: 14px;
+}
+.law-card:last-child { margin-bottom: 0; }
+.law-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--blue);
+  margin-bottom: 6px;
+}
+.law-text { font-size: 14px; color: rgba(255,255,255,0.8); line-height: 1.55; }
+.law-text strong { color: #fff; }
+.rights-text p { font-size: 16px; color: var(--ink-soft); margin-bottom: 16px; line-height: 1.65; }
+.rights-text p strong { color: var(--ink); font-weight: 600; }
+.rights-text p:last-child { margin-bottom: 0; }
+
+/* SECTION OFFRES — cartes cadeaux */
+.offers { background: var(--surface); }
+.offers-grid {
+  display: grid; grid-template-columns: 1fr;
+  gap: 20px; margin-top: 48px;
+}
+@media (min-width: 640px) { .offers-grid { grid-template-columns: 1fr 1fr; } }
+.offer-card {
+  background: var(--white);
+  border-radius: var(--r-xl);
+  padding: 36px 30px;
+  border: 1.5px solid var(--border);
+  position: relative; overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.offer-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.offer-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 4px;
+}
+.offer-card.responsible::before { background: var(--blue); }
+.offer-card.not-responsible::before { background: var(--amber); }
+.offer-type {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; margin-bottom: 12px;
+}
+.offer-card.responsible .offer-type { color: var(--blue); }
+.offer-card.not-responsible .offer-type { color: #B07800; }
+.offer-amount {
+  font-family: var(--display);
+  font-size: 48px; font-weight: 700; line-height: 1;
+  margin-bottom: 4px;
+}
+.offer-card.responsible .offer-amount { color: var(--blue); }
+.offer-card.not-responsible .offer-amount { color: var(--amber); }
+.offer-amount-sub { font-size: 14px; color: var(--ink-faint); margin-bottom: 20px; }
+.offer-desc { font-size: 15px; color: var(--ink-soft); line-height: 1.6; }
+.offer-desc strong { color: var(--ink); font-weight: 600; }
+.offer-scenario {
+  display: inline-block; margin-top: 16px;
+  font-size: 12px; font-weight: 600;
+  padding: 5px 12px; border-radius: 100px;
+}
+.offer-card.responsible .offer-scenario {
+  background: var(--blue-pale); color: var(--blue-dark);
+}
+.offer-card.not-responsible .offer-scenario {
+  background: var(--amber-bg); color: #8A5E00;
 }
 
-/* Succès */
-.success { display: none; text-align: center; padding: 40px 20px; }
-.success.active { display: block; }
-.success .ic { width: 66px; height: 66px; background: var(--blue,#0866FF); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 34px; color: #fff; }
-.success h3 { font-family: var(--display,'Fraunces',Georgia,serif); font-size: 24px; color: var(--blue-deep,#0A1A33); margin-bottom: 12px; }
-.success p { color: var(--ink-soft,#4A5568); }
+/* SECTION PROCESSUS */
+.process { background: var(--white); }
+.process-steps {
+  display: grid; grid-template-columns: 1fr;
+  gap: 0; margin-top: 48px; position: relative;
+}
+@media (min-width: 760px) {
+  .process-steps { grid-template-columns: repeat(3, 1fr); }
+}
+.process-step {
+  padding: 32px 28px 36px;
+  position: relative;
+  border: 1px solid var(--border);
+  margin: -1px 0 0 -1px;
+  background: var(--white);
+  transition: background 0.2s;
+}
+.process-step:hover { background: var(--blue-pale); }
+.process-num {
+  font-family: var(--display);
+  font-size: 48px; font-weight: 700;
+  color: var(--blue-mid); line-height: 1;
+  margin-bottom: 20px;
+}
+.process-step h3 { font-size: 19px; color: var(--ink); margin-bottom: 10px; }
+.process-step p { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
+.process-time {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12px; font-weight: 600; color: var(--blue);
+  margin-top: 14px;
+}
+.process-time::before { content: '⏱'; font-size: 13px; }
 
+/* SECTION GARANTIES */
+.guarantees { background: var(--blue-deep); }
+.guarantees-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 16px; margin-top: 48px;
+}
+@media (min-width: 640px) { .guarantees-grid { grid-template-columns: repeat(4, 1fr); } }
+.guarantee {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--r-lg);
+  padding: 28px 22px; text-align: center;
+  transition: background 0.2s;
+}
+.guarantee:hover { background: rgba(8,102,255,0.15); }
+.guarantee-icon { font-size: 28px; margin-bottom: 14px; }
+.guarantee h3 { font-family: var(--display); font-size: 16px; color: #fff; margin-bottom: 6px; font-weight: 600; }
+.guarantee p { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+
+/* TÉMOIGNAGE */
+.testimonial { background: var(--blue-pale); }
+.testimonial-inner {
+  max-width: 720px; margin: 0 auto; text-align: center;
+}
+.testimonial blockquote {
+  font-family: var(--display);
+  font-size: clamp(20px, 3.5vw, 28px);
+  font-style: italic;
+  color: var(--ink); font-weight: 400;
+  line-height: 1.4; margin-bottom: 24px;
+}
+.testimonial blockquote::before {
+  content: '\201C';
+  font-size: 60px; color: var(--blue);
+  display: block; line-height: 0.8;
+  margin-bottom: 12px; font-style: normal;
+}
+.testimonial-author {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+}
+.author-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--blue); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 16px; font-weight: 700;
+}
+.author-name { font-size: 15px; font-weight: 600; color: var(--ink); }
+.author-city { font-size: 13px; color: var(--ink-faint); }
+
+/* FAQ */
+.faq { background: var(--white); }
+.faq-list { max-width: 720px; margin: 48px auto 0; display: grid; gap: 10px; }
+.faq-item {
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-lg); overflow: hidden;
+  transition: border-color 0.2s;
+}
+.faq-item[open] { border-color: var(--blue); }
+.faq-item summary {
+  padding: 20px 22px; cursor: pointer;
+  font-weight: 600; font-size: 15px; color: var(--ink);
+  list-style: none; display: flex; justify-content: space-between;
+  align-items: center; gap: 16px;
+  user-select: none;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-toggle {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--blue-pale); color: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 300; flex-shrink: 0;
+  transition: transform 0.2s, background 0.2s;
+}
+.faq-item[open] .faq-toggle { transform: rotate(45deg); background: var(--blue); color: #fff; }
+.faq-a { padding: 0 22px 20px; font-size: 15px; color: var(--ink-soft); line-height: 1.65; }
+
+/* CTA FINAL */
+.cta-section {
+  background: var(--blue);
+  padding: 80px 0;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
+}
+.cta-section h2 {
+  font-size: clamp(28px, 5vw, 44px);
+  color: #fff; margin-bottom: 14px; position: relative;
+}
+.cta-section h2 em { font-style: italic; color: rgba(255,255,255,0.75); }
+.cta-section p { font-size: 17px; color: rgba(255,255,255,0.72); margin-bottom: 32px; position: relative; }
+.btn-cta-white {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: #fff; color: var(--blue);
+  font-family: var(--body); font-size: 17px; font-weight: 700;
+  padding: 18px 36px; border-radius: var(--r-md);
+  border: none; cursor: pointer;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  transition: transform 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+.btn-cta-white:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.25); }
+.cta-sub { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 16px; position: relative; }
+
+/* FOOTER */
+footer {
+  background: var(--blue-deep);
+  padding: 32px 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.foot {
+  display: flex; flex-direction: column; gap: 14px;
+  align-items: center; text-align: center;
+  font-size: 13px; color: rgba(255,255,255,0.45);
+}
+@media (min-width: 680px) { .foot { flex-direction: row; justify-content: space-between; text-align: left; } }
+.foot-links { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+.foot-links a { color: rgba(255,255,255,0.45); transition: color 0.15s; }
+.foot-links a:hover { color: #fff; }
+.foot-logo { font-family: var(--display); font-size: 17px; font-weight: 700; color: rgba(255,255,255,0.7); }
+.foot-logo span { color: var(--blue); }
+
+/* SUCCESS STATE */
+.form-success {
+  display: none; text-align: center; padding: 24px 10px;
+}
+.form-success.active { display: block; }
+.success-icon {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--blue); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; margin: 0 auto 18px;
+}
+.success-title { font-family: var(--display); font-size: 22px; color: var(--ink); margin-bottom: 8px; }
+.success-sub { font-size: 15px; color: var(--ink-soft); }
+
+/* MOBILE STICKY CTA */
+.mobile-cta {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  background: #fff; border-top: 1px solid var(--border);
+  padding: 12px 20px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+}
+@media (max-width: 859px) { .mobile-cta { display: block; } }
+.mobile-cta-btn {
+  width: 100%; padding: 15px;
+  background: var(--blue); color: #fff;
+  font-family: var(--body); font-size: 16px; font-weight: 700;
+  border: none; border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+/* STEP 2 FORM */
+.form-step { display: none; }
+.form-step.active { display: block; }
+.step-back {
+  background: none; border: none; cursor: pointer;
+  font-size: 13px; color: var(--ink-faint); font-family: var(--body);
+  padding: 0; margin-bottom: 16px; display: flex; align-items: center; gap: 6px;
+}
+.step-back:hover { color: var(--ink-soft); }
+
+/* Responsive misc */
+@media (max-width: 480px) {
+  .offers-grid { grid-template-columns: 1fr; }
+  .guarantees-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
 </style>
+
+<!-- Google Ads tag -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18255900873"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18255900873');
+</script>
+
 <!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -327,533 +655,391 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
-<!-- Google Ads tag -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18255900873"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'AW-18255900873');
-</script>
 </head>
 <body>
 
-<header>
-  <div class="wrap head">
-    <a href="/" class="logo">mon-<b>carrossier</b>.fr</a>
-    <button class="head-cta" onclick="scrollToForm('header')">Trouver mon carrossier</button>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">mon-<span>carrossier</span>.fr</div>
+  <div style="display:flex;align-items:center;">
+    <a href="tel:0762337265" class="nav-tel" onclick="trackCall()">07 62 33 72 65</a>
+    <button class="nav-cta" onclick="scrollToForm()">Trouver mon carrossier</button>
   </div>
-</header>
+</nav>
 
+<!-- HERO -->
 <section class="hero">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-  <div class="wrap hero-grid">
-    <div>
-      <span class="badge hero-anim hero-anim-1">Service disponible partout en France</span>
-      <h1 class="hero-anim hero-anim-2">Vous avez un sinistre. Vous avez aussi des <em>droits</em>.</h1>
-      <p class="hero-sub hero-anim hero-anim-3">Choisissez librement votre carrossier — un vrai, un local, un certifié. On vous accompagne, on prend en charge votre franchise, et on vous offre un cadeau pour chaque dossier. Jusqu'à 500&nbsp;€.</p>
-      <div class="hero-ctas hero-anim hero-anim-4">
-        <button class="btn btn-primary hero-mobile-cta" onclick="scrollToForm('hero')">Trouver mon carrossier →</button>
-        <a href="#process" class="btn btn-ghost">Comment ça marche</a>
+  <div class="hero-inner">
+    <!-- Gauche : texte -->
+    <div class="hero-left">
+      <div class="hero-eyebrow">Carrosserie sans franchise · 100% gratuit · Réponse 48h</div>
+      <h1>Le garage qui prend en charge<br><em>votre franchise.</em></h1>
+      <p class="hero-question">Carrossier certifié près de chez vous. Zéro avance de frais, véhicule de prêt inclus — et jusqu'à 500 € de franchise prise en charge ou offerts en carte cadeau.</p>
+      <div class="hero-benefits">
+        <div class="hero-benefit">
+          <div class="dot amber">🎁</div>
+          <span>Franchise prise en charge ou carte cadeau jusqu'à <strong style="color:var(--blue);">500 €</strong></span>
+        </div>
+        <div class="hero-benefit">
+          <div class="dot">🚗</div>
+          <span>Véhicule de prêt inclus pendant toute la réparation</span>
+        </div>
+        <div class="hero-benefit">
+          <div class="dot">🔒</div>
+          <span>Zéro avance de frais — cession de créance directe</span>
+        </div>
+        <div class="hero-benefit">
+          <div class="dot">⭐</div>
+          <span>Garantie 5 ans pièces &amp; main d'œuvre</span>
+        </div>
       </div>
-      <div class="hero-trust hero-anim hero-anim-5">
-        <span class="stars">★★★★★</span>
-        <span><strong>4,8/5</strong></span>
-        <span class="dot"></span>
-        <span>Carrossiers certifiés</span>
-        <span class="dot"></span>
-        <span>100% gratuit</span>
-        <span class="dot"></span>
-        <span>Garantie 5 ans</span>
-      </div>
+      <p class="hero-tel">Ou appelez directement : <a href="tel:0762337265" onclick="trackCall()">07 62 33 72 65</a></p>
     </div>
-    <div class="hero-card form-card" id="leadForm">
-      <div class="hero-card-tag">Votre demande en 2 minutes</div>
-      <p class="form-card-sub">Réponse en 48h, service sans engagement.</p>
-      <p class="form-intro">Vos coordonnées nous permettent de vous recontacter et de vous orienter vers un carrossier partenaire proche de chez vous.</p>
-      <form id="step1Form" onsubmit="goStep2(event)" novalidate>
-        <div class="fg-row fg-row--keep">
-          <div class="fg">
-            <label for="s1_prenom">Prénom *</label>
-            <input type="text" id="s1_prenom" name="prenom" required autocomplete="given-name" placeholder="Marie">
-          </div>
-          <div class="fg">
-            <label for="s1_tel">Téléphone *</label>
-            <input type="tel" id="s1_tel" name="tel" required autocomplete="tel" placeholder="06 12 34 56 78">
-          </div>
+
+    <!-- Droite : formulaire -->
+    <div>
+      <div class="form-card">
+        <div class="form-badge">100% gratuit · Réponse sous 48h</div>
+
+        <!-- Étape 1 -->
+        <div class="form-step active" id="step1">
+          <div class="form-title">Trouver mon carrossier</div>
+          <div class="form-sub">Réponse d'un carrossier certifié sous <strong>48h</strong>, sans engagement.</div>
+          <form id="step1Form" onsubmit="goStep2(event)" novalidate>
+            <div class="fg-row">
+              <div class="fg">
+                <label for="prenom">Prénom *</label>
+                <input type="text" id="prenom" name="prenom" required placeholder="Marie" autocomplete="given-name">
+              </div>
+              <div class="fg">
+                <label for="tel">Téléphone *</label>
+                <input type="tel" id="tel" name="tel" required placeholder="06 12 34 56 78" autocomplete="tel">
+              </div>
+            </div>
+            <div class="fg">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" required placeholder="marie@email.com" autocomplete="email">
+            </div>
+            <div class="fg-row">
+              <div class="fg">
+                <label for="cp">Code postal *</label>
+                <input type="text" id="cp" name="cp" required placeholder="83470" maxlength="5" inputmode="numeric" oninput="lookupVille(this)">
+              </div>
+              <div class="fg">
+                <label for="ville">Ville *</label>
+                <select id="ville" name="ville" required>
+                  <option value="">Choisir…</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn-submit">Continuer →</button>
+          </form>
+          <p class="form-legal">Vos données sont protégées · <a href="/rgpd.html">RGPD</a></p>
         </div>
-        <div class="fg">
-          <label for="s1_email">Email *</label>
-          <input type="email" id="s1_email" name="email" required autocomplete="email" placeholder="marie@exemple.fr">
+
+        <!-- Étape 2 -->
+        <div class="form-step" id="step2">
+          <button class="step-back" onclick="backStep1()">← Retour</button>
+          <div class="form-title">Votre sinistre en 30 sec</div>
+          <div class="form-sub">Permet à votre carrossier de <strong>préparer votre prise en charge</strong> avant de vous rappeler.</div>
+          <form id="step2Form" onsubmit="submitForm(event)" novalidate>
+            <div class="fg">
+              <label for="nom">Nom *</label>
+              <input type="text" id="nom" name="nom" required placeholder="Dupont" autocomplete="family-name">
+            </div>
+            <div class="fg">
+              <label for="marque">Marque et modèle *</label>
+              <input type="text" id="marque" name="marque" required placeholder="Renault Clio, Peugeot 308…">
+            </div>
+            <div class="fg">
+              <label for="responsable">Êtes-vous responsable ? <span class="opt">Optionnel</span></label>
+              <select id="responsable" name="responsable">
+                <option value="">Choisir…</option>
+                <option value="oui">Oui — je suis responsable</option>
+                <option value="non">Non — l'autre conducteur l'est</option>
+                <option value="nsp">Je ne sais pas encore</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label for="franchise">Montant de votre franchise <span class="opt">Optionnel</span></label>
+              <input type="number" id="franchise" name="franchise" min="0" step="1" inputmode="numeric" placeholder="si vous le connaissez">
+            </div>
+            <div class="fg">
+              <label for="degats">Description rapide des dégâts <span class="opt">Optionnel</span></label>
+              <input type="text" id="degats" name="degats" placeholder="Choc arrière, aile gauche…">
+            </div>
+            <div class="fg">
+              <label>Photos des dégâts <span class="opt">Optionnel</span></label>
+              <div class="photo-zone" onclick="document.getElementById('photoInput').click()">
+                <div class="pz-ic">📷</div>
+                <div class="pz-tx">Ajouter des photos</div>
+                <div class="pz-sub">Accélère votre devis · 6 photos max</div>
+              </div>
+              <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="previewPhotos(this)">
+              <div class="photo-preview" id="photoPreview"></div>
+            </div>
+            <button type="submit" class="btn-submit" id="submitBtn">Envoyer ma demande →</button>
+          </form>
+          <p class="form-legal">Sans engagement · Rappel sous 48h garanti</p>
         </div>
-        <div class="fg-row fg-row--cpville">
-          <div class="fg">
-            <label for="s1_cp">Code postal *</label>
-            <input type="text" id="s1_cp" name="cp" required inputmode="numeric" maxlength="5" placeholder="83470" oninput="lookupVille(this)">
-          </div>
-          <div class="fg">
-            <label for="s1_ville">Ville *</label>
-            <select id="s1_ville" name="ville" required>
-              <option value="">Choisir…</option>
-            </select>
-          </div>
+
+        <!-- Succès -->
+        <div class="form-success" id="formSuccess">
+          <div class="success-icon">✓</div>
+          <div class="success-title">Demande envoyée !</div>
+          <div class="success-sub">Un carrossier certifié près de chez vous vous rappelle <strong>sous 48h</strong>.</div>
         </div>
-        <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px;font-size:16px;">
-          Continuer →
-        </button>
-        <p class="disclaimer">Vos données sont protégées — <a href="/rgpd.html">politique RGPD</a></p>
-      </form>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- STATS -->
+<div class="stats-band">
+  <div class="wrap stats-inner">
+    <div class="stat">
+      <div class="stat-val">100%</div>
+      <div class="stat-lbl">Gratuit pour vous</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">500 €</div>
+      <div class="stat-lbl">Max. franchise prise en charge</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">48h</div>
+      <div class="stat-lbl">Délai de rappel garanti</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">5 ans</div>
+      <div class="stat-lbl">Garantie réparations</div>
+    </div>
+  </div>
+</div>
+
+<!-- DROITS -->
 <section class="rights">
-  <div class="wrap rights-inner">
-    <span class="eyebrow">Ce que votre assureur ne vous dit pas</span>
-    <h2>Personne ne peut vous imposer un garage. <em>C'est la loi.</em></h2>
-    <p>Le Code des assurances est clair : <strong>vous avez le droit absolu de choisir votre carrossier</strong>. Y compris s'il n'est pas dans la « liste agréée » de votre assurance. Votre dossier sera remboursé de la même manière.</p>
-    <p>Le problème ? La plupart des assurés ne le savent pas. Et leur assurance les oriente vers des garages partenaires qui travaillent sur des tarifs imposés — au détriment de la qualité de réparation de votre véhicule.</p>
-    <p><strong>On vous remet ce droit entre les mains.</strong></p>
-    <span class="law">L.211-5-1 — Code des assurances</span>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="center">
-      <span class="eyebrow">Deux situations, deux cadeaux</span>
-      <h2 class="sec-title">Quelle que soit votre situation,<br>vous repartez gagnant.</h2>
-    </div>
-    <div class="offer-grid">
-      <div class="offer-card">
-        <div class="offer-icon">🛡️</div>
-        <h3>Vous êtes responsable ?</h3>
-        <div class="offer-amount">Franchise prise en charge</div>
-        <p>On rembourse tout ou partie de votre franchise, directement, sans démarche. Jusqu'à 500&nbsp;€ selon le montant des réparations.</p>
-        <a class="offer-link" href="#faq">Voir les conditions</a>
+  <div class="wrap rights-grid">
+    <div class="rights-visual">
+      <div class="law-card">
+        <div class="law-label">Code des assurances · Art. L211-5-1</div>
+        <div class="law-text"><strong>Vous avez le droit absolu de choisir votre réparateur.</strong> Aucune assurance ne peut vous imposer un garage — même si votre véhicule n'est pas assuré tous risques.</div>
       </div>
-      <div class="offer-card warm">
-        <div class="offer-icon">🎁</div>
-        <h3>Vous n'êtes pas responsable ?</h3>
-        <div class="offer-amount">Une carte cadeau</div>
-        <p>Pas de franchise à payer, mais un sinistre quand même. On vous offre une carte cadeau multi-enseignes (Décathlon, Carrefour, Fnac, Amazon…). Jusqu'à 500&nbsp;€.</p>
-        <a class="offer-link" href="#faq">Voir les conditions</a>
+      <div class="law-card">
+        <div class="law-label">Ce que votre assureur ne dit pas</div>
+        <div class="law-text">Les garages "agréés" travaillent sur des tarifs négociés à la baisse. <strong>Votre voiture mérite mieux qu'une réparation au rabais.</strong></div>
+      </div>
+      <div class="law-card">
+        <div class="law-label">Ce qu'on fait à votre place</div>
+        <div class="law-text">On vous trouve un carrossier indépendant certifié, on gère la relation avec l'expert d'assurance, et <strong>on finance votre franchise.</strong></div>
       </div>
     </div>
-    <p class="offer-note">Montant calculé selon le coût total des réparations. Communiqué dès le devis validé, sans surprise.</p>
-  </div>
-</section>
-
-<section style="background: var(--bg-card); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
-  <div class="wrap">
-    <div class="center">
-      <span class="eyebrow">Notre différence</span>
-      <h2 class="sec-title">Indépendant. Local.<br>Entièrement de votre côté.</h2>
-      <p class="sec-sub">Ni assurance, ni réseau d'enseigne qui impose des prix cassés à ses adhérents. Une plateforme indépendante qui sélectionne les meilleurs carrossiers de votre région.</p>
-    </div>
-    <div class="compare-table">
-      <div class="compare-row head">
-        <div class="crit">&nbsp;</div>
-        <div class="col-them">Réseau agréé assurance</div>
-        <div class="col-us">mon-carrossier.fr</div>
-      </div>
-      <div class="compare-row"><div class="crit">Qui choisit le garage</div><div class="col-them">Votre assurance</div><div class="col-us">Vous</div></div>
-      <div class="compare-row"><div class="crit">Tarifs appliqués</div><div class="col-them">Imposés</div><div class="col-us">Justes</div></div>
-      <div class="compare-row"><div class="crit">Qualité de réparation</div><div class="col-them">Variable</div><div class="col-us">Optimale</div></div>
-      <div class="compare-row"><div class="crit">Véhicule de prêt</div><div class="col-them">Pas toujours</div><div class="col-us">Inclus</div></div>
-      <div class="compare-row"><div class="crit">Cadeau client</div><div class="col-them">Aucun</div><div class="col-us">Jusqu'à 500 €</div></div>
+    <div class="rights-text">
+      <span class="eyebrow">Votre droit, expliqué</span>
+      <h2 class="sec-title">Personne ne peut vous <em>imposer</em> un garage.</h2>
+      <p>La plupart des assurés l'ignorent : votre assurance vous "recommande" ses garages partenaires parce que ces garages ont accepté de travailler à des tarifs négociés — pas parce que c'est obligatoire.</p>
+      <p>Résultat : des réparations menées vite, avec des pièces au coût minimal. Votre voiture vous revient réparée sur le papier. Pas toujours en réalité.</p>
+      <p><strong>On vous remet ce choix entre les mains.</strong> On sélectionne des carrossiers indépendants qui travaillent à leur tarif — et qui ont tout intérêt à soigner votre véhicule.</p>
     </div>
   </div>
 </section>
 
-<section id="process">
+<!-- OFFRES -->
+<section class="offers">
   <div class="wrap">
-    <div class="center">
+    <span class="eyebrow">Selon votre situation</span>
+    <h2 class="sec-title">Quel que soit votre sinistre,<br>vous repartez <em>gagnant.</em></h2>
+    <p class="sec-sub">Deux situations, deux cadeaux. Le montant exact vous est communiqué dès le devis validé, sans surprise.</p>
+    <div class="offers-grid">
+      <div class="offer-card responsible">
+        <div class="offer-type">🛡️ Vous êtes responsable</div>
+        <div class="offer-amount">500 €</div>
+        <div class="offer-amount-sub">maximum pris en charge</div>
+        <div class="offer-desc">On rembourse tout ou partie de votre <strong>franchise d'assurance</strong>, directement, sans démarche de votre part. Le montant est calculé selon le coût total des réparations.</div>
+        <span class="offer-scenario">Franchise couverte</span>
+      </div>
+      <div class="offer-card not-responsible">
+        <div class="offer-type">🎁 Vous n'êtes pas responsable</div>
+        <div class="offer-amount">500 €</div>
+        <div class="offer-amount-sub">en carte cadeau multi-enseignes</div>
+        <div class="offer-desc">Pas de franchise à payer ? On vous offre une <strong>carte cadeau</strong> utilisable chez Décathlon, Fnac, Amazon, Carrefour et bien d'autres.</div>
+        <span class="offer-scenario">Décathlon · Fnac · Amazon…</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSUS -->
+<section class="process">
+  <div class="wrap">
+    <div style="text-align:center;">
       <span class="eyebrow">Zéro démarche pour vous</span>
-      <h2 class="sec-title">On gère tout.<br>Vous récupérez votre voiture.</h2>
+      <h2 class="sec-title" style="max-width:520px;margin:0 auto 14px;">On gère tout.<br>Vous récupérez votre voiture.</h2>
     </div>
-    <div class="steps">
-      <div class="step-card">
-        <div class="n">1</div>
-        <h3>Vous nous dites tout</h3>
-        <p>Une photo des dégâts, votre code postal, votre situation. On comprend votre dossier en 2 minutes.</p>
-        <span class="time">⏱ 2 minutes</span>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="process-num">01</div>
+        <h3>Votre demande en 2 minutes</h3>
+        <p>Code postal, type de sinistre, coordonnées. On comprend votre dossier immédiatement et on identifie le carrossier certifié le plus proche.</p>
+        <div class="process-time">2 minutes</div>
       </div>
-      <div class="step-card">
-        <div class="n">2</div>
-        <h3>On vous oriente</h3>
-        <p>Un carrossier certifié près de chez vous vous rappelle sous 48h. Il édite votre devis et reçoit l'expert dans les meilleures conditions.</p>
-        <span class="time">⏱ Sous 48h</span>
+      <div class="process-step">
+        <div class="process-num">02</div>
+        <h3>Un carrossier vous rappelle</h3>
+        <p>Sous 48h, un carrossier certifié de votre secteur vous contacte. Il prépare le devis, reçoit l'expert d'assurance dans les meilleures conditions.</p>
+        <div class="process-time">Sous 48h</div>
       </div>
-      <div class="step-card">
-        <div class="n">3</div>
+      <div class="process-step">
+        <div class="process-num">03</div>
         <h3>Votre voiture, comme neuve</h3>
-        <p>Travaux garantis 5 ans, véhicule de prêt inclus. Et selon votre situation : franchise prise en charge ou carte cadeau.</p>
-        <span class="time">⏱ 3 à 7 jours</span>
+        <p>Travaux garantis 5 ans, véhicule de prêt inclus. Selon votre situation : franchise prise en charge ou carte cadeau jusqu'à 500 €.</p>
+        <div class="process-time">3 à 7 jours</div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="expert">
-  <div class="wrap expert-inner">
-    <div class="expert-visual">
-      <div class="big">L'expert</div>
-      <p>C'est lui qui détermine le montant débloqué pour votre réparation. Mieux il est reçu, mieux votre voiture est réparée.</p>
-    </div>
-    <div>
-      <span class="eyebrow">Le détail qui change tout</span>
-      <h2>Un carrossier qui sait recevoir <em>un expert d'assurance</em>.</h2>
-      <p>Après votre sinistre, c'est l'expert mandaté par votre assurance qui évalue les dégâts. Son rapport détermine ce que l'assurance va débloquer.</p>
-      <p>Un garage non préparé ? L'évaluation est expédiée, des dégâts passent inaperçus, votre voiture est mal réparée — et vous le découvrez trois mois plus tard.</p>
-      <p><strong>Nos carrossiers partenaires savent exactement comment travailler avec les experts.</strong> Ils préparent le véhicule, présentent les dégâts cachés, défendent un chiffrage juste.</p>
-    </div>
-  </div>
-</section>
-
-<section>
+<!-- GARANTIES -->
+<section class="guarantees">
   <div class="wrap">
-    <div class="center">
-      <span class="eyebrow">Nos garanties</span>
-      <h2 class="sec-title">Aucune mauvaise surprise.</h2>
+    <div style="text-align:center;">
+      <span class="eyebrow" style="background:rgba(8,102,255,0.25);color:#7FAAFF;">Nos garanties</span>
+      <h2 class="sec-title" style="color:#fff;max-width:460px;margin:0 auto;">Aucune mauvaise surprise.<br><em style="color:#7FAAFF;">Jamais.</em></h2>
     </div>
-    <div class="guarantees">
+    <div class="guarantees-grid">
       <div class="guarantee">
-        <div class="ic">✓</div>
+        <div class="guarantee-icon">🆓</div>
         <h3>100% gratuit</h3>
-        <p>Notre service est entièrement gratuit. On est rémunérés par notre réseau.</p>
+        <p>Notre service est entièrement gratuit. Rémunérés par notre réseau, jamais par vous.</p>
       </div>
       <div class="guarantee">
-        <div class="ic">✓</div>
+        <div class="guarantee-icon">⭐</div>
         <h3>Garantie 5 ans</h3>
-        <p>Pièces et main d'œuvre, sur tous les dossiers de notre réseau.</p>
+        <p>Pièces et main d'œuvre sur tous les dossiers du réseau mon-carrossier.fr.</p>
       </div>
       <div class="guarantee">
-        <div class="ic">✓</div>
+        <div class="guarantee-icon">🚙</div>
         <h3>Véhicule de prêt</h3>
-        <p>Inclus pendant toute la durée des réparations.</p>
+        <p>Inclus systématiquement pendant toute la durée des réparations.</p>
       </div>
       <div class="guarantee">
-        <div class="ic">✓</div>
-        <h3>Sans avance</h3>
-        <p>Cession de créance directe à l'assurance. Vous n'avancez rien.</p>
+        <div class="guarantee-icon">💳</div>
+        <h3>Zéro avance</h3>
+        <p>Cession de créance directe à l'assurance. Vous n'avancez pas un euro.</p>
       </div>
     </div>
   </div>
 </section>
 
+<!-- TÉMOIGNAGE -->
 <section class="testimonial">
-  <div class="wrap test-inner">
-    <div class="test-q">"</div>
-    <blockquote>Mon assurance voulait m'envoyer dans son garage à 40&nbsp;km. J'ai eu un devis le lendemain à 10&nbsp;km de chez moi. Réparation parfaite, franchise prise en charge. Je ne savais même pas que j'avais le droit de choisir.</blockquote>
-    <div class="test-author">
-      <div class="test-avatar">ML</div>
-      <div style="text-align:left;">
-        <div class="test-name">Marie L.</div>
-        <div class="test-loc">Brignoles · Mars 2026</div>
+  <div class="wrap testimonial-inner">
+    <blockquote>
+      Mon assurance voulait m'envoyer dans un garage à 40 km. J'ai eu un carrossier le lendemain à 10 km de chez moi, ma franchise prise en charge, et une réparation impeccable. Je ne savais même pas que j'avais ce droit.
+    </blockquote>
+    <div class="testimonial-author">
+      <div class="author-avatar">ML</div>
+      <div>
+        <div class="author-name">Marie L.</div>
+        <div class="author-city">Mars 2026 · ★★★★★</div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="faq">
+<!-- FAQ -->
+<section class="faq">
   <div class="wrap">
-    <div class="center">
-      <span class="eyebrow">Vos questions, nos réponses</span>
-      <h2 class="sec-title">On répond franchement.</h2>
+    <div style="text-align:center;">
+      <span class="eyebrow">On répond franchement</span>
+      <h2 class="sec-title">Vos questions.</h2>
     </div>
     <div class="faq-list">
-      <details class="faq-item"><summary>Mon assurance peut-elle refuser que j'aille chez votre carrossier ?</summary><div class="faq-a">Non. Le Code des assurances vous donne le libre choix du réparateur. Aucune assurance ne peut vous imposer un garage. Si la vôtre essaie, on vous aide à faire valoir votre droit.</div></details>
-      <details class="faq-item"><summary>C'est vraiment 100% gratuit ?</summary><div class="faq-a">Oui. Notre service est gratuit pour vous, à 100%. On est rémunérés par les carrossiers de notre réseau sur la base d'une commission au succès. Vous ne payez rien, jamais.</div></details>
-      <details class="faq-item"><summary>Combien de temps avant d'avoir mon véhicule réparé ?</summary><div class="faq-a">Devis sous 48h après votre demande. Réparation entre 3 et 7 jours selon les dégâts. Les délais précis vous sont communiqués et engagés dès le devis validé.</div></details>
-      <details class="faq-item"><summary>Comment calculez-vous le montant du cadeau ?</summary><div class="faq-a">Selon le coût total des réparations. Plus votre dossier est important, plus le cadeau est élevé — jusqu'à 500 €. Le montant exact vous est communiqué dès le devis validé, sans surprise.</div></details>
-      <details class="faq-item"><summary>Vos carrossiers sont-ils tous certifiés ?</summary><div class="faq-a">Oui. On vérifie l'ancienneté, la note Google, les certifications professionnelles et l'assurance RC pro. Et on les rencontre tous physiquement avant de les intégrer à notre réseau.</div></details>
-      <details class="faq-item"><summary>Et si je ne suis pas satisfait des travaux ?</summary><div class="faq-a">On intervient en médiation directe. Nos carrossiers s'engagent à reprendre tout défaut sous garantie. Notre réputation dépend de votre satisfaction — on prend ça très au sérieux.</div></details>
+      <details class="faq-item">
+        <summary>Mon assurance peut-elle refuser que j'aille chez votre carrossier ? <span class="faq-toggle">+</span></summary>
+        <div class="faq-a">Non. Le Code des assurances vous donne le libre choix du réparateur, sans exception. Aucune assurance ne peut vous imposer un garage. Si la vôtre essaie, on vous aide à faire valoir votre droit.</div>
+      </details>
+      <details class="faq-item">
+        <summary>C'est vraiment 100% gratuit ? <span class="faq-toggle">+</span></summary>
+        <div class="faq-a">Oui, à 100%. Notre service est gratuit pour vous, sans exception. On est rémunérés par les carrossiers de notre réseau sur commission au succès. Vous ne payez rien, jamais, pour aucune raison.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Comment est calculé le montant de la franchise prise en charge ? <span class="faq-toggle">+</span></summary>
+        <div class="faq-a">Selon le coût total des réparations. Plus le dossier est important, plus la prise en charge est élevée — jusqu'à 500 €. Le montant exact vous est communiqué dès le devis validé, sans surprise.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Combien de temps pour récupérer mon véhicule ? <span class="faq-toggle">+</span></summary>
+        <div class="faq-a">Devis sous 48h après votre demande. Réparation entre 3 et 7 jours selon l'étendue des dégâts. Les délais précis sont communiqués et engagés dès le devis validé par votre carrossier.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Vos carrossiers sont-ils tous certifiés ? <span class="faq-toggle">+</span></summary>
+        <div class="faq-a">Oui. On vérifie l'ancienneté, la note Google, les certifications professionnelles et l'assurance RC Pro. Et on les rencontre tous physiquement avant de les intégrer au réseau.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Et si je ne suis pas satisfait des travaux ? <span class="faq-toggle">+</span></summary>
+        <div class="faq-a">On intervient en médiation directe. Nos carrossiers s'engagent à reprendre tout défaut sous garantie. Notre réputation dépend de votre satisfaction — on prend ça très au sérieux.</div>
+      </details>
     </div>
   </div>
 </section>
 
-<section class="cta-final">
-  <div class="wrap cta-inner">
-    <h2>Votre sinistre. Vos droits. <em>Votre carrossier.</em></h2>
+<!-- CTA FINAL -->
+<section class="cta-section" id="cta-final">
+  <div class="wrap">
+    <h2>Votre sinistre. Vos droits.<br><em>Votre carrossier.</em></h2>
     <p>Trouvez le bon partenaire en 48h. Service 100% gratuit, jusqu'à 500 € de cadeau.</p>
-    <button class="btn btn-primary" style="font-size:18px;padding:19px 38px;" onclick="scrollToForm('cta_final')">Trouver mon carrossier →</button>
-    <p style="margin-top:20px;font-size:15px;color:rgba(255,255,255,0.85);">Ou appelez directement : <a href="tel:0762337265" style="color:#fff;text-decoration:none;font-weight:700;" onclick="if(typeof gtag==='function')gtag('event','conversion',{send_to:'AW-18255900873'})">07 62 33 72 65</a></p>
+    <button class="btn-cta-white" onclick="scrollToForm()">Trouver mon carrossier →</button>
+    <p class="cta-sub">Ou appelez directement : <a href="tel:0762337265" style="color:rgba(255,255,255,0.75);font-weight:600;" onclick="trackCall()">07 62 33 72 65</a></p>
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
   <div class="wrap foot">
-    <div>© 2026 mon-carrossier.fr — Plateforme indépendante de mise en relation</div>
+    <div class="foot-logo">mon-<span>carrossier</span>.fr</div>
+    <div style="color:rgba(255,255,255,0.35);font-size:12px;">© 2026 · Plateforme indépendante de mise en relation</div>
     <div class="foot-links">
+      <a href="/partenaires.html">Vous êtes carrossier ?</a>
       <a href="/mentions-legales.html">Mentions légales</a>
-      <a href="/cgu.html">CGU</a>
       <a href="/rgpd.html">RGPD</a>
-      <a href="/cookies.html">Cookies</a>
       <a href="/contact.html">Contact</a>
-      <a href="/partenaires.html" class="pro">Vous êtes carrossier ?</a>
     </div>
   </div>
 </footer>
 
-<iframe name="formsubmitFrame" style="display:none;" aria-hidden="true"></iframe>
-
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Trouver mon carrossier">
-  <div class="modal-box">
-
-    <!-- ── ÉTAPE 1 (entrée mobile) : Coordonnées ── -->
-    <div id="step1View" style="display:none;">
-      <div class="modal-head">
-        <div class="hero-card-tag" style="margin-bottom:0;">Votre demande en 2 minutes</div>
-        <button class="modal-x" onclick="closeForm()" aria-label="Fermer">×</button>
-      </div>
-      <p class="form-card-sub">Réponse en 48h, service sans engagement.</p>
-      <p class="form-intro">Vos coordonnées nous permettent de vous recontacter et de vous orienter vers un carrossier partenaire proche de chez vous.</p>
-
-      <div class="form-progress"><div class="form-progress-fill" style="width:50%"></div></div>
-
-      <form id="modalStep1Form" onsubmit="goStep2(event)" novalidate>
-        <div class="fg-row fg-row--keep">
-          <div class="fg">
-            <label for="m_prenom">Prénom *</label>
-            <input type="text" id="m_prenom" name="prenom" required autocomplete="given-name" placeholder="Marie">
-          </div>
-          <div class="fg">
-            <label for="m_tel">Téléphone *</label>
-            <input type="tel" id="m_tel" name="tel" required autocomplete="tel" placeholder="06 12 34 56 78">
-          </div>
-        </div>
-        <div class="fg">
-          <label for="m_email">Email *</label>
-          <input type="email" id="m_email" name="email" required autocomplete="email" placeholder="marie@exemple.fr">
-        </div>
-        <div class="fg-row fg-row--cpville">
-          <div class="fg">
-            <label for="m_cp">Code postal *</label>
-            <input type="text" id="m_cp" name="cp" required inputmode="numeric" maxlength="5" placeholder="83470" oninput="lookupVille(this)">
-          </div>
-          <div class="fg">
-            <label for="m_ville">Ville *</label>
-            <select id="m_ville" name="ville" required>
-              <option value="">Choisir…</option>
-            </select>
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px;font-size:16px;">
-          Continuer →
-        </button>
-        <p class="disclaimer">Vos données sont protégées — <a href="/rgpd.html">politique RGPD</a></p>
-      </form>
-    </div>
-
-    <!-- ── ÉTAPE 2 : Dossier sinistre ── -->
-    <div id="step2View" style="display:none;">
-      <button class="btn-back" onclick="goBack()">← Retour</button>
-
-      <div class="modal-head">
-        <h3>Trouver mon carrossier</h3>
-        <button class="modal-x" onclick="closeForm()" aria-label="Fermer">×</button>
-      </div>
-      <p class="form-card-sub">Réponse en 48h, service sans engagement.</p>
-
-      <div class="form-progress"><div class="form-progress-fill" style="width:100%"></div></div>
-
-      <div class="step2-intro">
-        <p>Décrivez rapidement ce qu'il s'est passé et les dégâts constatés. <strong>30 secondes suffisent</strong> pour permettre à votre carrossier de préparer votre prise en charge.</p>
-      </div>
-
-      <form id="step2Form" onsubmit="submitFinalForm(event)" novalidate>
-        <div class="fg">
-          <label for="s2_nom">Nom *</label>
-          <input type="text" id="s2_nom" name="nom" required autocomplete="family-name" placeholder="Dupont">
-        </div>
-        <div class="fg">
-          <label for="s2_marque">Marque et modèle du véhicule *</label>
-          <input type="text" id="s2_marque" name="marque_modele" required placeholder="Ex : Renault Clio 5, Peugeot 308…">
-        </div>
-        <div class="fg">
-          <label for="s2_adresse">
-            Votre adresse
-            <span class="opt-badge">Optionnel</span>
-          </label>
-          <input type="text" id="s2_adresse" name="adresse" autocomplete="street-address" placeholder="Juste la rue et le numéro, le reste on l'a déjà 😉">
-        </div>
-        <div class="fg">
-          <label for="s2_responsable">
-            Êtes-vous responsable du sinistre ?
-            <span class="opt-badge">Optionnel</span>
-          </label>
-          <select id="s2_responsable" name="responsable">
-            <option value="">Choisir…</option>
-            <option value="oui">Oui — je suis responsable</option>
-            <option value="non">Non — l'autre conducteur est responsable</option>
-            <option value="nsp">Je ne sais pas encore</option>
-          </select>
-        </div>
-        <div class="fg">
-          <label for="s2_franchise">
-            Montant de votre franchise
-            <span class="opt-badge">Optionnel</span>
-          </label>
-          <input type="number" id="s2_franchise" name="franchise" min="0" step="1" inputmode="numeric" placeholder="si vous le connaissez">
-        </div>
-        <div class="fg">
-          <label for="s2_degats">
-            Description des dégâts
-            <span class="opt-badge">Optionnel</span>
-          </label>
-          <textarea id="s2_degats" name="degats" rows="3" placeholder="Ex : Aile avant droite enfoncée, pare-chocs arrière fissuré…"></textarea>
-        </div>
-        <div class="fg">
-          <label>
-            Photos des dégâts
-            <span class="opt-badge">Optionnel</span>
-          </label>
-          <div class="photo-upload-zone" onclick="document.getElementById('photoInput').click()">
-            <div class="pu-icon">📷</div>
-            <div class="pu-text">Ajouter des photos</div>
-            <div class="pu-sub">Accélère votre devis · 6 photos max · JPG ou PNG</div>
-          </div>
-          <input type="file" id="photoInput" name="photos" accept="image/*" multiple style="display:none" onchange="previewPhotos(this)">
-          <div class="photo-preview" id="photoPreview"></div>
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-full" id="submitBtn" style="font-size:16px;">
-          Envoyer ma demande
-        </button>
-        <p class="disclaimer">En envoyant ce formulaire, vous acceptez d'être recontacté par un carrossier de notre réseau. Vos données sont protégées — <a href="/rgpd.html">politique RGPD</a>.</p>
-      </form>
-    </div>
-
-    <!-- ── SUCCÈS ── -->
-    <div class="success" id="successView">
-      <div class="ic">✓</div>
-      <h3>Demande envoyée !</h3>
-      <p>Un carrossier certifié près de chez vous vous rappelle <strong>sous 48h</strong>.</p>
-      <button class="btn btn-ghost" style="margin-top:24px;" onclick="closeForm()">Fermer</button>
-    </div>
-
-  </div>
+<!-- MOBILE STICKY -->
+<div class="mobile-cta" id="mobileCta">
+  <button class="mobile-cta-btn" onclick="scrollToForm()">Trouver mon carrossier — Gratuit →</button>
 </div>
 
 <script>
-var _notionPageId = null; // ID de la page Notion créée à l'étape 1
-var _leadStep1   = {};   // Données étape 1 conservées pour l'étape 2
+// ── État conservé entre les étapes ──────────────────────────────────────────
+var _notionPageId = null;     // ID de la page Notion créée à l'étape 1
+var step1Data = {};           // Données étape 1
 
 function trackEvent(name, params) {
   if (typeof gtag === 'function') gtag('event', name, params || {});
   if (typeof fbq  === 'function') fbq('trackCustom', name, params || {});
 }
 
-var _entry = 'inline'; // 'inline' (desktop) | 'modal' (mobile)
-
-// Boutons « Trouver mon carrossier » : desktop → amène au formulaire inline ;
-// mobile (formulaire inline masqué) → ouvre le modal sur l'étape 1.
-function scrollToForm(source) {
-  trackEvent('form_open', { source: source || 'unknown' });
-  var card = document.getElementById('leadForm');
-  if (!card || card.offsetParent === null) { openModalStep1(); return; }
-  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  var first = document.getElementById('s1_prenom');
-  if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 450);
+// Conversion Google Ads « clic appel »
+function trackCall() {
+  if (typeof gtag === 'function') gtag('event', 'conversion', { send_to: 'AW-18255900873' });
+  trackEvent('call_click', {});
 }
 
-// Ouvre le modal sur l'étape 1 (parcours mobile)
-function openModalStep1() {
-  _entry = 'modal';
-  document.getElementById('step1View').style.display = 'block';
-  document.getElementById('step2View').style.display = 'none';
-  document.getElementById('successView').classList.remove('active');
-  document.getElementById('modal').classList.add('active');
-  document.body.style.overflow = 'hidden';
-  document.querySelector('.modal-box').scrollTop = 0;
-}
-
-// Ouvre le modal sur l'étape 2 (dossier sinistre)
-function openStep2() {
-  document.getElementById('step1View').style.display = 'none';
-  document.getElementById('step2View').style.display = 'block';
-  document.getElementById('successView').classList.remove('active');
-  document.getElementById('modal').classList.add('active');
-  document.body.style.overflow = 'hidden';
-  document.querySelector('.modal-box').scrollTop = 0;
-}
-
-function closeForm() {
-  var wasSuccess = document.getElementById('successView').classList.contains('active');
-  document.getElementById('modal').classList.remove('active');
-  document.body.style.overflow = '';
-  // Après une demande envoyée, on repart d'une page vierge
-  if (wasSuccess) setTimeout(resetAll, 300);
-}
-
-function resetAll() {
-  var f1 = document.getElementById('step1Form');      if (f1) f1.reset();
-  var fm = document.getElementById('modalStep1Form');  if (fm) fm.reset();
-  document.getElementById('step2Form').reset();
-  document.getElementById('photoPreview').innerHTML = '';
-  document.getElementById('step1View').style.display = 'none';
-  document.getElementById('step2View').style.display = 'block';
-  document.getElementById('successView').classList.remove('active');
-  _notionPageId = null;
-  _leadStep1    = {};
-}
-
-// Étape 1 → étape 2 (commun au formulaire inline desktop et au formulaire du modal mobile)
-function goStep2(e) {
-  e.preventDefault();
-  var form = e.target;
-  if (!form.checkValidity()) { form.reportValidity(); return; }
-
-  // Validation tel FR basique
-  var telEl = form.elements['tel'];
-  var tel   = telEl.value.replace(/[\s\-\.]/g, '');
-  if (!/^(\+33|0033|0)[1-9][0-9]{8}$/.test(tel)) {
-    telEl.setCustomValidity('Numéro invalide (ex : 06 12 34 56 78)');
-    form.reportValidity();
-    telEl.setCustomValidity('');
-    return;
-  }
-
-  _entry = (form.id === 'modalStep1Form') ? 'modal' : 'inline';
-  _leadStep1 = {
-    prenom: form.elements['prenom'].value.trim(),
-    email:  form.elements['email'].value.trim(),
-    tel:    tel,
-    cp:     form.elements['cp'].value.trim(),
-    ville:  form.elements['ville'].value,
-  };
-
-  // Envoi immédiat à Notion (statut Incomplet)
-  fetch('/api/lead-step1', {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(_leadStep1),
-  })
-  .then(function (r) { return r.json(); })
-  .then(function (d) { if (d.pageId) _notionPageId = d.pageId; })
-  .catch(function () {});  // silencieux — on passe à l'étape 2 quoi qu'il arrive
-
-  trackEvent('form_step1_complete', { ville: _leadStep1.ville, cp: _leadStep1.cp });
-  // Conversion Meta standard pour l'étape 1 (coordonnées captées)
-  if (typeof fbq === 'function') fbq('track', 'Contact', { content_category: 'sinistre_auto' });
-
-  openStep2();
+function scrollToForm() {
+  trackEvent('form_open', {});
+  var card = document.querySelector('.form-card');
+  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(function () { var p = document.getElementById('prenom'); if (p) p.focus({ preventScroll: true }); }, 500);
 }
 
 // Peuple le menu déroulant Ville à partir du code postal (API Découpage administratif)
 function lookupVille(cpInput) {
-  var form = cpInput.form;
-  var sel  = form && form.elements['ville'];
+  var sel = document.getElementById('ville');
   if (!sel) return;
   var cp = cpInput.value.trim();
-  if (!/^[0-9]{5}$/.test(cp)) {
-    sel.innerHTML = '<option value="">Choisir…</option>';
-    return;
-  }
+  if (!/^[0-9]{5}$/.test(cp)) { sel.innerHTML = '<option value="">Choisir…</option>'; return; }
   fetch('https://geo.api.gouv.fr/communes?codePostal=' + cp + '&fields=nom&format=json')
     .then(function (r) { return r.json(); })
     .then(function (villes) {
@@ -868,51 +1054,83 @@ function lookupVille(cpInput) {
     .catch(function () {});
 }
 
-function goBack() {
-  if (_entry === 'modal') {
-    // Parcours mobile : retour à l'étape 1 dans le modal
-    document.getElementById('step2View').style.display = 'none';
-    document.getElementById('step1View').style.display = 'block';
-    document.querySelector('.modal-box').scrollTop = 0;
-  } else {
-    // Parcours desktop : on referme et on revient au formulaire inline
-    document.getElementById('modal').classList.remove('active');
-    document.body.style.overflow = '';
-    var card = document.getElementById('leadForm');
-    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+// ── Étape 1 → étape 2 ───────────────────────────────────────────────────────
+function goStep2(e) {
+  e.preventDefault();
+  var f = e.target;
+  if (!f.checkValidity()) { f.reportValidity(); return; }
+
+  // Validation téléphone FR basique
+  var tel = f.tel.value.replace(/[\s\-\.]/g, '');
+  if (!/^(\+33|0033|0)[1-9][0-9]{8}$/.test(tel)) {
+    f.tel.setCustomValidity('Numéro invalide (ex : 06 12 34 56 78)');
+    f.reportValidity();
+    f.tel.setCustomValidity('');
+    return;
   }
+
+  step1Data = {
+    prenom: f.prenom.value.trim(),
+    tel:    tel,
+    email:  f.email.value.trim(),
+    cp:     f.cp.value.trim(),
+    ville:  f.ville.value,
+  };
+
+  // Envoi immédiat à Notion (statut « Incomplet »)
+  fetch('/api/lead-step1', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(step1Data),
+  })
+  .then(function (r) { return r.json(); })
+  .then(function (d) { if (d.pageId) _notionPageId = d.pageId; })
+  .catch(function () {});
+
+  trackEvent('form_step1_complete', { ville: step1Data.ville, cp: step1Data.cp });
+  if (typeof fbq === 'function') fbq('track', 'Contact', { content_category: 'sinistre_auto' });
+
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step2').classList.add('active');
+  var card = document.querySelector('.form-card');
+  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-function submitFinalForm(e) {
+function backStep1() {
+  document.getElementById('step2').classList.remove('active');
+  document.getElementById('step1').classList.add('active');
+}
+
+// ── Étape 2 → envoi complet ─────────────────────────────────────────────────
+function submitForm(e) {
   e.preventDefault();
-  var form = document.getElementById('step2Form');
-  if (!form.checkValidity()) { form.reportValidity(); return; }
+  var f = e.target;
+  if (!f.checkValidity()) { f.reportValidity(); return; }
 
   var btn = document.getElementById('submitBtn');
-  btn.disabled    = true;
-  btn.textContent = 'Envoi en cours…';
+  btn.disabled = true; btn.textContent = 'Envoi en cours…';
 
   var payload = new FormData();
   // Données étape 1
-  Object.keys(_leadStep1).forEach(function (k) { payload.append(k, _leadStep1[k]); });
+  Object.keys(step1Data).forEach(function (k) { payload.append(k, step1Data[k]); });
   // Données étape 2
-  payload.append('nom',           document.getElementById('s2_nom').value.trim());
-  payload.append('marque_modele', document.getElementById('s2_marque').value.trim());
-  payload.append('adresse',       document.getElementById('s2_adresse').value.trim());
-  payload.append('responsable',   document.getElementById('s2_responsable').value);
-  payload.append('franchise',     document.getElementById('s2_franchise').value.trim());
-  payload.append('degats',        document.getElementById('s2_degats').value.trim());
+  payload.append('nom',           f.nom.value.trim());
+  payload.append('marque_modele', f.marque.value.trim());
+  payload.append('responsable',   f.responsable.value);
+  payload.append('franchise',     f.franchise.value.trim());
+  payload.append('degats',        f.degats.value.trim());
   if (_notionPageId) payload.append('notionPageId', _notionPageId);
   // Photos
   var files = document.getElementById('photoInput').files;
   for (var i = 0; i < files.length; i++) { payload.append('photos', files[i]); }
 
   trackEvent('form_submit', {
-    ville:      _leadStep1.ville,
-    cp:         _leadStep1.cp,
-    responsable: document.getElementById('s2_responsable').value,
-    has_photos: files.length > 0,
+    ville:       step1Data.ville,
+    cp:          step1Data.cp,
+    responsable: f.responsable.value,
+    has_photos:  files.length > 0,
   });
+  // Conversions : Meta Lead + Google Ads
   if (typeof fbq === 'function') fbq('track', 'Lead', { content_category: 'sinistre_auto' });
   if (typeof gtag === 'function') gtag('event', 'conversion', { send_to: 'AW-18255900873' });
 
@@ -920,33 +1138,39 @@ function submitFinalForm(e) {
     .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
     .catch(function () {})
     .finally(function () {
-      btn.disabled    = false;
-      btn.textContent = 'Envoyer ma demande';
-      document.getElementById('step2View').style.display = 'none';
-      document.getElementById('successView').classList.add('active');
-      document.querySelector('.modal-box').scrollTop = 0;
+      btn.disabled = false; btn.textContent = 'Envoyer ma demande →';
+      document.getElementById('step2').classList.remove('active');
+      document.getElementById('formSuccess').classList.add('active');
+      var card = document.querySelector('.form-card');
+      if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 }
 
+// Aperçu des photos sélectionnées
 function previewPhotos(input) {
   var preview = document.getElementById('photoPreview');
   preview.innerHTML = '';
   Array.prototype.slice.call(input.files, 0, 6).forEach(function (file) {
     var reader = new FileReader();
     reader.onload = function (ev) {
-      var wrap = document.createElement('div'); wrap.className = 'photo-thumb-wrap';
-      var img  = document.createElement('img');  img.src = ev.target.result; img.className = 'photo-thumb';
-      var rm   = document.createElement('button'); rm.className = 'photo-remove'; rm.type = 'button'; rm.innerHTML = '×';
-      rm.onclick = function () { wrap.remove(); };
-      wrap.appendChild(img); wrap.appendChild(rm); preview.appendChild(wrap);
+      var wrap = document.createElement('div'); wrap.className = 'photo-thumb';
+      var img  = document.createElement('img');  img.src = ev.target.result;
+      wrap.appendChild(img); preview.appendChild(wrap);
     };
     reader.readAsDataURL(file);
   });
 }
 
-// Fermeture backdrop + Échap
-document.getElementById('modal').addEventListener('click', function (e) { if (e.target.id === 'modal') closeForm(); });
-document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeForm(); });
+// Masquer le CTA mobile quand le formulaire est visible (mobile uniquement)
+var _mq = window.matchMedia('(max-width: 859px)');
+var observer = new IntersectionObserver(function (entries) {
+  var mobileCta = document.getElementById('mobileCta');
+  if (!mobileCta) return;
+  if (!_mq.matches) { mobileCta.style.display = 'none'; return; }
+  mobileCta.style.display = entries[0].isIntersecting ? 'none' : 'block';
+}, { threshold: 0.3 });
+var formCard = document.querySelector('.form-card');
+if (formCard) observer.observe(formCard);
 </script>
 
 </body>
