@@ -1,8 +1,19 @@
 # Configuration GTM — Conversions Google Ads (mon-carrossier.fr)
 
 Compte Google Ads : **AW-18255900873**
-Objectif : 3 conversions Google Ads déclenchées via **Google Tag Manager**, à partir
-d'événements `dataLayer` poussés par le site.
+
+> ✅ **Mise en œuvre actuelle = conversions « en dur » dans le code** (`index.html`, via `gtag`),
+> avec les libellés réels ci-dessous et les valeurs 10/50/30 €. **Rien à configurer dans GTM.**
+> ⚠️ Si tu décides plus tard de gérer ces conversions **dans GTM** (balises ci-dessous), **retire d'abord
+> les appels `gtag('event','conversion', …)` du code** pour éviter le **double comptage**.
+>
+> **Libellés de conversion (récupérés dans Google Ads) :**
+> - Lead Step 1 : `AW-18255900873/ZDyZCM78usUcEMnhi4FE` — 10 €
+> - Lead Step 2 : `AW-18255900873/2lrhCMn9usUcEMnhi4FE` — 50 €
+> - Clic téléphone : `AW-18255900873/lwVHCMz9usUcEMnhi4FE` — 30 €
+
+Objectif (doc de référence) : 3 conversions Google Ads à partir d'événements `dataLayer`
+poussés par le site — utile si tu veux basculer la gestion dans **Google Tag Manager**.
 
 ---
 
@@ -79,7 +90,7 @@ Type pour les trois : **Déclencheur personnalisé → Événement personnalisé
 | Nom | `Lead Step 1` |
 | Type | **Suivi des conversions Google Ads** (*Google Ads Conversion Tracking*) |
 | ID de conversion | `18255900873` |
-| Libellé de conversion | `CONVERSION_LABEL_1` |
+| Libellé de conversion | `ZDyZCM78usUcEMnhi4FE` |
 | Valeur | `10` |
 | Devise | `EUR` |
 | Déclencheur | `Trigger - Lead Step 1` |
@@ -90,7 +101,7 @@ Type pour les trois : **Déclencheur personnalisé → Événement personnalisé
 | Nom | `Lead Step 2` |
 | Type | **Suivi des conversions Google Ads** |
 | ID de conversion | `18255900873` |
-| Libellé de conversion | `CONVERSION_LABEL_2` |
+| Libellé de conversion | `2lrhCMn9usUcEMnhi4FE` |
 | Valeur | `50` |
 | Devise | `EUR` |
 | Déclencheur | `Trigger - Lead Step 2` |
@@ -101,7 +112,7 @@ Type pour les trois : **Déclencheur personnalisé → Événement personnalisé
 | Nom | `Clic telephone` |
 | Type | **Suivi des conversions Google Ads** |
 | ID de conversion | `18255900873` |
-| Libellé de conversion | `CONVERSION_LABEL_3` |
+| Libellé de conversion | `lwVHCMz9usUcEMnhi4FE` |
 | Valeur | `30` |
 | Devise | `EUR` |
 | Déclencheur | `Trigger - Clic telephone` |
@@ -117,9 +128,9 @@ Pour chaque action de conversion, dans **Google Ads → Objectifs → Conversion
 Crée d'abord les 3 actions de conversion dans Google Ads (si pas déjà fait) :
 | Action Google Ads | Catégorie suggérée | Remplace |
 |---|---|---|
-| Lead Step 1 (formulaire incomplet) | Prospect / Soumission de formulaire | `CONVERSION_LABEL_1` |
-| Lead Step 2 (formulaire complet) | Prospect / Soumission de formulaire | `CONVERSION_LABEL_2` |
-| Clic téléphone | Contact / Clic sur numéro | `CONVERSION_LABEL_3` |
+| Lead Step 1 (formulaire incomplet) | Prospect / Soumission de formulaire | `ZDyZCM78usUcEMnhi4FE` |
+| Lead Step 2 (formulaire complet) | Prospect / Soumission de formulaire | `2lrhCMn9usUcEMnhi4FE` |
+| Clic téléphone | Contact / Clic sur numéro | `lwVHCMz9usUcEMnhi4FE` |
 
 Reporte ensuite chaque libellé dans la balise GTM correspondante (§3), puis **Publier** le conteneur.
 
@@ -134,9 +145,11 @@ Reporte ensuite chaque libellé dans la balise GTM correspondante (§3), puis **
 
 ---
 
-## Récapitulatif des placeholders à remplacer
-| Placeholder | À remplacer par |
-|---|---|
-| `CONVERSION_LABEL_1` | libellé Google Ads de « Lead Step 1 » |
-| `CONVERSION_LABEL_2` | libellé Google Ads de « Lead Step 2 » |
-| `CONVERSION_LABEL_3` | libellé Google Ads de « Clic téléphone » |
+## Récapitulatif — libellés de conversion (renseignés ✅)
+| Conversion | Libellé | Valeur |
+|---|---|---|
+| Lead Step 1 | `AW-18255900873/ZDyZCM78usUcEMnhi4FE` | 10 € |
+| Lead Step 2 | `AW-18255900873/2lrhCMn9usUcEMnhi4FE` | 50 € |
+| Clic téléphone | `AW-18255900873/lwVHCMz9usUcEMnhi4FE` | 30 € |
+
+> Ces libellés sont **déjà câblés dans `index.html`** (appels `gtag` sur `lead_step1` / `lead_complete` / `clic_tel`). Conteneur GTM `GTM-PFJWVQF8` installé mais non requis pour ces conversions.
