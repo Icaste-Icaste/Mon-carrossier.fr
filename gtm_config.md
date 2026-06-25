@@ -6,17 +6,14 @@ d'événements `dataLayer` poussés par le site.
 
 ---
 
-## ⚠️ Prérequis : installer le conteneur GTM (actuellement ABSENT)
+## ✅ Conteneur GTM installé — `GTM-PFJWVQF8`
 
-> À ce jour, le site **n'a PAS de conteneur GTM**. Seul le tag Google Ads `gtag.js`
-> (`AW-18255900873`) est présent dans `index.html`.
-> **Tant que le conteneur GTM n'est pas installé, les `dataLayer.push()` ne déclenchent rien.**
+> Le conteneur **`GTM-PFJWVQF8`** est désormais installé dans `index.html`
+> (bloc `<script>` dans `<head>` + bloc `<noscript>` après `<body>`).
+> Les `dataLayer.push()` du site sont donc bien captés par GTM.
+> Il reste à créer les déclencheurs/balises ci-dessous **dans l'interface GTM** puis à publier.
 
-### Étapes
-1. Crée (ou récupère) un conteneur **Web** dans https://tagmanager.google.com → tu obtiens un ID `GTM-XXXXXXX`.
-2. Colle le snippet ci-dessous dans `index.html` (remplace `GTM-XXXXXXX` par ton ID).
-   - Bloc 1 : juste après l'ouverture de `<head>`.
-   - Bloc 2 : juste après l'ouverture de `<body>`.
+<details><summary>Snippet installé (pour référence)</summary>
 
 ```html
 <!-- Google Tag Manager (dans <head>) -->
@@ -24,17 +21,18 @@ d'événements `dataLayer` poussés par le site.
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+})(window,document,'script','dataLayer','GTM-PFJWVQF8');</script>
 <!-- End Google Tag Manager -->
 
 <!-- Google Tag Manager (noscript) (juste après <body>) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PFJWVQF8"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 ```
 
-> 💡 Donne-moi l'ID `GTM-XXXXXXX` et je l'installe dans `index.html` (sinon Stéphane le colle).
-> Note : le conteneur GTM peut cohabiter avec le `gtag.js` Google Ads déjà présent.
+</details>
+
+> Note : le conteneur GTM cohabite avec le `gtag.js` Google Ads déjà présent (`AW-18255900873`).
 
 ---
 
@@ -139,7 +137,6 @@ Reporte ensuite chaque libellé dans la balise GTM correspondante (§3), puis **
 ## Récapitulatif des placeholders à remplacer
 | Placeholder | À remplacer par |
 |---|---|
-| `GTM-XXXXXXX` | l'ID de ton conteneur GTM (snippet §Prérequis) |
 | `CONVERSION_LABEL_1` | libellé Google Ads de « Lead Step 1 » |
 | `CONVERSION_LABEL_2` | libellé Google Ads de « Lead Step 2 » |
 | `CONVERSION_LABEL_3` | libellé Google Ads de « Clic téléphone » |
