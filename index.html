@@ -1032,10 +1032,11 @@ function trackEvent(name, params) {
   if (typeof fbq  === 'function') fbq('trackCustom', name, params || {});
 }
 
-// Conversion Google Ads « clic appel » (via GTM dataLayer)
+// Conversion Google Ads « clic appel »
 function trackCall() {
   window.dataLayer = window.dataLayer || [];
   dataLayer.push({ event: 'clic_tel' });
+  if (typeof gtag === 'function') gtag('event', 'conversion', { send_to: 'AW-18255900873/lwVHCMz9usUcEMnhi4FE', value: 30.0, currency: 'EUR' });
   trackEvent('call_click', {});
 }
 
@@ -1101,9 +1102,10 @@ function goStep2(e) {
 
   trackEvent('form_step1_complete', { ville: step1Data.ville, cp: step1Data.cp });
   if (typeof fbq === 'function') fbq('track', 'Contact', { content_category: 'sinistre_auto' });
-  // Conversion Google Ads « Lead Step 1 » (via GTM dataLayer)
+  // Conversion Google Ads « Lead Step 1 »
   window.dataLayer = window.dataLayer || [];
   dataLayer.push({ event: 'lead_step1' });
+  if (typeof gtag === 'function') gtag('event', 'conversion', { send_to: 'AW-18255900873/ZDyZCM78usUcEMnhi4FE', value: 10.0, currency: 'EUR' });
 
   document.getElementById('step1').classList.remove('active');
   document.getElementById('step2').classList.add('active');
@@ -1145,10 +1147,11 @@ function submitForm(e) {
     responsable: f.responsable.value,
     has_photos:  files.length > 0,
   });
-  // Conversions : Meta Lead (direct) + Google Ads « Lead Step 2 » via GTM (dataLayer)
+  // Conversions : Meta Lead (direct) + Google Ads « Lead Step 2 »
   if (typeof fbq === 'function') fbq('track', 'Lead', { content_category: 'sinistre_auto' });
   window.dataLayer = window.dataLayer || [];
   dataLayer.push({ event: 'lead_complete' });
+  if (typeof gtag === 'function') gtag('event', 'conversion', { send_to: 'AW-18255900873/2lrhCMn9usUcEMnhi4FE', value: 50.0, currency: 'EUR' });
 
   fetch('/api/lead-client', { method: 'POST', body: payload })
     .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
