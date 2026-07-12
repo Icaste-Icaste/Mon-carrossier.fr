@@ -430,7 +430,7 @@ src="https://www.facebook.com/tr?id=1372274248287881&ev=PageView&noscript=1"
           <li><strong>L'avance des frais via la cession de créance assurance</strong> (le client n'avance rien, vous récupérez directement de l'assureur).</li>
           <li><strong>Une garantie 2 ans pièces et main d'œuvre</strong> sur les dossiers réalisés.</li>
           <li><strong>Une réponse aux demandes sous 24h</strong> et un devis client sous 48h.</li>
-          <li><strong>Un travail soigné</strong> qui mérite votre savoir-faire et nos avis 4,8/5.</li>
+          <li><strong>Un travail soigné</strong> qui mérite votre savoir-faire.</li>
         </ul>
       </div>
     </div>
@@ -572,6 +572,20 @@ function submitForm(e) {
   trackEvent('partner_form_submit', { form_type: 'partenaire', ville: data.ville, taille: data.taille, vehicule: data.vehicule });
   if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'Lead partenaire', content_category: 'recrutement_carrossier' });
   if (typeof gtag === 'function') gtag('event', 'conversion', { send_to: 'AW-18255900873' });
+
+  // Copie vers la plateforme V2 (fiche carrossier en base) — non bloquant
+  fetch('https://mon-carrossier-app-production.up.railway.app/api/lead-partenaire', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      entreprise: data.garage || '',
+      contactNom: ((data.prenom || '') + ' ' + (data.nom || '')).trim(),
+      tel: data.tel || '',
+      email: data.email || '',
+      ville: ((data.cp || '') + ' ' + (data.ville || '')).trim(),
+      message: 'Taille: ' + (data.taille || '?') + ' · Véhicule de prêt: ' + (data.vehicule || '?')
+    })
+  }).catch(function(){});
 
   fetch(MAKE_WEBHOOK_URL, {
     method: 'POST',
