@@ -1089,10 +1089,10 @@ function goStep2(e) {
 
   trackEvent('form_step1_complete', { ville: step1Data.ville, cp: step1Data.cp });
   if (typeof fbq === 'function') fbq('track', 'Contact', { content_category: 'sinistre_auto' });
-  // Conversion Google Ads « Lead Step 1 »
+  // Événement analytics conservé — mais PLUS de conversion Google Ads à l'étape 1 :
+  // on ne comptabilise que les leads qui vont au bout (« Lead Step 2 » à l'envoi final).
   window.dataLayer = window.dataLayer || [];
   dataLayer.push({ event: 'lead_step1' });
-  if (typeof gtag === 'function') gtag('event', 'conversion', { send_to: 'AW-18255900873/ZDyZCM78usUcEMnhi4FE', value: 10.0, currency: 'EUR' });
 
   document.getElementById('step1').classList.remove('active');
   document.getElementById('step2').classList.add('active');

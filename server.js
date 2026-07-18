@@ -140,6 +140,36 @@ async function updateNotionPage(pageId, lead, folderUrl) {
   });
 }
 
+// ── Pont vers la plateforme V2 (admin mon-carrossier-app) ─────────────────────
+// Chaque lead est aussi poussé vers la V2 pour apparaître dans le kanban admin.
+// Ne bloque jamais le flux existant : erreurs logguées, jamais levées.
+const V2_API_URL = process.env.V2_API_URL || 'https://mon-carrossier-app-production.up.railway.app';
+async function sendToV2(etape, lead, folderUrl) {
+  if (!process.env.LEAD_BRIDGE_SECRET) return; // pont désactivé sans secret
+  const r = await fetch(V2_API_URL + '/api/lead-externe', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-bridge-secret': process.env.LEAD_BRIDGE_SECRET,
+    },
+    body: JSON.stringify({
+      etape:         etape,
+      prenom:        lead.prenom || '',
+      nom:           lead.nom || '',
+      tel:           lead.telephone || lead.tel || '',
+      email:         lead.email || '',
+      cp:            lead.cp || '',
+      ville:         lead.ville || '',
+      marque_modele: lead.marque_modele || lead.marque || '',
+      responsable:   lead.resp || lead.responsable || '',
+      franchise:     lead.franchise || '',
+      degats:        lead.description || lead.degats || '',
+      photosUrl:     folderUrl || '',
+    }),
+  });
+  if (!r.ok) throw new Error('V2 HTTP ' + r.status);
+}
+
 // ── Make webhook ──────────────────────────────────────────────────────────────
 async function sendToMake(lead, folderUrl) {
   const r = await fetch(MAKE_WEBHOOK_URL, {
@@ -165,7 +195,7 @@ async function sendToMake(lead, folderUrl) {
 }
 
 // ── Diagnostic ────────────────────────────────────────────────────────────────
-var lastErrors = { drive: null, notion: null, make: null };
+var lastErrors = { drive: null, notion: null, make: null, v2: null };
 app.get('/api/health', function (req, res) {
   res.json({
     env: {
@@ -174,6 +204,7 @@ app.get('/api/health', function (req, res) {
       drive_folder: !!process.env.GOOGLE_DRIVE_PHOTOS_FOLDER_ID,
       notion_db:    !!process.env.NOTION_DATABASE_ID,
       make_url:     !!process.env.MAKE_WEBHOOK_URL,
+      v2_bridge:    !!process.env.LEAD_BRIDGE_SECRET,
     },
     lastErrors,
   });
@@ -185,11 +216,18 @@ app.post('/api/lead-step1', express.json(), async function (req, res) {
     const lead = req.body || {};
     if (lead.website) return res.status(200).json({ ok: true }); // honeypot
 
-    const pageId = await createNotionPage(lead, null, true);
-    lastErrors.notion = null;
+    // Notion + pont V2 en parallèle — l'échec de l'un n'empêche pas l'autre
+    const results = await Promise.allSettled([
+      createNotionPage(lead, null, true),
+      sendToV2(1, lead, null),
+    ]);
+    lastErrors.notion = results[0].status === 'rejected' ? results[0].reason.message : null;
+    lastErrors.v2     = results[1].status === 'rejected' ? results[1].reason.message : null;
+    if (lastErrors.notion) console.error('[lead-step1][notion]', lastErrors.notion);
+    if (lastErrors.v2) console.error('[lead-step1][v2]', lastErrors.v2);
+    const pageId = results[0].status === 'fulfilled' ? results[0].value : null;
     res.status(200).json({ ok: true, pageId });
   } catch (e) {
-    lastErrors.notion = e.message;
     console.error('[lead-step1]', e.message);
     // On renvoie ok:true quand même — le frontend passe à l'étape 2 dans tous les cas
     res.status(200).json({ ok: true, pageId: null, warning: e.message });
@@ -230,13 +268,14 @@ app.post('/api/lead-client', function (req, res) {
         ? updateNotionPage(lead.notionPageId, lead, folderUrl)
         : createNotionPage(lead, folderUrl, false);
 
-      // 3. Notion + Make en parallèle
+      // 3. Notion + Make + pont V2 en parallèle
       const results = await Promise.allSettled([
         notionPromise,
         sendToMake(lead, folderUrl),
+        sendToV2(2, lead, folderUrl),
       ]);
       results.forEach(function (r, i) {
-        const key = i === 0 ? 'notion' : 'make';
+        const key = i === 0 ? 'notion' : i === 1 ? 'make' : 'v2';
         if (r.status === 'rejected') {
           lastErrors[key] = r.reason && r.reason.message;
           console.error('[' + key + ']', r.reason && r.reason.message);
