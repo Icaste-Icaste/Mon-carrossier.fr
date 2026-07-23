@@ -171,6 +171,23 @@ async function sendToV2(etape, lead, folderUrl) {
   if (!r.ok) throw new Error('V2 HTTP ' + r.status);
 }
 
+// Transmet aussi les FICHIERS photos à la V2 (en plus de Drive) pour qu'ils
+// apparaissent dans l'onglet Médias du dossier admin.
+async function sendMediasToV2(lead, files) {
+  if (!process.env.LEAD_BRIDGE_SECRET || !files || !files.length) return;
+  const fd = new FormData();
+  fd.append('tel', lead.telephone || lead.tel || '');
+  files.slice(0, 10).forEach(function (f) {
+    fd.append('files', new Blob([f.buffer], { type: f.mimetype }), f.originalname || 'photo.jpg');
+  });
+  const r = await fetch(V2_API_URL + '/api/lead-externe/medias', {
+    method: 'POST',
+    headers: { 'x-bridge-secret': process.env.LEAD_BRIDGE_SECRET },
+    body: fd,
+  });
+  if (!r.ok) throw new Error('V2 medias HTTP ' + r.status);
+}
+
 // ── Make webhook ──────────────────────────────────────────────────────────────
 async function sendToMake(lead, folderUrl) {
   const r = await fetch(MAKE_WEBHOOK_URL, {
@@ -269,11 +286,11 @@ app.post('/api/lead-client', function (req, res) {
         ? updateNotionPage(lead.notionPageId, lead, folderUrl)
         : createNotionPage(lead, folderUrl, false);
 
-      // 3. Notion + Make + pont V2 en parallèle
+      // 3. Notion + Make + pont V2 (données puis fichiers) en parallèle
       const results = await Promise.allSettled([
         notionPromise,
         sendToMake(lead, folderUrl),
-        sendToV2(2, lead, folderUrl),
+        sendToV2(2, lead, folderUrl).then(function () { return sendMediasToV2(lead, files); }),
       ]);
       results.forEach(function (r, i) {
         const key = i === 0 ? 'notion' : i === 1 ? 'make' : 'v2';
