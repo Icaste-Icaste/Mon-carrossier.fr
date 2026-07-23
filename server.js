@@ -173,19 +173,24 @@ async function sendToV2(etape, lead, folderUrl) {
 
 // Transmet aussi les FICHIERS photos à la V2 (en plus de Drive) pour qu'ils
 // apparaissent dans l'onglet Médias du dossier admin.
+// Un fichier par requête : un envoi groupé de plusieurs Mo se fait refuser.
 async function sendMediasToV2(lead, files) {
   if (!process.env.LEAD_BRIDGE_SECRET || !files || !files.length) return;
-  const fd = new FormData();
-  fd.append('tel', lead.telephone || lead.tel || '');
-  files.slice(0, 10).forEach(function (f) {
-    fd.append('files', new Blob([f.buffer], { type: f.mimetype }), f.originalname || 'photo.jpg');
-  });
-  const r = await fetch(V2_API_URL + '/api/lead-externe/medias', {
-    method: 'POST',
-    headers: { 'x-bridge-secret': process.env.LEAD_BRIDGE_SECRET },
-    body: fd,
-  });
-  if (!r.ok) throw new Error('V2 medias HTTP ' + r.status);
+  var echecs = 0;
+  for (const f of files.slice(0, 10)) {
+    try {
+      const fd = new FormData();
+      fd.append('tel', lead.telephone || lead.tel || '');
+      fd.append('files', new Blob([f.buffer], { type: f.mimetype }), f.originalname || 'photo.jpg');
+      const r = await fetch(V2_API_URL + '/api/lead-externe/medias', {
+        method: 'POST',
+        headers: { 'x-bridge-secret': process.env.LEAD_BRIDGE_SECRET },
+        body: fd,
+      });
+      if (!r.ok) echecs++;
+    } catch (e) { echecs++; }
+  }
+  if (echecs) throw new Error('V2 medias : ' + echecs + '/' + files.length + ' échec(s)');
 }
 
 // ── Make webhook ──────────────────────────────────────────────────────────────
