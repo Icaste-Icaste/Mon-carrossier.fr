@@ -164,6 +164,7 @@ async function sendToV2(etape, lead, folderUrl) {
       responsable:   lead.resp || lead.responsable || '',
       franchise:     lead.franchise || '',
       degats:        lead.description || lead.degats || '',
+      assurance:     lead.assurance || '',
       photosUrl:     folderUrl || '',
     }),
   });
